@@ -30,6 +30,7 @@ private struct SettingsFormView: View {
     @Query private var customGames: [CustomGame]
     @State private var showAISearch  = false
     @State private var showPremium   = false
+    @State private var addLimitMessage: String? = nil
     @State private var notifStatus: UNAuthorizationStatus = .notDetermined
 
     var body: some View {
@@ -71,6 +72,20 @@ private struct SettingsFormView: View {
         .fontDesign(.rounded)
         .sheet(isPresented: $showAISearch) { AIGameSearchView() }
         .sheet(isPresented: $showPremium) { PremiumView() }
+        .alert("自定义游戏已达上限", isPresented: Binding(
+            get: { addLimitMessage != nil },
+            set: { if !$0 { addLimitMessage = nil } }
+        )) {
+            if !purchaseService.isPremium {
+                Button("升级会员") {
+                    addLimitMessage = nil
+                    showPremium = true
+                }
+            }
+            Button("知道了", role: .cancel) {}
+        } message: {
+            Text(addLimitMessage ?? "")
+        }
         .onAppear { refreshNotifStatus() }
     }
 
@@ -381,6 +396,10 @@ private struct SettingsFormView: View {
     }
 
     private func openAddGame() {
+        guard customGames.count < purchaseService.tier.maxCustomGames else {
+            addLimitMessage = purchaseService.tier.customGameLimitMessage(currentCount: customGames.count)
+            return
+        }
         showAISearch = true
     }
 

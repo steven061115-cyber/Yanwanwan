@@ -14,6 +14,7 @@ struct GameGridView: View {
     @State private var showPremium       = false
     @State private var showCompleteGuide = false
     @State private var cardsAppeared     = false
+    @State private var addLimitMessage: String? = nil
 
     private var prefs: UserPreferences? { prefsQuery.first }
     private var followedGames: [HoYoGame] { prefs?.followedGames ?? [] }
@@ -32,6 +33,20 @@ struct GameGridView: View {
             .sheet(isPresented: $showAISearch) { AIGameSearchView() }
             .sheet(isPresented: $showPremium) { PremiumView() }
             .sheet(isPresented: $showCompleteGuide) { CompleteTaskGuideSheet() }
+            .alert("自定义游戏已达上限", isPresented: Binding(
+                get: { addLimitMessage != nil },
+                set: { if !$0 { addLimitMessage = nil } }
+            )) {
+                if !purchaseService.isPremium {
+                    Button("升级会员") {
+                        addLimitMessage = nil
+                        showPremium = true
+                    }
+                }
+                Button("知道了", role: .cancel) {}
+            } message: {
+                Text(addLimitMessage ?? "")
+            }
             .fontDesign(.rounded)
             .onAppear {
                 cardsAppeared = false
@@ -204,6 +219,10 @@ struct GameGridView: View {
     }
 
     private func openAddGame() {
+        guard customGames.count < purchaseService.tier.maxCustomGames else {
+            addLimitMessage = purchaseService.tier.customGameLimitMessage(currentCount: customGames.count)
+            return
+        }
         showAISearch = true
     }
 
@@ -493,6 +512,7 @@ struct GamesTabView: View {
     @State private var showAISearch  = false
     @State private var showPremium   = false
     @State private var cardsAppeared = false
+    @State private var addLimitMessage: String? = nil
 
     private var prefs:        UserPreferences? { prefsQuery.first }
     private var followedGames: [HoYoGame]      { prefs?.followedGames ?? [] }
@@ -575,6 +595,20 @@ struct GamesTabView: View {
             }
             .sheet(isPresented: $showAISearch) { AIGameSearchView() }
             .sheet(isPresented: $showPremium) { PremiumView() }
+            .alert("自定义游戏已达上限", isPresented: Binding(
+                get: { addLimitMessage != nil },
+                set: { if !$0 { addLimitMessage = nil } }
+            )) {
+                if !purchaseService.isPremium {
+                    Button("升级会员") {
+                        addLimitMessage = nil
+                        showPremium = true
+                    }
+                }
+                Button("知道了", role: .cancel) {}
+            } message: {
+                Text(addLimitMessage ?? "")
+            }
             .fontDesign(.rounded)
             .onAppear {
                 cardsAppeared = false
@@ -615,6 +649,10 @@ struct GamesTabView: View {
     }
 
     private func openAddGame() {
+        guard customGames.count < purchaseService.tier.maxCustomGames else {
+            addLimitMessage = purchaseService.tier.customGameLimitMessage(currentCount: customGames.count)
+            return
+        }
         showAISearch = true
     }
 

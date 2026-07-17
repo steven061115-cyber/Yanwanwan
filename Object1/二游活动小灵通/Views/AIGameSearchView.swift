@@ -160,12 +160,15 @@ struct AIGameSearchView: View {
             } message: {
                 Text(aiService.quotaLimitMessage ?? "")
             }
-            .alert("无法保存", isPresented: Binding(
+            .alert("自定义游戏已达上限", isPresented: Binding(
                 get: { saveLimitMessage != nil },
                 set: { if !$0 { saveLimitMessage = nil } }
             )) {
                 if !purchaseService.isPremium {
-                    Button("升级会员") { showPremium = true }
+                    Button("升级会员") {
+                        saveLimitMessage = nil
+                        showPremium = true
+                    }
                 }
                 Button("知道了", role: .cancel) {}
             } message: {
@@ -231,7 +234,7 @@ struct AIGameSearchView: View {
         let currentCount = currentCustomGameCount()
         let maxCustomGames = purchaseService.tier.maxCustomGames
         guard currentCount < maxCustomGames else {
-            saveLimitMessage = "当前自定义游戏 \(currentCount)/\(maxCustomGames)，请先删除已有自定义游戏，或升级会员。"
+            saveLimitMessage = purchaseService.tier.customGameLimitMessage(currentCount: currentCount)
             return
         }
 
