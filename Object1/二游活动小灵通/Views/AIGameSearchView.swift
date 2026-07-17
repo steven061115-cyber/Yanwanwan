@@ -146,11 +146,11 @@ struct AIGameSearchView: View {
             .background(Color.hoyoBg)
             .sheet(isPresented: $showLinkGuide) { BilibiliLinkGuideSheet() }
             .sheet(isPresented: $showPremium) { PremiumView() }
-            .alert("今日提取次数已用完", isPresented: Binding(
+            .alert(purchaseService.tier.extractionLimitTitle, isPresented: Binding(
                 get: { aiService.quotaLimitMessage != nil },
                 set: { if !$0 { aiService.quotaLimitMessage = nil } }
             )) {
-                if !purchaseService.isPremium {
+                if purchaseService.tier == .free {
                     Button("升级会员") {
                         aiService.quotaLimitMessage = nil
                         showPremium = true

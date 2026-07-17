@@ -156,11 +156,11 @@ struct CustomGameDetailView: View {
         .toolbarBackground(Color.hoyoBg, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .fontDesign(.rounded)
-        .alert("今日提取次数已用完", isPresented: Binding(
+        .alert(purchaseService.tier.extractionLimitTitle, isPresented: Binding(
             get: { aiService.quotaLimitMessage != nil },
             set: { if !$0 { aiService.quotaLimitMessage = nil } }
         )) {
-            if !purchaseService.isPremium {
+            if purchaseService.tier == .free {
                 Button("升级会员") {
                     aiService.quotaLimitMessage = nil
                     showPremium = true

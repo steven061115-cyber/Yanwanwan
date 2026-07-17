@@ -425,9 +425,10 @@ function sendDailyLimitExceeded(res, { tier, quota }) {
 }
 
 function dailyLimitMessage(tier) {
+  const limit = dailyLimits[tier] ?? dailyLimits.free;
   return tier === 'premium'
-    ? '今日提取次数已用完，明天再试'
-    : '免费版今日提取次数已用完，升级会员可每日提取 5 次';
+    ? `会员今日 ${limit} 次提取额度已用完，明天会自动恢复。`
+    : `免费版今日 ${limit} 次提取额度已用完。升级会员后每日可提取 ${dailyLimits.premium} 次。`;
 }
 
 function getPathname(rawUrl) {

@@ -48,7 +48,7 @@ final class AIGameService {
                 return true
             }
 
-            quotaLimitMessage = quota.message ?? "今日提取次数已用完，明天再试。"
+            quotaLimitMessage = entitlementTier.extractionLimitMessage
             return false
         } catch {
             if let urlError = error as? URLError {
@@ -122,11 +122,11 @@ final class AIGameService {
             let (data, response) = try await URLSession.shared.data(for: req)
             if let http = response as? HTTPURLResponse, http.statusCode != 200 {
                 let apiError = try? JSONDecoder().decode(ExtractionErrorResponse.self, from: data)
-                let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
                 if http.statusCode == 429 || apiError?.error == "daily_limit_exceeded" {
-                    quotaLimitMessage = message.isEmpty ? "今日提取次数已用完，明天再试。" : String(message.prefix(160))
+                    quotaLimitMessage = entitlementTier.extractionLimitMessage
                     return []
                 }
+                let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
                 errorMessage = "提取后端错误（\(http.statusCode)）：\(message.prefix(120))"
                 return []
             }
@@ -188,16 +188,7 @@ final class AIGameService {
     }
 
     private struct QuotaResponse: Decodable {
-        let quota: Quota
         let canExtract: Bool
-        let message: String?
-    }
-
-    private struct Quota: Decodable {
-        let date: String
-        let tier: String
-        let used: Int
-        let limit: Int
     }
 
     private struct RawEvent: Decodable {

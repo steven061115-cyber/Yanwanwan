@@ -25,6 +25,22 @@ enum EntitlementTier: String, Codable, Sendable {
         }
     }
 
+    var extractionLimitTitle: String {
+        switch self {
+        case .free:    return "免费提取次数已用完"
+        case .premium: return "会员提取次数已用完"
+        }
+    }
+
+    var extractionLimitMessage: String {
+        switch self {
+        case .free:
+            return "免费版今日 \(dailyAIQueries) 次提取额度已用完。升级会员后每日可提取 \(EntitlementTier.premium.dailyAIQueries) 次。"
+        case .premium:
+            return "会员今日 \(dailyAIQueries) 次提取额度已用完，明天会自动恢复。"
+        }
+    }
+
     func customGameLimitMessage(currentCount: Int) -> String {
         switch self {
         case .free:
