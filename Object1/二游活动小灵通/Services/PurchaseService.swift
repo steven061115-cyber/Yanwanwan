@@ -2,6 +2,32 @@ import Foundation
 import Observation
 import StoreKit
 
+#if DEBUG
+enum DebugEntitlementOverride: String, CaseIterable, Identifiable {
+    case live
+    case free
+    case premium
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .live:    return "真实"
+        case .free:    return "免费版"
+        case .premium: return "会员"
+        }
+    }
+
+    var forcedTier: EntitlementTier? {
+        switch self {
+        case .live:    return nil
+        case .free:    return .free
+        case .premium: return .premium
+        }
+    }
+}
+#endif
+
 @MainActor
 @Observable
 final class PurchaseService {
@@ -12,6 +38,13 @@ final class PurchaseService {
     var isLoadingProducts = false
     var errorMessage: String? = nil
 
+    #if DEBUG
+    var debugEntitlementOverride: DebugEntitlementOverride = .live {
+        didSet { applyEffectiveTier() }
+    }
+    #endif
+
+    private var storeKitTier: EntitlementTier = .free
     private var didStart = false
     private var transactionUpdatesTask: Task<Void, Never>?
 
@@ -71,7 +104,7 @@ final class PurchaseService {
                 let transaction = try checkVerified(verification)
                 await refreshEntitlements()
                 await transaction.finish()
-                return tier == .premium
+                return storeKitTier == .premium
             case .userCancelled, .pending:
                 return false
             @unknown default:
@@ -102,7 +135,19 @@ final class PurchaseService {
             hasPremium = true
         }
 
-        tier = hasPremium ? .premium : .free
+        storeKitTier = hasPremium ? .premium : .free
+        applyEffectiveTier()
+    }
+
+    private func applyEffectiveTier() {
+        #if DEBUG
+        if let forcedTier = debugEntitlementOverride.forcedTier {
+            tier = forcedTier
+            return
+        }
+        #endif
+
+        tier = storeKitTier
     }
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {

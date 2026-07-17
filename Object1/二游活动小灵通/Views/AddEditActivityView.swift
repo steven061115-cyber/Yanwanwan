@@ -45,6 +45,9 @@ private struct SettingsFormView: View {
                     // 会员权益
                     sectionLabel(icon: "crown.fill", iconColor: Color.hoyoYellow, title: "会员权益")
                     membershipCard
+                    #if DEBUG
+                    debugEntitlementCard
+                    #endif
 
                     // 关注的游戏
                     sectionLabel(icon: "bookmark.fill", iconColor: Color.hoyoPink, title: "关注的游戏")
@@ -180,6 +183,57 @@ private struct SettingsFormView: View {
         )
         .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
     }
+
+    #if DEBUG
+    private var debugEntitlementCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: "hammer.fill")
+                    .font(.system(size: 14, weight: .black))
+                    .foregroundStyle(.white)
+                    .frame(width: 30, height: 30)
+                    .background(Color.hoyoNavy, in: RoundedRectangle(cornerRadius: 8))
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Debug 测试身份")
+                        .font(.system(size: 14, weight: .black, design: .rounded))
+                        .foregroundStyle(Color.hoyoNavy)
+                    Text("当前：\(purchaseService.tier.displayName)")
+                        .font(.caption2)
+                        .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+                }
+                Spacer()
+            }
+
+            HStack(spacing: 8) {
+                ForEach(DebugEntitlementOverride.allCases) { mode in
+                    Button {
+                        purchaseService.debugEntitlementOverride = mode
+                    } label: {
+                        Text(mode.displayName)
+                            .font(.system(size: 13, weight: .black, design: .rounded))
+                            .foregroundStyle(purchaseService.debugEntitlementOverride == mode ? .white : Color.hoyoNavy)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 9)
+                            .background(
+                                purchaseService.debugEntitlementOverride == mode
+                                ? Color.hoyoPink
+                                : Color.hoyoNavy.opacity(0.07),
+                                in: RoundedRectangle(cornerRadius: 10)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(14)
+        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
+        )
+    }
+    #endif
 
     // MARK: - Section Label
 
