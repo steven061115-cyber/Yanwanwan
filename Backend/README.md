@@ -8,7 +8,7 @@
 - 公告 URL + 正文 hash 的提取缓存
 - DeepSeek 返回的结构化活动
 
-命中缓存时不会调用 DeepSeek，也不会扣每日提取次数。
+命中缓存时不会调用 DeepSeek，但仍会消耗 1 次每日提取次数。
 
 ## 本地运行
 
@@ -92,6 +92,6 @@ curl -X POST http://127.0.0.1:8787/api/extract-events \
 - 免费版：每日 2 次
 - 会员：每日 5 次
 
-命中缓存时不扣次数；缓存未命中时会在调用 DeepSeek 前预扣一次，如果 DeepSeek 失败会退回。请求头 `X-Entitlement-Tier` 传 `premium` 时按会员额度处理，其它值按免费版处理。
+用户发起提取时会先检查并预扣次数；命中缓存时直接返回数据库结果并消耗 1 次，缓存未命中时调用 DeepSeek。DeepSeek 失败或缓存查询失败会退回次数。请求头 `X-Entitlement-Tier` 传 `premium` 时按会员额度处理，其它值按免费版处理。
 
 注意：当前会员状态仍由 App 传给后端，属于上线前的 MVP。正式防伪还需要接 Apple App Store Server API 校验订阅。

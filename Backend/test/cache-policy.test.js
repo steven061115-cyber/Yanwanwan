@@ -4,18 +4,20 @@ import { readFile } from 'node:fs/promises';
 
 const serverSource = await readFile(new URL('../src/server.js', import.meta.url), 'utf8');
 
-test('cache hits return before daily usage is reserved', () => {
-  const cacheLookup = serverSource.indexOf('const cached = await database.getCachedExtraction');
+test('cache hits consume reserved daily usage', () => {
+  const cacheLookup = serverSource.indexOf('cached = await database.getCachedExtraction');
   const cachedBranch = serverSource.indexOf('if (cached)', cacheLookup);
   const cachedReturn = serverSource.indexOf('return;', cachedBranch);
   const reserveUsage = serverSource.indexOf('reservedQuota = await reserveDailyUsage');
+  const cachedQuota = serverSource.indexOf('quota: reservedQuota', cachedBranch);
 
   assert.notEqual(cacheLookup, -1);
   assert.notEqual(cachedBranch, -1);
   assert.notEqual(cachedReturn, -1);
   assert.notEqual(reserveUsage, -1);
-  assert.ok(cacheLookup < reserveUsage);
-  assert.ok(cachedReturn < reserveUsage);
+  assert.notEqual(cachedQuota, -1);
+  assert.ok(reserveUsage < cacheLookup);
+  assert.ok(cachedQuota < cachedReturn);
 });
 
 test('DeepSeek failures refund reserved daily usage before returning an error', () => {

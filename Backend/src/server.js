@@ -141,25 +141,7 @@ async function handleExtractEvents(req, res) {
   const contentHash = hashText(limitedText);
   const cacheKey = buildExtractionCacheKey({ normalizedUrl, contentHash, gameName });
 
-  // Cache is checked before quota reservation, so repeated reads of the same unchanged notice are free.
-  if (database.isEnabled) {
-    const cached = await database.getCachedExtraction({ cacheKey });
-    if (cached) {
-      const quota = await getDailyQuota({ installId, tier });
-      sendJSON(res, 200, {
-        events: cached.events,
-        quota,
-        cache: {
-          hit: true,
-          articleURL: cached.articleUrl,
-          updatedAt: cached.updatedAt
-        }
-      });
-      return;
-    }
-  }
-
-  // Only uncached requests reserve quota before calling DeepSeek.
+  // Every user-triggered extraction consumes quota, whether served from cache or DeepSeek.
   let reservedQuota = null;
   if (database.isEnabled) {
     reservedQuota = await reserveDailyUsage({ installId, tier });
@@ -172,6 +154,33 @@ async function handleExtractEvents(req, res) {
     const quota = await getDailyQuota({ installId, tier });
     if (quota.used >= quota.limit) {
       sendDailyLimitExceeded(res, { tier, quota });
+      return;
+    }
+  }
+
+  if (database.isEnabled) {
+    let cached;
+    try {
+      cached = await database.getCachedExtraction({ cacheKey });
+    } catch (error) {
+      if (reservedQuota) {
+        await refundDailyUsage({ installId, tier }).catch((refundError) => {
+          console.error('Failed to refund daily usage after cache lookup error', refundError);
+        });
+      }
+      throw error;
+    }
+
+    if (cached) {
+      sendJSON(res, 200, {
+        events: cached.events,
+        quota: reservedQuota,
+        cache: {
+          hit: true,
+          articleURL: cached.articleUrl,
+          updatedAt: cached.updatedAt
+        }
+      });
       return;
     }
   }
