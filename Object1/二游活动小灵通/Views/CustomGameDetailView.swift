@@ -5,7 +5,6 @@ struct CustomGameDetailView: View {
     @Bindable var game: CustomGame
     @Environment(\.modelContext) private var modelContext
     @Environment(PurchaseService.self) private var purchaseService
-    @Query private var prefsQuery: [UserPreferences]
 
     @State private var aiService     = AIGameService()
     @State private var showConfirm   = false
