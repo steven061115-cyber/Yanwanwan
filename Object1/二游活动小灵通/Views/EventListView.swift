@@ -193,7 +193,7 @@ struct GameDetailView: View {
 
                 }
                 .padding(16)
-                .padding(.bottom, 24)
+                .padding(.bottom, 120)
             }
         }
         .navigationBarBackButtonHidden(true)
