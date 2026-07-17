@@ -146,6 +146,20 @@ struct AIGameSearchView: View {
             .background(Color.hoyoBg)
             .sheet(isPresented: $showLinkGuide) { BilibiliLinkGuideSheet() }
             .sheet(isPresented: $showPremium) { PremiumView() }
+            .alert("今日 AI 次数已用完", isPresented: Binding(
+                get: { aiService.quotaLimitMessage != nil },
+                set: { if !$0 { aiService.quotaLimitMessage = nil } }
+            )) {
+                if !purchaseService.isPremium {
+                    Button("升级会员") {
+                        aiService.quotaLimitMessage = nil
+                        showPremium = true
+                    }
+                }
+                Button("知道了", role: .cancel) {}
+            } message: {
+                Text(aiService.quotaLimitMessage ?? "")
+            }
             .alert("无法保存", isPresented: Binding(
                 get: { saveLimitMessage != nil },
                 set: { if !$0 { saveLimitMessage = nil } }

@@ -8,6 +8,7 @@ import Observation
 final class AIGameService {
     var isSearching   = false
     var errorMessage: String? = nil
+    var quotaLimitMessage: String? = nil
 
     // MARK: - Entry point
 
@@ -19,6 +20,7 @@ final class AIGameService {
 
         isSearching  = true
         errorMessage = nil
+        quotaLimitMessage = nil
         defer { isSearching = false }
 
         let drafts = await backendExtract(
@@ -27,7 +29,7 @@ final class AIGameService {
             articleURL: articleURL,
             entitlementTier: entitlementTier
         )
-        if drafts.isEmpty && errorMessage == nil {
+        if drafts.isEmpty && errorMessage == nil && quotaLimitMessage == nil {
             errorMessage = "小的没找到游戏内活动，请确认页面内容是否为版本公告"
         }
         return drafts
@@ -73,6 +75,10 @@ final class AIGameService {
             if let http = response as? HTTPURLResponse, http.statusCode != 200 {
                 let apiError = try? JSONDecoder().decode(ExtractionErrorResponse.self, from: data)
                 let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
+                if http.statusCode == 429 || apiError?.error == "daily_limit_exceeded" {
+                    quotaLimitMessage = message.isEmpty ? "今日 AI 提取次数已用完，明天再试。" : String(message.prefix(160))
+                    return []
+                }
                 errorMessage = "AI 后端错误（\(http.statusCode)）：\(message.prefix(120))"
                 return []
             }
@@ -129,6 +135,7 @@ final class AIGameService {
     }
 
     private struct ExtractionErrorResponse: Decodable {
+        let error: String?
         let message: String?
     }
 

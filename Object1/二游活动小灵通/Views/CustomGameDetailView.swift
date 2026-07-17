@@ -10,6 +10,7 @@ struct CustomGameDetailView: View {
     @State private var aiService     = AIGameService()
     @State private var showConfirm   = false
     @State private var showURLInput  = false
+    @State private var showPremium   = false
     @State private var articleURL    = ""
     @State private var pendingDrafts:    [AIEventDraft] = []
     @State private var editingEvent:     CustomEvent? = nil
@@ -156,6 +157,20 @@ struct CustomGameDetailView: View {
         .toolbarBackground(Color.hoyoBg, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .fontDesign(.rounded)
+        .alert("今日 AI 次数已用完", isPresented: Binding(
+            get: { aiService.quotaLimitMessage != nil },
+            set: { if !$0 { aiService.quotaLimitMessage = nil } }
+        )) {
+            if !purchaseService.isPremium {
+                Button("升级会员") {
+                    aiService.quotaLimitMessage = nil
+                    showPremium = true
+                }
+            }
+            Button("知道了", role: .cancel) {}
+        } message: {
+            Text(aiService.quotaLimitMessage ?? "")
+        }
         .sheet(isPresented: $showURLInput) {
             ArticleURLInputView(url: $articleURL) {
                 showURLInput = false
@@ -181,6 +196,7 @@ struct CustomGameDetailView: View {
                 }
             }
         }
+        .sheet(isPresented: $showPremium) { PremiumView() }
         .sheet(isPresented: $showConfirm) {
             RefreshConfirmView(gameName: game.name, drafts: $pendingDrafts) { selected in
                 applyRefresh(selected)
