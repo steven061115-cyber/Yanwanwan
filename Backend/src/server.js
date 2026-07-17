@@ -115,6 +115,7 @@ async function handleExtractEvents(req, res) {
   const contentHash = hashText(limitedText);
   const cacheKey = buildExtractionCacheKey({ normalizedUrl, contentHash, gameName });
 
+  // Cache is checked before quota reservation, so repeated reads of the same unchanged notice are free.
   if (database.isEnabled) {
     const cached = await database.getCachedExtraction({ cacheKey });
     if (cached) {
@@ -132,6 +133,7 @@ async function handleExtractEvents(req, res) {
     }
   }
 
+  // Only uncached requests reserve quota before calling DeepSeek.
   let reservedQuota = null;
   if (database.isEnabled) {
     reservedQuota = await reserveDailyUsage({ installId, tier });
@@ -155,6 +157,7 @@ async function handleExtractEvents(req, res) {
       text: limitedText
     });
   } catch (error) {
+    // DeepSeek failures should not consume user quota.
     if (reservedQuota) {
       await refundDailyUsage({ installId, tier }).catch((refundError) => {
         console.error('Failed to refund daily AI usage', refundError);
