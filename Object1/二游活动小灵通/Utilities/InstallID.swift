@@ -49,4 +49,13 @@ enum InstallID {
         attributes[kSecValueData as String] = data
         SecItemAdd(attributes as CFDictionary, nil)
     }
+
+    #if DEBUG
+    @discardableResult
+    static func resetForDebug() -> String {
+        let id = UUID().uuidString
+        save(id)
+        return id
+    }
+    #endif
 }

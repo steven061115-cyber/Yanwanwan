@@ -3,7 +3,7 @@ import Observation
 import StoreKit
 
 #if DEBUG
-enum DebugEntitlementOverride: String, CaseIterable, Identifiable {
+enum DebugEntitlementOverride: String, Identifiable {
     case live
     case free
     case premium
@@ -12,7 +12,7 @@ enum DebugEntitlementOverride: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .live:    return "真实"
+        case .live:    return "未覆盖"
         case .free:    return "免费版"
         case .premium: return "会员"
         }

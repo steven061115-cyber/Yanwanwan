@@ -32,6 +32,9 @@ private struct SettingsFormView: View {
     @State private var showPremium   = false
     @State private var addLimitMessage: String? = nil
     @State private var notifStatus: UNAuthorizationStatus = .notDetermined
+    #if DEBUG
+    @State private var didResetDebugQuota = false
+    #endif
 
     var body: some View {
         ZStack {
@@ -89,6 +92,13 @@ private struct SettingsFormView: View {
         } message: {
             Text(addLimitMessage ?? "")
         }
+        #if DEBUG
+        .alert("已重置提取次数", isPresented: $didResetDebugQuota) {
+            Button("知道了", role: .cancel) {}
+        } message: {
+            Text("已刷新本机测试标识，后端会按新的设备记录重新计算今日提取次数。")
+        }
+        #endif
         .onAppear { refreshNotifStatus() }
     }
 
@@ -206,24 +216,21 @@ private struct SettingsFormView: View {
             }
 
             HStack(spacing: 8) {
-                ForEach(DebugEntitlementOverride.allCases) { mode in
-                    Button {
-                        purchaseService.debugEntitlementOverride = mode
-                    } label: {
-                        Text(mode.displayName)
-                            .font(.system(size: 13, weight: .black, design: .rounded))
-                            .foregroundStyle(purchaseService.debugEntitlementOverride == mode ? .white : Color.hoyoNavy)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 9)
-                            .background(
-                                purchaseService.debugEntitlementOverride == mode
-                                ? Color.hoyoPink
-                                : Color.hoyoNavy.opacity(0.07),
-                                in: RoundedRectangle(cornerRadius: 10)
-                            )
-                    }
-                    .buttonStyle(.plain)
+                Button {
+                    InstallID.resetForDebug()
+                    didResetDebugQuota = true
+                } label: {
+                    Text("重置次数")
+                        .font(.system(size: 13, weight: .black, design: .rounded))
+                        .foregroundStyle(Color.hoyoNavy)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 9)
+                        .background(Color.hoyoNavy.opacity(0.07), in: RoundedRectangle(cornerRadius: 10))
                 }
+                .buttonStyle(.plain)
+
+                debugEntitlementButton(.free)
+                debugEntitlementButton(.premium)
             }
         }
         .padding(14)
@@ -232,6 +239,25 @@ private struct SettingsFormView: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
         )
+    }
+
+    private func debugEntitlementButton(_ mode: DebugEntitlementOverride) -> some View {
+        Button {
+            purchaseService.debugEntitlementOverride = mode
+        } label: {
+            Text(mode.displayName)
+                .font(.system(size: 13, weight: .black, design: .rounded))
+                .foregroundStyle(purchaseService.debugEntitlementOverride == mode ? .white : Color.hoyoNavy)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 9)
+                .background(
+                    purchaseService.debugEntitlementOverride == mode
+                    ? Color.hoyoPink
+                    : Color.hoyoNavy.opacity(0.07),
+                    in: RoundedRectangle(cornerRadius: 10)
+                )
+        }
+        .buttonStyle(.plain)
     }
     #endif
 
