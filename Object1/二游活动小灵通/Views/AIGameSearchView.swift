@@ -127,9 +127,9 @@ struct AIGameSearchView: View {
                             .tint(Color.hoyoPink)
                         }
                     } header: {
-                        Text("AI 提取结果（共 \(drafts.count) 条）")
+                        Text("提取结果（共 \(drafts.count) 条）")
                     } footer: {
-                        Text("AI 结果仅供参考，请确认日期准确后再保存。取消勾选不需要的活动。")
+                        Text("提取结果仅供参考，请确认日期准确后再保存。取消勾选不需要的活动。")
                     }
                 } else if hasSearched && !aiService.isSearching && aiService.errorMessage == nil {
                     Section {
@@ -146,7 +146,7 @@ struct AIGameSearchView: View {
             .background(Color.hoyoBg)
             .sheet(isPresented: $showLinkGuide) { BilibiliLinkGuideSheet() }
             .sheet(isPresented: $showPremium) { PremiumView() }
-            .alert("今日 AI 次数已用完", isPresented: Binding(
+            .alert("今日提取次数已用完", isPresented: Binding(
                 get: { aiService.quotaLimitMessage != nil },
                 set: { if !$0 { aiService.quotaLimitMessage = nil } }
             )) {

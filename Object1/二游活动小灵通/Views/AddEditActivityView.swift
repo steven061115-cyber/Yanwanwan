@@ -137,7 +137,7 @@ private struct SettingsFormView: View {
                     Text(purchaseService.tier.displayName)
                         .font(.system(size: 16, weight: .black, design: .rounded))
                         .foregroundStyle(Color.hoyoNavy)
-                    Text("自定义游戏 \(customGames.count)/\(purchaseService.tier.maxCustomGames) · 每日 AI \(purchaseService.tier.dailyAIQueries) 次")
+                    Text("自定义游戏 \(customGames.count)/\(purchaseService.tier.maxCustomGames) · 每日提取 \(purchaseService.tier.dailyAIQueries) 次")
                         .font(.caption)
                         .foregroundStyle(Color.hoyoNavy.opacity(0.46))
                 }

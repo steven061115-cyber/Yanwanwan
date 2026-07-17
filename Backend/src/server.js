@@ -21,7 +21,7 @@ const database = createDatabase({
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined
 });
 const dailyLimits = {
-  free: 1,
+  free: 2,
   premium: 5
 };
 
@@ -380,8 +380,8 @@ function sendDailyLimitExceeded(res, { tier, quota }) {
   sendJSON(res, 429, {
     error: 'daily_limit_exceeded',
     message: tier === 'premium'
-      ? '今日 AI 提取次数已用完，明天再试'
-      : '免费版今日 AI 提取次数已用完，升级会员可每日提取 5 次',
+      ? '今日提取次数已用完，明天再试'
+      : '免费版今日提取次数已用完，升级会员可每日提取 5 次',
     tier,
     used: quota.used,
     limit: quota.limit

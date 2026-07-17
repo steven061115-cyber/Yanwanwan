@@ -8,7 +8,7 @@
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>开发调试时需要连接同一局域网内的本地 AI 后端。</string>
+	<string>开发调试时需要连接同一局域网内的本地提取后端。</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

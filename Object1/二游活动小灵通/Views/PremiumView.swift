@@ -41,7 +41,7 @@ struct PremiumView: View {
             Text("解锁更多自定义游戏")
                 .font(.system(size: 26, weight: .black, design: .rounded))
                 .foregroundStyle(Color.hoyoNavy)
-            Text("会员可添加 10 个自定义游戏，每日 AI 提取 5 次。")
+            Text("会员可添加 10 个自定义游戏，每日提取 5 次。")
                 .font(.subheadline)
                 .foregroundStyle(Color.hoyoNavy.opacity(0.58))
         }
@@ -53,7 +53,7 @@ struct PremiumView: View {
 
     private var planComparison: some View {
         VStack(spacing: 10) {
-            planRow(title: "免费版", customGames: 1, dailyQueries: 1, tint: Color.hoyoNavy.opacity(0.45))
+            planRow(title: "免费版", customGames: 1, dailyQueries: 2, tint: Color.hoyoNavy.opacity(0.45))
             planRow(title: "会员", customGames: 10, dailyQueries: 5, tint: Color.hoyoPink)
         }
     }
@@ -70,7 +70,7 @@ struct PremiumView: View {
                 Text(title)
                     .font(.system(size: 16, weight: .black, design: .rounded))
                     .foregroundStyle(Color.hoyoNavy)
-                Text("自定义游戏 \(customGames) 个 · 每日 AI 提取 \(dailyQueries) 次")
+                Text("自定义游戏 \(customGames) 个 · 每日提取 \(dailyQueries) 次")
                     .font(.caption)
                     .foregroundStyle(Color.hoyoNavy.opacity(0.48))
             }

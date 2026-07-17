@@ -14,7 +14,7 @@ final class AIGameService {
 
     func extractEvents(from text: String, gameName: String, articleURL: URL?, entitlementTier: EntitlementTier) async -> [AIEventDraft] {
         guard APIConfig.isAIBackendConfigured, APIConfig.aiExtractorURL != nil else {
-            errorMessage = "请先部署 AI 后端，并在 APIConfig.swift 填入后端地址"
+            errorMessage = "请先部署提取后端，并在 APIConfig.swift 填入后端地址"
             return []
         }
 
@@ -58,7 +58,7 @@ final class AIGameService {
                 articleURL: articleURL?.absoluteString,
                 text: searchText
               )) else {
-            errorMessage = "AI 后端请求构建失败"
+            errorMessage = "提取后端请求构建失败"
             return []
         }
 
@@ -76,10 +76,10 @@ final class AIGameService {
                 let apiError = try? JSONDecoder().decode(ExtractionErrorResponse.self, from: data)
                 let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
                 if http.statusCode == 429 || apiError?.error == "daily_limit_exceeded" {
-                    quotaLimitMessage = message.isEmpty ? "今日 AI 提取次数已用完，明天再试。" : String(message.prefix(160))
+                    quotaLimitMessage = message.isEmpty ? "今日提取次数已用完，明天再试。" : String(message.prefix(160))
                     return []
                 }
-                errorMessage = "AI 后端错误（\(http.statusCode)）：\(message.prefix(120))"
+                errorMessage = "提取后端错误（\(http.statusCode)）：\(message.prefix(120))"
                 return []
             }
 
@@ -107,9 +107,9 @@ final class AIGameService {
             if let urlError = error as? URLError {
                 switch urlError.code {
                 case .timedOut:
-                    errorMessage = "请求超时：AI 处理长公告可能需要更久，请确认后端仍在运行后重试。"
+                    errorMessage = "请求超时：处理长公告可能需要更久，请确认后端仍在运行后重试。"
                 case .cannotConnectToHost, .cannotFindHost, .networkConnectionLost:
-                    errorMessage = "AI 后端连接失败：请确认后端已启动，且手机和 Mac 在同一 Wi-Fi。"
+                    errorMessage = "提取后端连接失败：请确认后端已启动，且手机和 Mac 在同一 Wi-Fi。"
                 case .notConnectedToInternet:
                     errorMessage = "网络不可用：请检查当前网络连接。"
                 default:

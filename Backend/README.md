@@ -1,14 +1,14 @@
-# AI Backend
+# 提取 Backend
 
 这个后端只做一件事：把 DeepSeek API key 留在服务器环境变量里，App 只请求自己的后端接口。
 
 正式发布时建议部署到 Railway，并绑定 Railway Postgres。后端会使用 Postgres 保存：
 
-- 每日 AI 查询次数
+- 每日提取次数
 - 公告 URL + 正文 hash 的提取缓存
 - DeepSeek 返回的结构化活动
 
-命中缓存时不会调用 DeepSeek，也不会扣每日 AI 次数。
+命中缓存时不会调用 DeepSeek，也不会扣每日提取次数。
 
 ## 本地运行
 
@@ -87,9 +87,9 @@ curl -X POST http://127.0.0.1:8787/api/extract-events \
 
 ## 查询次数限制
 
-后端按 `X-Install-ID` 和北京时间日期记录 AI 调用次数：
+后端按 `X-Install-ID` 和北京时间日期记录提取调用次数：
 
-- 免费版：每日 1 次
+- 免费版：每日 2 次
 - 会员：每日 5 次
 
 命中缓存时不扣次数；缓存未命中时会在调用 DeepSeek 前预扣一次，如果 DeepSeek 失败会退回。请求头 `X-Entitlement-Tier` 传 `premium` 时按会员额度处理，其它值按免费版处理。

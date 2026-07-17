@@ -157,7 +157,7 @@ struct CustomGameDetailView: View {
         .toolbarBackground(Color.hoyoBg, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .fontDesign(.rounded)
-        .alert("今日 AI 次数已用完", isPresented: Binding(
+        .alert("今日提取次数已用完", isPresented: Binding(
             get: { aiService.quotaLimitMessage != nil },
             set: { if !$0 { aiService.quotaLimitMessage = nil } }
         )) {
@@ -405,7 +405,7 @@ struct RefreshConfirmView: View {
                 } header: {
                     Text("小的找到 \(drafts.count) 个新活动")
                 } footer: {
-                    Text("保存后会用勾选的新活动替换当前游戏的原有活动，完成状态和旧提醒也会清空重建。游戏名称、图标和颜色不会改变。AI 日期仅供参考，请您确认后再保存。")
+                    Text("保存后会用勾选的新活动替换当前游戏的原有活动，完成状态和旧提醒也会清空重建。游戏名称、图标和颜色不会改变。日期仅供参考，请您确认后再保存。")
                         .font(.caption)
                 }
             }
@@ -976,7 +976,7 @@ struct BilibiliLinkGuideSheet: View {
                             .font(.caption).fontWeight(.semibold)
                         Text("b23.tv/xxxxx（单个活动介绍页）")
                             .font(.caption2).foregroundStyle(.secondary).monospaced()
-                        Text("单个活动页只有该活动信息，AI 无法提取到全部活动时间。")
+                        Text("单个活动页只有该活动信息，无法提取到全部活动时间。")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 2)
