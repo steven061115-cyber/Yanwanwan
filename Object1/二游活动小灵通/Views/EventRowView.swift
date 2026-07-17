@@ -1,0 +1,190 @@
+import SwiftUI
+
+struct EventRowView: View {
+    let event:         RemoteEvent
+    var showGameTag:   Bool          = true
+    var isMuted:       Bool          = false
+    var onTap:         (() -> Void)? = nil
+    var onToggleMute:  (() -> Void)? = nil
+    let onToggleDone:  () -> Void
+
+    private var isUrgent: Bool {
+        event.urgency == .critical || event.urgency == .warning
+    }
+
+    private var compactRemaining: String {
+        if event.isDone { return "已完成" }
+        let rem = Int(event.remaining)
+        if rem <= 0 { return "已结束" }
+        let days    = rem / 86400
+        let hours   = (rem % 86400) / 3600
+        let minutes = (rem % 3600) / 60
+        if days  > 0 { return "\(days)天\(hours)时" }
+        if hours > 0 { return "\(hours)时\(minutes)分" }
+        return "\(minutes)分"
+    }
+
+    private var pillColor: Color {
+        if event.isDone || event.remaining <= 0 { return .gray.opacity(0.25) }
+        return isUrgent ? Color.hoyoPink : Color.hoyoYellow
+    }
+
+    private var pillTextColor: Color {
+        if event.isDone || event.remaining <= 0 { return .secondary }
+        return isUrgent ? .white : Color.hoyoNavy
+    }
+
+    private var borderColor: Color {
+        if event.isDone || event.remaining <= 0 { return Color.hoyoNavy.opacity(0.15) }
+        return isUrgent ? Color.hoyoPink : Color.hoyoNavy.opacity(0.20)
+    }
+
+    private var borderWidth: CGFloat {
+        (event.isDone || event.remaining <= 0) ? 1.5 : (isUrgent ? 2.5 : 2)
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // Left accent bar
+            Capsule()
+                .fill(event.urgency.color.opacity(event.isDone ? 0.25 : 0.85))
+                .frame(width: 4)
+                .padding(.vertical, 10)
+                .padding(.leading, 12)
+
+            // Main tappable content
+            Button {
+                onTap?()
+            } label: {
+                HStack(spacing: 10) {
+                    // Icon
+                    ZStack {
+                        Circle()
+                            .fill(isUrgent
+                                  ? Color.hoyoPink.opacity(0.12)
+                                  : event.game.cardHeaderColor.opacity(0.10))
+                            .frame(width: 32, height: 32)
+                        if event.isDone {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundStyle(Color.hoyoMint)
+                        } else if event.remaining <= 0 {
+                            Text("✕")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundStyle(.gray)
+                        } else if isUrgent {
+                            Text("!")
+                                .font(.system(size: 14, weight: .black))
+                                .foregroundStyle(Color.hoyoPink)
+                        } else {
+                            Text("▶")
+                                .font(.system(size: 10, weight: .black))
+                                .foregroundStyle(event.game.cardHeaderColor)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        // Game tag / mute icon row
+                        if showGameTag || isMuted {
+                            HStack(spacing: 5) {
+                                if isMuted {
+                                    Image(systemName: "bell.slash.fill")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                if showGameTag {
+                                    Text(event.game.emoji + " " + event.game.displayName)
+                                        .font(.caption2)
+                                        .foregroundStyle(event.game.accentColor)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(event.game.accentColor.opacity(0.12), in: Capsule())
+                                }
+                            }
+                        }
+
+                        Text(event.title)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Color.hoyoNavy.opacity(event.isDone ? 0.40 : 1.0))
+                            .strikethrough(event.isDone, color: Color.hoyoNavy.opacity(0.35))
+                            .lineLimit(1)
+
+                        if !event.isDone && event.remaining > 0 {
+                            Text("\(event.endDateShort)结束 · \(event.category)")
+                                .font(.caption2)
+                                .foregroundStyle(Color.hoyoNavy.opacity(0.35))
+                        }
+                    }
+
+                    Spacer(minLength: 4)
+
+                    // Countdown pill
+                    HStack(spacing: 3) {
+                        Image(systemName: "clock")
+                            .font(.system(size: 10, weight: .bold))
+                        Text(compactRemaining)
+                            .font(.system(size: 12, weight: .black))
+                    }
+                    .foregroundStyle(pillTextColor)
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 6)
+                    .background(pillColor)
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule().stroke(
+                            (event.isDone || event.remaining <= 0) ? Color.clear : Color.hoyoNavy,
+                            lineWidth: 1.5
+                        )
+                    )
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 4)
+                .contentShape(Rectangle())
+                .fontDesign(.rounded)
+            }
+            .buttonStyle(.plain)
+
+            // Done toggle
+            Button {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                onToggleDone()
+            } label: {
+                Image(systemName: event.isDone ? "checkmark.circle.fill" : "circle")
+                    .imageScale(.large)
+                    .foregroundStyle(event.isDone ? Color.hoyoMint : Color.hoyoNavy.opacity(0.25))
+                    .scaleEffect(event.isDone ? 1.18 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.45), value: event.isDone)
+            }
+            .buttonStyle(.plain)
+            .padding(.trailing, 14)
+            .padding(.leading, 4)
+            .accessibilityLabel(event.isDone ? "标记为未完成" : "标记为完成")
+        }
+        .padding(.vertical, 8)
+        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(borderColor, lineWidth: borderWidth))
+        .shadow(
+            color: (event.isDone || event.remaining <= 0)
+                ? Color.clear
+                : (isUrgent ? Color.hoyoPink.opacity(0.35) : Color.hoyoNavy.opacity(0.20)),
+            radius: 0, x: 2, y: 2
+        )
+        .opacity(event.isDone ? 0.65 : 1)
+        .contextMenu {
+            if let toggleMute = onToggleMute, !event.isDone, event.remaining > 0 {
+                Button {
+                    toggleMute()
+                } label: {
+                    Label(isMuted ? "恢复通知" : "静音此活动通知",
+                          systemImage: isMuted ? "bell.fill" : "bell.slash")
+                }
+            }
+            Button {
+                onToggleDone()
+            } label: {
+                Label(event.isDone ? "标记为未完成" : "标记为完成",
+                      systemImage: event.isDone ? "arrow.uturn.backward.circle" : "checkmark.circle")
+            }
+        }
+    }
+}

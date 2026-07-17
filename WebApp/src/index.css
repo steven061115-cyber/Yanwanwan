@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --font-size: 16px;
+  --background: #FDF0F8;
+  --foreground: #2C2555;
+  --card: #ffffff;
+  --card-foreground: #2C2555;
+  --primary: #FF6EB4;
+  --primary-foreground: #ffffff;
+  --secondary: #DDB4F0;
+  --muted: #f5e8f5;
+  --muted-foreground: #9980b0;
+  --border: rgba(44, 37, 85, 0.10);
+  --radius: 1rem;
+
+  /* Hoyo palette */
+  --hoyo-pink: #FF6EB4;
+  --hoyo-mint: #39C5BB;
+  --hoyo-yellow: #FFD95A;
+  --hoyo-navy: #2C2555;
+  --hoyo-bg: #FDF0F8;
+  --hoyo-lavender: #DDB4F0;
+  --hoyo-card: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Microsoft YaHei', system-ui, sans-serif;
+  background: var(--hoyo-bg);
+  color: var(--hoyo-navy);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 0px; }
+
+/* Remove default button styles */
+button { cursor: pointer; border: none; background: none; padding: 0; }
+
+/* Smooth transitions */
+* { transition-property: color, background-color, border-color, opacity, transform;
+    transition-duration: 150ms; }
