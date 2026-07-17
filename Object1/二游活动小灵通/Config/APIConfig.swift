@@ -21,6 +21,11 @@ enum APIConfig {
         return URL(string: "\(trimmedBaseURL)/api/extract-events")
     }
 
+    static var quotaURL: URL? {
+        let trimmedBaseURL = aiBackendBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        return URL(string: "\(trimmedBaseURL)/api/quota")
+    }
+
     static var isAIBackendConfigured: Bool {
         !aiBackendBaseURL.isEmpty && !aiBackendBaseURL.contains("your-backend.example.com")
     }

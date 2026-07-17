@@ -59,6 +59,11 @@ async function handleRequest(req, res) {
     return;
   }
 
+  if (req.method === 'GET' && getPathname(req.url) === '/api/quota') {
+    await handleGetQuota(req, res);
+    return;
+  }
+
   if (req.method === 'POST' && req.url === '/api/extract-events') {
     await handleExtractEvents(req, res);
     return;
@@ -67,6 +72,27 @@ async function handleRequest(req, res) {
   sendJSON(res, 404, {
     error: 'not_found',
     message: '接口不存在'
+  });
+}
+
+async function handleGetQuota(req, res) {
+  const installId = getHeader(req, 'x-install-id')?.trim();
+  const tier = getEntitlementTier(req);
+
+  if (!installId || installId.length > 120) {
+    sendJSON(res, 400, {
+      error: 'missing_install_id',
+      message: '缺少设备标识，请更新 App 后重试'
+    });
+    return;
+  }
+
+  const quota = await getDailyQuota({ installId, tier });
+  const canExtract = quota.used < quota.limit;
+  sendJSON(res, 200, {
+    quota,
+    canExtract,
+    message: canExtract ? null : dailyLimitMessage(tier)
   });
 }
 
@@ -382,13 +408,25 @@ function getEntitlementTier(req) {
 function sendDailyLimitExceeded(res, { tier, quota }) {
   sendJSON(res, 429, {
     error: 'daily_limit_exceeded',
-    message: tier === 'premium'
-      ? '今日提取次数已用完，明天再试'
-      : '免费版今日提取次数已用完，升级会员可每日提取 5 次',
+    message: dailyLimitMessage(tier),
     tier,
     used: quota.used,
     limit: quota.limit
   });
+}
+
+function dailyLimitMessage(tier) {
+  return tier === 'premium'
+    ? '今日提取次数已用完，明天再试'
+    : '免费版今日提取次数已用完，升级会员可每日提取 5 次';
+}
+
+function getPathname(rawUrl) {
+  try {
+    return new URL(rawUrl, 'http://localhost').pathname;
+  } catch {
+    return rawUrl;
+  }
 }
 
 function hashText(text) {

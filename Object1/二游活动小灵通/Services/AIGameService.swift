@@ -7,10 +7,58 @@ import Observation
 @Observable
 final class AIGameService {
     var isSearching   = false
+    var isCheckingQuota = false
     var errorMessage: String? = nil
     var quotaLimitMessage: String? = nil
 
     // MARK: - Entry point
+
+    func canStartExtraction(entitlementTier: EntitlementTier) async -> Bool {
+        guard APIConfig.isAIBackendConfigured, let url = APIConfig.quotaURL else {
+            errorMessage = "请先部署提取后端，并在 APIConfig.swift 填入后端地址"
+            return false
+        }
+
+        isCheckingQuota = true
+        errorMessage = nil
+        quotaLimitMessage = nil
+        defer { isCheckingQuota = false }
+
+        var req = URLRequest(url: url)
+        req.httpMethod = "GET"
+        req.setValue(InstallID.current, forHTTPHeaderField: "X-Install-ID")
+        req.setValue(entitlementTier.backendHeaderValue, forHTTPHeaderField: "X-Entitlement-Tier")
+        req.timeoutInterval = 20
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+            if let http = response as? HTTPURLResponse, http.statusCode != 200 {
+                let apiError = try? JSONDecoder().decode(ExtractionErrorResponse.self, from: data)
+                let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
+                errorMessage = "提取后端错误（\(http.statusCode)）：\(message.prefix(120))"
+                return false
+            }
+
+            guard let quota = try? JSONDecoder().decode(QuotaResponse.self, from: data) else {
+                errorMessage = "提取次数状态异常，请重试"
+                return false
+            }
+
+            if quota.canExtract {
+                return true
+            }
+
+            quotaLimitMessage = quota.message ?? "今日提取次数已用完，明天再试。"
+            return false
+        } catch {
+            if let urlError = error as? URLError {
+                errorMessage = "提取次数检查失败：\(urlError.localizedDescription)"
+            } else {
+                errorMessage = "提取次数检查失败：\(error.localizedDescription)"
+            }
+            return false
+        }
+    }
 
     func extractEvents(from text: String, gameName: String, articleURL: URL?, entitlementTier: EntitlementTier) async -> [AIEventDraft] {
         guard APIConfig.isAIBackendConfigured, APIConfig.aiExtractorURL != nil else {
@@ -137,6 +185,19 @@ final class AIGameService {
     private struct ExtractionErrorResponse: Decodable {
         let error: String?
         let message: String?
+    }
+
+    private struct QuotaResponse: Decodable {
+        let quota: Quota
+        let canExtract: Bool
+        let message: String?
+    }
+
+    private struct Quota: Decodable {
+        let date: String
+        let tier: String
+        let used: Int
+        let limit: Int
     }
 
     private struct RawEvent: Decodable {

@@ -45,3 +45,17 @@ test('URL cache key is shared by link and unchanged content, not by game name', 
   assert.match(urlBranch, /return `url:\$\{normalizedUrl\}:sha256:\$\{contentHash\}`/);
   assert.ok(!urlBranch.includes('gameName'));
 });
+
+test('quota endpoint reads daily usage without reserving quota', () => {
+  const route = serverSource.indexOf("getPathname(req.url) === '/api/quota'");
+  const handlerStart = serverSource.indexOf('async function handleGetQuota');
+  const handlerEnd = serverSource.indexOf('async function handleExtractEvents', handlerStart);
+  const handlerBody = serverSource.slice(handlerStart, handlerEnd);
+
+  assert.notEqual(route, -1);
+  assert.notEqual(handlerStart, -1);
+  assert.notEqual(handlerEnd, -1);
+  assert.match(handlerBody, /await getDailyQuota/);
+  assert.ok(!handlerBody.includes('reserveDailyUsage'));
+  assert.ok(!handlerBody.includes('incrementDailyUsage'));
+});

@@ -300,10 +300,9 @@ struct CustomGameDetailView: View {
                 .buttonStyle(.plain)
 
                 Button {
-                    articleURL = ""
-                    showURLInput = true
+                    Task { await openRefreshInput() }
                 } label: {
-                    if aiService.isSearching {
+                    if aiService.isSearching || aiService.isCheckingQuota {
                         ProgressView().scaleEffect(0.75)
                             .frame(width: 54, height: 34)
                     } else {
@@ -321,9 +320,15 @@ struct CustomGameDetailView: View {
                 }
                 .accessibilityLabel("更新")
                 .buttonStyle(.plain)
-                .disabled(aiService.isSearching)
+                .disabled(aiService.isSearching || aiService.isCheckingQuota)
             }
         }
+    }
+
+    private func openRefreshInput() async {
+        articleURL = ""
+        guard await aiService.canStartExtraction(entitlementTier: purchaseService.tier) else { return }
+        showURLInput = true
     }
 }
 
