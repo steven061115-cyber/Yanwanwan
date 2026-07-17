@@ -10,7 +10,7 @@ enum APIConfig {
     static let aiBackendBaseURL = "http://192.168.110.98:8787"
     #endif
     #else
-    static let aiBackendBaseURL = "https://your-backend.example.com"
+    static let aiBackendBaseURL = "https://yanwanwan-production-edd3.up.railway.app"
     #endif
 
     static var aiExtractorURL: URL? {
