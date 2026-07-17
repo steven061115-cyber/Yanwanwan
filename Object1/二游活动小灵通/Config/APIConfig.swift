@@ -1,16 +1,19 @@
 import Foundation
 
 enum APIConfig {
+    private static let railwayBackendBaseURL = "https://yanwanwan-production-edd3.up.railway.app"
+    private static let useLocalBackendInDebug = false
+
     #if DEBUG
-    #if targetEnvironment(simulator)
-    // The iOS Simulator can reach the Mac host through 127.0.0.1.
-    static let aiBackendBaseURL = "http://127.0.0.1:8787"
+    static let aiBackendBaseURL = useLocalBackendInDebug ? localBackendBaseURL : railwayBackendBaseURL
     #else
-    // Real devices must use the Mac's Wi-Fi/LAN IP. Update this if your IP changes.
-    static let aiBackendBaseURL = "http://192.168.110.98:8787"
+    static let aiBackendBaseURL = railwayBackendBaseURL
     #endif
+
+    #if targetEnvironment(simulator)
+    private static let localBackendBaseURL = "http://127.0.0.1:8787"
     #else
-    static let aiBackendBaseURL = "https://yanwanwan-production-edd3.up.railway.app"
+    private static let localBackendBaseURL = "http://192.168.110.98:8787"
     #endif
 
     static var aiExtractorURL: URL? {
