@@ -19,6 +19,15 @@ cp .env.example .env
 
 把 `.env` 里的 `DEEPSEEK_API_KEY` 换成真实 key。需要测试正式缓存/次数限制时，也填入 `DATABASE_URL`。
 
+会员额度由后端校验 App Store 交易 JWS 后决定。正式环境需要配置 Apple 根证书：
+
+```env
+APP_BUNDLE_ID=ailesson.path.Object1
+APP_STORE_ROOT_CERT_PATH=./certs/AppleRootCA-G3.pem
+```
+
+本地 StoreKit 调试如果暂时没有证书链，可临时设置 `ALLOW_UNVERIFIED_STOREKIT_JWS=true`，只用于本地开发，不要带到线上。
+
 然后运行：
 
 ```bash
@@ -31,6 +40,13 @@ npm start
 
 ```bash
 curl http://127.0.0.1:8787/health
+```
+
+上架用链接：
+
+```bash
+curl http://127.0.0.1:8787/privacy
+curl http://127.0.0.1:8787/terms
 ```
 
 真机调试时，手机和 Mac 必须在同一个 Wi-Fi 下，App 里需要填 Mac 的局域网 IP：
@@ -54,6 +70,12 @@ DEEPSEEK_API_KEY=你的 DeepSeek key
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 MAX_TEXT_CHARS=50000
 DEEPSEEK_TIMEOUT_MS=90000
+QUOTA_RATE_LIMIT_PER_MINUTE=120
+EXTRACT_RATE_LIMIT_PER_HOUR=30
+TRUST_PROXY_HEADERS=true
+APP_BUNDLE_ID=ailesson.path.Object1
+APP_STORE_ROOT_CERT_PATH=./certs/AppleRootCA-G3.pem
+ALLOW_UNVERIFIED_STOREKIT_JWS=false
 ```
 
 Railway 会自动提供 `PORT`，不需要手动设置。部署成功后打开 `/health`，确认：
@@ -81,7 +103,7 @@ static let aiBackendBaseURL = "https://你的 Railway 域名"
 curl -X POST http://127.0.0.1:8787/api/extract-events \
   -H 'Content-Type: application/json' \
   -H 'X-Install-ID: test-install-id' \
-  -H 'X-Entitlement-Tier: free' \
+  -H 'X-App-Store-Transaction: 这里填 App 传来的 StoreKit 交易 JWS' \
   -d '{"gameName":"测试游戏","articleURL":"https://example.com/notice","text":"公告正文"}'
 ```
 
@@ -91,7 +113,12 @@ curl -X POST http://127.0.0.1:8787/api/extract-events \
 
 - 免费版：每日 2 次
 - 会员：每日 5 次
+- 同一 IP 默认每小时最多 30 次提取请求，避免伪造设备 ID 绕过每日次数后刷 DeepSeek 成本。可通过 `EXTRACT_RATE_LIMIT_PER_HOUR` 调整。
 
-用户发起提取时会先检查并预扣次数；命中缓存时直接返回数据库结果并消耗 1 次，缓存未命中时调用 DeepSeek。DeepSeek 失败或缓存查询失败会退回次数。请求头 `X-Entitlement-Tier` 传 `premium` 时按会员额度处理，其它值按免费版处理。
+用户发起提取时会先检查并预扣次数；命中缓存时直接返回数据库结果并消耗 1 次，缓存未命中时调用 DeepSeek。DeepSeek 失败或缓存查询失败会退回次数。App 会把 StoreKit 当前权益的交易 JWS 放在 `X-App-Store-Transaction`，后端验证产品 ID、Bundle ID、吊销状态和过期时间后才按会员额度处理；没有凭证或验证失败时按免费版处理。部署在 Railway 这类反向代理后面时，设置 `TRUST_PROXY_HEADERS=true` 才会使用真实客户端 IP 做限流；本地直连环境保持默认 `false`。
 
-注意：当前会员状态仍由 App 传给后端，属于上线前的 MVP。正式防伪还需要接 Apple App Store Server API 校验订阅。
+## 上架检查
+
+- iOS 主 App 和 Widget 都需要包含 `PrivacyInfo.xcprivacy`。当前项目声明了 `UserDefaults` 的用途，用于 App 和小组件之间保存/读取自身数据。
+- App Store Connect 仍需要手动填写 App 隐私标签、内购商品、订阅说明、支持链接和审核信息。
+- 后端部署后，会员页会指向生产域名的 `/privacy` 和 `/terms`，提交审核前需要确认这两个页面在公网可访问。

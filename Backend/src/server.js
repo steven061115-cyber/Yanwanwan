@@ -1,9 +1,10 @@
 import { createServer } from 'node:http';
 import { promises as fs } from 'node:fs';
-import { createHash } from 'node:crypto';
+import { createHash, verify, X509Certificate } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDatabase } from './db.js';
+import { normalizeExtractedEvents } from './event-filter.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -16,6 +17,13 @@ const host = process.env.HOST ?? '0.0.0.0';
 const deepSeekApiKey = process.env.DEEPSEEK_API_KEY ?? '';
 const maxTextChars = Number(process.env.MAX_TEXT_CHARS ?? 50000);
 const deepSeekTimeoutMs = Number(process.env.DEEPSEEK_TIMEOUT_MS ?? 90000);
+const appBundleId = process.env.APP_BUNDLE_ID ?? 'ailesson.path.Object1';
+const allowUnverifiedStoreKitJWS = process.env.ALLOW_UNVERIFIED_STOREKIT_JWS === 'true';
+const appStoreRootCertificate = await loadAppStoreRootCertificate();
+const premiumProductIDs = new Set([
+  'ailesson.path.Object1.premium.monthly',
+  'ailesson.path.Object1.premium.lifetime'
+]);
 const database = createDatabase({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined
@@ -24,6 +32,21 @@ const dailyLimits = {
   free: 2,
   premium: 5
 };
+const rateLimits = {
+  quota: {
+    name: 'quota',
+    limit: parsePositiveInteger(process.env.QUOTA_RATE_LIMIT_PER_MINUTE, 120),
+    windowMs: 60 * 1000,
+    message: '查询次数过于频繁，请稍后再试'
+  },
+  extract: {
+    name: 'extract',
+    limit: parsePositiveInteger(process.env.EXTRACT_RATE_LIMIT_PER_HOUR, 30),
+    windowMs: 60 * 60 * 1000,
+    message: '提取请求过于频繁，请稍后再试'
+  }
+};
+const rateLimitBuckets = new Map();
 
 await database.init();
 
@@ -44,7 +67,9 @@ server.listen(port, host, () => {
 });
 
 async function handleRequest(req, res) {
-  if (req.method === 'GET' && req.url === '/health') {
+  const pathname = getPathname(req.url);
+
+  if (req.method === 'GET' && pathname === '/health') {
     const databaseHealth = await database.health().catch((error) => ({
       ok: false,
       configured: database.isEnabled,
@@ -59,12 +84,22 @@ async function handleRequest(req, res) {
     return;
   }
 
-  if (req.method === 'GET' && getPathname(req.url) === '/api/quota') {
+  if (req.method === 'GET' && pathname === '/privacy') {
+    sendHTML(res, 200, privacyPolicyHTML());
+    return;
+  }
+
+  if (req.method === 'GET' && pathname === '/terms') {
+    sendHTML(res, 200, termsOfServiceHTML());
+    return;
+  }
+
+  if (req.method === 'GET' && pathname === '/api/quota') {
     await handleGetQuota(req, res);
     return;
   }
 
-  if (req.method === 'POST' && req.url === '/api/extract-events') {
+  if (req.method === 'POST' && pathname === '/api/extract-events') {
     await handleExtractEvents(req, res);
     return;
   }
@@ -76,8 +111,11 @@ async function handleRequest(req, res) {
 }
 
 async function handleGetQuota(req, res) {
+  if (!enforceRateLimit(req, res, rateLimits.quota)) {
+    return;
+  }
+
   const installId = getHeader(req, 'x-install-id')?.trim();
-  const tier = getEntitlementTier(req);
 
   if (!installId || installId.length > 120) {
     sendJSON(res, 400, {
@@ -87,6 +125,7 @@ async function handleGetQuota(req, res) {
     return;
   }
 
+  const tier = await getVerifiedEntitlementTier(req);
   const quota = await getDailyQuota({ installId, tier });
   const canExtract = quota.used < quota.limit;
   sendJSON(res, 200, {
@@ -97,6 +136,10 @@ async function handleGetQuota(req, res) {
 }
 
 async function handleExtractEvents(req, res) {
+  if (!enforceRateLimit(req, res, rateLimits.extract)) {
+    return;
+  }
+
   if (!deepSeekApiKey || deepSeekApiKey.startsWith('sk-your-')) {
     sendJSON(res, 500, {
       error: 'deepseek_not_configured',
@@ -107,7 +150,6 @@ async function handleExtractEvents(req, res) {
 
   const body = await readJSONBody(req);
   const installId = getHeader(req, 'x-install-id')?.trim();
-  const tier = getEntitlementTier(req);
   const gameName = typeof body.gameName === 'string' ? body.gameName.trim() : '';
   const articleUrl = typeof body.articleURL === 'string' ? body.articleURL.trim() : '';
   const text = typeof body.text === 'string' ? body.text.trim() : '';
@@ -136,6 +178,7 @@ async function handleExtractEvents(req, res) {
     return;
   }
 
+  const tier = await getVerifiedEntitlementTier(req);
   const limitedText = text.slice(0, maxTextChars);
   const normalizedUrl = normalizeArticleURL(articleUrl);
   const contentHash = hashText(limitedText);
@@ -172,8 +215,9 @@ async function handleExtractEvents(req, res) {
     }
 
     if (cached) {
+      const cachedEvents = normalizeExtractedEvents(cached.events);
       sendJSON(res, 200, {
-        events: cached.events,
+        events: cachedEvents,
         quota: reservedQuota,
         cache: {
           hit: true,
@@ -251,7 +295,9 @@ async function extractEventsWithDeepSeek({ gameName, text }) {
 2. 周常任务（endDate 填当前版本的维护时间）
 3. 副本/关卡挑战
 
-排除：社交媒体活动、充值礼包、线下活动、官方直播、投票问卷、每日签到/打卡活动、时装/皮肤折扣或销售活动。
+排除：社交媒体活动、充值礼包、线下活动、官方直播、投票问卷、每日签到/打卡活动、登录/累计登录/签到奖励、时装/皮肤折扣或销售活动。
+必须排除所有卡池/抽卡相关内容，包括但不限于角色或武器祈愿、跃迁、寻访、调频、UP 池、复刻池、概率提升、补给、招募、召唤、唤取等。
+同时排除标题或分类中包含"角色"或"武器"的条目。
 
 返回 JSON 格式如下：
 {"events":[{"title":"活动名","startDate":"YYYY-MM-DD HH:mm","endDate":"YYYY-MM-DD HH:mm","category":"版本活动"}]}
@@ -318,21 +364,7 @@ ${text}
 
   const parsed = JSON.parse(extractJSONPayload(content));
   const rawEvents = Array.isArray(parsed.events) ? parsed.events : [];
-  return rawEvents.map(normalizeEvent).filter(Boolean);
-}
-
-function normalizeEvent(event) {
-  if (!event || typeof event !== 'object') return null;
-
-  const title = typeof event.title === 'string' ? event.title.trim() : '';
-  const startDate = typeof event.startDate === 'string' ? event.startDate.trim() : '';
-  const endDate = typeof event.endDate === 'string' ? event.endDate.trim() : '';
-  const category = typeof event.category === 'string' && event.category.trim()
-    ? event.category.trim()
-    : '活动';
-
-  if (!title || !endDate) return null;
-  return { title, startDate, endDate, category };
+  return normalizeExtractedEvents(rawEvents);
 }
 
 function extractJSONPayload(content) {
@@ -410,8 +442,172 @@ function getHeader(req, name) {
   return value;
 }
 
-function getEntitlementTier(req) {
-  return getHeader(req, 'x-entitlement-tier') === 'premium' ? 'premium' : 'free';
+async function getVerifiedEntitlementTier(req) {
+  const transactionJWS = getHeader(req, 'x-app-store-transaction')?.trim();
+  if (!transactionJWS) return 'free';
+
+  const transaction = verifyAppStoreTransactionJWS(transactionJWS);
+  if (!transaction) return 'free';
+
+  const productId = typeof transaction.productId === 'string'
+    ? transaction.productId
+    : (typeof transaction.productID === 'string' ? transaction.productID : '');
+  const bundleId = typeof transaction.bundleId === 'string'
+    ? transaction.bundleId
+    : (typeof transaction.bundleID === 'string' ? transaction.bundleID : '');
+  if (!premiumProductIDs.has(productId)) return 'free';
+  if (bundleId !== appBundleId) return 'free';
+  if (transaction.revocationDate) return 'free';
+
+  const expiresDate = Number(transaction.expiresDate ?? 0);
+  if (expiresDate > 0 && expiresDate <= Date.now()) return 'free';
+
+  return 'premium';
+}
+
+function verifyAppStoreTransactionJWS(jws) {
+  try {
+    const parts = jws.split('.');
+    if (parts.length !== 3) return null;
+
+    const [encodedHeader, encodedPayload, encodedSignature] = parts;
+    const header = parseBase64URLJSON(encodedHeader);
+    const payload = parseBase64URLJSON(encodedPayload);
+    if (!header || !payload || header.alg !== 'ES256') return null;
+
+    if (!allowUnverifiedStoreKitJWS) {
+      if (!appStoreRootCertificate) return null;
+      const certificates = parseJWSCertificateChain(header.x5c);
+      if (!verifyCertificateChain(certificates, appStoreRootCertificate)) return null;
+
+      const signature = base64URLToBuffer(encodedSignature);
+      const signedData = Buffer.from(`${encodedHeader}.${encodedPayload}`, 'utf8');
+      const isSignatureValid = verify(
+        'sha256',
+        signedData,
+        {
+          key: certificates[0].publicKey,
+          dsaEncoding: 'ieee-p1363'
+        },
+        signature
+      );
+      if (!isSignatureValid) return null;
+    }
+
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function parseJWSCertificateChain(x5c) {
+  if (!Array.isArray(x5c) || x5c.length === 0) return [];
+  return x5c.map((certificate) => new X509Certificate(pemFromBase64Certificate(certificate)));
+}
+
+function verifyCertificateChain(certificates, trustedRoot) {
+  if (certificates.length === 0) return false;
+
+  for (const certificate of certificates) {
+    if (!isCertificateCurrentlyValid(certificate)) return false;
+  }
+
+  for (let i = 0; i < certificates.length - 1; i += 1) {
+    const certificate = certificates[i];
+    const issuer = certificates[i + 1];
+    if (certificate.issuer !== issuer.subject) return false;
+    if (!certificate.verify(issuer.publicKey)) return false;
+  }
+
+  const chainRoot = certificates[certificates.length - 1];
+  if (
+    chainRoot.fingerprint256 === trustedRoot.fingerprint256 &&
+    chainRoot.subject === trustedRoot.subject
+  ) {
+    return true;
+  }
+
+  return chainRoot.issuer === trustedRoot.subject && chainRoot.verify(trustedRoot.publicKey);
+}
+
+function isCertificateCurrentlyValid(certificate) {
+  const now = Date.now();
+  return Date.parse(certificate.validFrom) <= now && now <= Date.parse(certificate.validTo);
+}
+
+function parseBase64URLJSON(value) {
+  try {
+    return JSON.parse(base64URLToBuffer(value).toString('utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function base64URLToBuffer(value) {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = normalized.padEnd(normalized.length + ((4 - normalized.length % 4) % 4), '=');
+  return Buffer.from(padded, 'base64');
+}
+
+function pemFromBase64Certificate(value) {
+  const body = String(value).match(/.{1,64}/g)?.join('\n') ?? '';
+  return `-----BEGIN CERTIFICATE-----\n${body}\n-----END CERTIFICATE-----`;
+}
+
+function enforceRateLimit(req, res, config) {
+  const now = Date.now();
+  pruneRateLimitBuckets(now);
+
+  const clientAddress = getClientAddress(req);
+  const key = `${config.name}:${clientAddress}`;
+  const existing = rateLimitBuckets.get(key);
+
+  if (!existing || existing.resetAt <= now) {
+    rateLimitBuckets.set(key, {
+      count: 1,
+      resetAt: now + config.windowMs
+    });
+    return true;
+  }
+
+  if (existing.count >= config.limit) {
+    const retryAfterSeconds = Math.max(1, Math.ceil((existing.resetAt - now) / 1000));
+    res.setHeader('Retry-After', String(retryAfterSeconds));
+    sendJSON(res, 429, {
+      error: 'rate_limited',
+      message: config.message,
+      retryAfterSeconds
+    });
+    return false;
+  }
+
+  existing.count += 1;
+  return true;
+}
+
+function pruneRateLimitBuckets(now) {
+  if (rateLimitBuckets.size < 10000) return;
+
+  for (const [key, bucket] of rateLimitBuckets.entries()) {
+    if (bucket.resetAt <= now) {
+      rateLimitBuckets.delete(key);
+    }
+  }
+}
+
+function getClientAddress(req) {
+  if (process.env.TRUST_PROXY_HEADERS === 'true') {
+    const forwarded = getHeader(req, 'x-forwarded-for') ?? getHeader(req, 'cf-connecting-ip');
+    const firstAddress = forwarded?.split(',')?.[0]?.trim();
+    if (firstAddress) return firstAddress;
+  }
+
+  return req.socket?.remoteAddress ?? 'unknown';
+}
+
+function parsePositiveInteger(value, fallback) {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 function sendDailyLimitExceeded(res, { tier, quota }) {
@@ -595,6 +791,99 @@ function sendJSON(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
+function sendHTML(res, status, html) {
+  res.writeHead(status, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'public, max-age=300'
+  });
+  res.end(html);
+}
+
+function legalPageHTML({ title, updatedAt, body }) {
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${title} | 二游活动小灵通</title>
+  <style>
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17213b; background: #f7f8fb; }
+    body { margin: 0; }
+    main { max-width: 760px; margin: 0 auto; padding: 40px 18px 56px; }
+    h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.2; }
+    h2 { margin: 28px 0 10px; font-size: 18px; }
+    p, li { font-size: 15px; line-height: 1.75; }
+    p { margin: 0 0 12px; }
+    ul { margin: 0; padding-left: 20px; }
+    a { color: #d83d84; }
+    .updated { color: #69748a; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>${title}</h1>
+    <p class="updated">更新日期：${updatedAt}</p>
+    ${body}
+  </main>
+</body>
+</html>`;
+}
+
+function privacyPolicyHTML() {
+  return legalPageHTML({
+    title: '隐私政策',
+    updatedAt: '2026-07-18',
+    body: `
+    <p>二游活动小灵通用于整理游戏活动、兑换码和提醒。我们尽量只处理提供功能所必需的数据，不会出售用户数据，也不会用于跨 App 或跨网站追踪。</p>
+
+    <h2>我们会处理的数据</h2>
+    <ul>
+      <li>安装标识：App 会生成一个随机安装标识，用于后端计算每日 AI 提取额度和基础限流。</li>
+      <li>公告内容：当你使用 AI 提取时，游戏名、公告链接和公告正文会发送到后端，用于提取活动并做缓存。</li>
+      <li>购买凭证：开通会员后，App 会把 App Store 交易凭证发送给后端，只用于验证会员额度。</li>
+      <li>本地内容：你创建的游戏、活动、通知设置和小组件数据主要保存在设备本地；如果系统启用 iCloud，同步由 Apple iCloud 处理。</li>
+    </ul>
+
+    <h2>第三方服务</h2>
+    <p>AI 提取功能会通过我们的后端调用 DeepSeek。App 内购买由 Apple App Store 处理，付款信息不经过我们的服务器。</p>
+
+    <h2>数据保留</h2>
+    <p>后端会保留每日额度记录和公告提取缓存，用于控制成本、加快重复公告处理和排查服务问题。你可以停止使用 AI 提取功能，以避免继续向后端发送公告内容。</p>
+
+    <h2>联系我们</h2>
+    <p>如需隐私相关支持，请通过 App Store 产品页提供的开发者联系方式联系我们。</p>`
+  });
+}
+
+function termsOfServiceHTML() {
+  return legalPageHTML({
+    title: '服务条款',
+    updatedAt: '2026-07-18',
+    body: `
+    <p>使用二游活动小灵通，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。</p>
+
+    <h2>会员与购买</h2>
+    <ul>
+      <li>月度会员为自动续订订阅，价格以 App Store 购买页显示为准。</li>
+      <li>永久会员为一次性购买项目，购买后可长期使用当前会员权益。</li>
+      <li>购买、续订、取消和退款由 Apple App Store 处理。你可以在系统账户的订阅管理中取消月度会员。</li>
+      <li>月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。</li>
+    </ul>
+
+    <h2>会员权益</h2>
+    <p>会员当前包含更高的自定义游戏数量上限和每日 AI 提取额度。具体额度以 App 内展示为准。为了保证服务稳定，我们仍可能对异常高频请求进行限制。</p>
+
+    <h2>使用限制</h2>
+    <p>请勿批量滥用接口、绕过额度限制、提交违法内容，或将本服务用于侵犯他人权益的用途。</p>
+
+    <h2>Apple 标准协议</h2>
+    <p>App 内购买还受 <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Apple 标准许可协议</a> 约束。</p>
+
+    <h2>联系我们</h2>
+    <p>如需服务相关支持，请通过 App Store 产品页提供的开发者联系方式联系我们。</p>`
+  });
+}
+
 async function loadDotEnv() {
   const envFile = path.join(rootDir, '.env');
   let raw;
@@ -624,4 +913,24 @@ async function loadDotEnv() {
 
     process.env[key] = value;
   }
+}
+
+async function loadAppStoreRootCertificate() {
+  const certPath = process.env.APP_STORE_ROOT_CERT_PATH?.trim();
+  const certPem = process.env.APP_STORE_ROOT_CERT_PEM?.trim();
+
+  try {
+    if (certPath) {
+      const resolvedPath = path.isAbsolute(certPath) ? certPath : path.resolve(rootDir, certPath);
+      return new X509Certificate(await fs.readFile(resolvedPath, 'utf8'));
+    }
+
+    if (certPem) {
+      return new X509Certificate(certPem.replace(/\\n/g, '\n'));
+    }
+  } catch (error) {
+    console.error('Failed to load App Store root certificate', error);
+  }
+
+  return null;
 }

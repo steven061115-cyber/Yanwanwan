@@ -49,7 +49,7 @@ test('URL cache key is shared by link and unchanged content, not by game name', 
 });
 
 test('quota endpoint reads daily usage without reserving quota', () => {
-  const route = serverSource.indexOf("getPathname(req.url) === '/api/quota'");
+  const route = serverSource.indexOf("pathname === '/api/quota'");
   const handlerStart = serverSource.indexOf('async function handleGetQuota');
   const handlerEnd = serverSource.indexOf('async function handleExtractEvents', handlerStart);
   const handlerBody = serverSource.slice(handlerStart, handlerEnd);
