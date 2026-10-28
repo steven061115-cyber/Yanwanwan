@@ -566,7 +566,7 @@ struct ArticleURLInputView: View {
                 } footer: {
                     Text(usesBilibili
                          ? String(localized: "粘贴哔哩哔哩版本公告的分享链接（b23.tv/…），应用会用内置浏览器打开，如遇验证码请手动通过后点「提取内容」。", bundle: .appLanguage)
-                         : String(localized: "要粘贴的是某个版本具体活动公告的页面链接（例如「2.5 版本活动一览」），不是官网的新闻列表页。粘贴后用内置浏览器提取内容。", bundle: .appLanguage))
+                         : overseasNoticeLinkHint(for: officialNews))
                 }
 
                 Section {

@@ -5,21 +5,37 @@ import SwiftData
 struct OfficialNewsPage {
     let english: String
     let chinese: String
+    // 英文官网上版本更新公告的真实标题，引导用户找对公告；中文官网的标题不同，所以只在英文界面显示。
+    let englishNoticeExample: String
 
     var forCurrentLanguage: String {
         AppLanguage.current == .en ? english : chinese
     }
+
+    var noticeExampleForCurrentLanguage: String? {
+        AppLanguage.current == .en ? englishNoticeExample : nil
+    }
+}
+
+// 海外公告链接的提示：说明要选版本更新公告，英文界面附上该游戏的真实标题。
+func overseasNoticeLinkHint(for page: OfficialNewsPage?) -> String {
+    let hint = String(localized: "粘贴版本更新公告（Patch Notes / Version Update Notes）的链接，它会用文字列出每个活动的时间。不要用卡池公告、新闻列表页，或全是图片的活动一览。粘贴后用内置浏览器提取内容。", bundle: .appLanguage)
+    guard let example = page?.noticeExampleForCurrentLanguage else { return hint }
+    return hint + "\n" + String(localized: "例如：\(example)", bundle: .appLanguage)
 }
 
 enum OverseasOfficialNews {
     // 键是游戏名的中文原文，也是 Localizable 里的翻译键。
     static let pages: [String: OfficialNewsPage] = [
         "鸣潮": .init(english: "https://wutheringwaves.kurogames.com/en/main/news",
-                    chinese: "https://wutheringwaves.kurogames.com/zh-tw/main/news"),
+                    chinese: "https://wutheringwaves.kurogames.com/zh-tw/main/news",
+                    englishNoticeExample: "Patch Notes for Wuthering Waves Version 3.7"),
         "终末地": .init(english: "https://endfield.gryphline.com/en-us#notice",
-                     chinese: "https://endfield.gryphline.com/zh-tw#notice"),
+                     chinese: "https://endfield.gryphline.com/zh-tw#notice",
+                     englishNoticeExample: "[Sanctuary of Ink] Version Update Notes"),
         "异环": .init(english: "https://nte.perfectworld.com/en/article/news/index.html",
-                    chinese: "https://nte.perfectworld.com/cn/article/news/index.html"),
+                    chinese: "https://nte.perfectworld.com/cn/article/news/index.html",
+                    englishNoticeExample: "Ver. 1.4 Patch Notes"),
     ]
 
     // 自定义游戏的名字是添加时的语言写的，三种语言的译名都认。
@@ -189,12 +205,18 @@ struct AIGameSearchView: View {
                       detail: String(localized: "在公告页点分享，复制 b23.tv 短链，回到本页点「粘贴」。", bundle: .appLanguage))
         }
 
+        private var officialSiteStep2Detail: String {
+            let detail = String(localized: "选标题含「更新公告」「Patch Notes」或「Version Update Notes」的那篇，里面会用文字列出每个活动的时间。不要选卡池公告（Convene、Headhunting 等），也不要选全是图片的活动一览，AI 读不了图片。", bundle: .appLanguage)
+            guard let example = space.overseasNews?.noticeExampleForCurrentLanguage else { return detail }
+            return detail + "\n" + String(localized: "例如：\(example)", bundle: .appLanguage)
+        }
+
         @ViewBuilder
         private var officialSiteSteps: some View {
             guideStep(number: "1", title: String(localized: "打开官网公告页", bundle: .appLanguage),
                       detail: String(localized: "点下方按钮，在浏览器里打开国际服官网的公告页。", bundle: .appLanguage))
-            guideStep(number: "2", title: String(localized: "点开最新版本公告", bundle: .appLanguage),
-                      detail: String(localized: "选择最新版本的更新公告或活动一览，不要选单个活动介绍。", bundle: .appLanguage))
+            guideStep(number: "2", title: String(localized: "点开版本更新公告", bundle: .appLanguage),
+                      detail: officialSiteStep2Detail)
             guideStep(number: "3", title: String(localized: "复制链接", bundle: .appLanguage),
                       detail: String(localized: "复制这篇公告的网址，回到本页点「粘贴」。", bundle: .appLanguage))
         }
@@ -426,7 +448,7 @@ struct AIGameSearchView: View {
         } footer: {
             Text(HoYoServer.current.usesBilibili
                  ? String(localized: "粘贴从 B站 App 里复制出来的具体版本公告分享链接（b23.tv/…），再用内置浏览器提取内容。", bundle: .appLanguage)
-                 : String(localized: "要粘贴的是某个版本具体活动公告的页面链接（例如「2.5 版本活动一览」），不是官网的新闻列表页。粘贴后用内置浏览器提取内容。", bundle: .appLanguage))
+                 : overseasNoticeLinkHint(for: OverseasOfficialNews.page(forGameName: gameName)))
         }
 
         Section {
