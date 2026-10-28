@@ -12,6 +12,10 @@ const EXCLUDED_EVENT_PATTERNS = [
   /\b(banners?|wish(es)?|warps?|convene|headhunting|gacha|rate[- ]?up|signal search|recruitment)\b/i,
   // 与中文规则"角色|武器"对应
   /\b(characters?|weapons?)\b/i,
+  // 日文公告（"武器"与中文同形，已由上面的中文规则覆盖）
+  /ガチャ|ピックアップ|祈願|ワープ|スカウト|召喚|調律|ログインボーナス|ログイン報酬|ログインイベント|ログイン|キャラクター/,
+  // 韩文公告
+  /가챠|뽑기|픽업|기원|워프|헤드헌팅|스카우트|소환|출석|로그인|캐릭터|무기/,
   /\b(check-?in|log-?in|login|sign-?in) (event|rewards?|bonus)\b|\bdaily (check-?in|login|sign-?in)\b/i,
   // 各游戏的抽取 / 开箱 / 外观售卖叫法（鸣潮、终末地、异环）
   /\b(arsenal issue|re-?factor|arc research|mystery box(es)?|limited s-class|featured (resonator|weapon))\b/i,

@@ -3,7 +3,9 @@
 const LANGUAGE_NAMES = {
   'zh-Hans': '简体中文',
   'zh-Hant': '繁體中文（台灣用語）',
-  en: 'English'
+  en: 'English',
+  ja: '日本語',
+  ko: '한국어'
 };
 
 export const DEFAULT_OUTPUT_LANGUAGE = 'zh-Hans';

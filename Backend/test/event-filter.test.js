@@ -78,3 +78,23 @@ test('excludes Endfield and NTE gacha, sign-in and outfit sales', () => {
     assert.equal(shouldExcludeEvent({ title, category: '版本活动' }), false, title);
   }
 });
+
+test('excludes Japanese and Korean gacha and login events', () => {
+  const excluded = [
+    'イベント祈願「杯中のバラッド」',
+    'キャラクターイベントワープ',
+    '限定スカウト',
+    'ログインボーナス',
+    '캐릭터 이벤트 기원',
+    '한정 헤드헌팅',
+    '출석 이벤트',
+    '무기 이벤트 워프'
+  ];
+  for (const title of excluded) {
+    assert.equal(shouldExcludeEvent({ title, category: '版本活动' }), true, title);
+  }
+
+  for (const title of ['自由気ままな雪合戦', '幻想シアター', '근심 없는 눈싸움', '현실 속 환상극']) {
+    assert.equal(shouldExcludeEvent({ title, category: '版本活动' }), false, title);
+  }
+});
