@@ -8,7 +8,6 @@ struct Object1App: App {
 
     init() {
         HoYoServer.saveDefaultIfNeeded()
-        AppLanguage.saveDefaultIfNeeded()
         applyAppearance()
     }
 

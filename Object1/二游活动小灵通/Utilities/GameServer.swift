@@ -28,8 +28,29 @@ nonisolated enum HoYoServer: String, CaseIterable, Identifiable {
         }
     }
 
+    // 覆盖的地区，帮用户判断自己在哪个服。亚服的服务器时间统一是 UTC+8，日本、韩国也一样。
+    var regions: String { regions(in: .current) }
+
+    func regions(in language: AppLanguage) -> String {
+        switch self {
+        case .china:   return String(localized: "中国大陆", bundle: language.bundle)
+        case .america: return String(localized: "北美、南美", bundle: language.bundle)
+        case .europe:  return String(localized: "欧洲、中东、非洲", bundle: language.bundle)
+        case .asia:    return String(localized: "日本、韩国、东南亚、港澳台", bundle: language.bundle)
+        }
+    }
+
     var utcOffsetLabel: String {
         utcOffsetHours >= 0 ? "UTC+\(utcOffsetHours)" : "UTC\(utcOffsetHours)"
+    }
+
+    // 默认界面语言。日文、韩文没有对应的服务器，只能在设置里手动选。
+    var language: AppLanguage {
+        switch self {
+        case .china:            return .zhHans
+        case .asia:             return .zhHant
+        case .america, .europe: return .en
+        }
     }
 
     // 国服用 B站，其余服务器用 YouTube。
@@ -94,35 +115,25 @@ nonisolated enum HoYoServer: String, CaseIterable, Identifiable {
     }
 }
 
-// App 界面语言，和服务器无关。首次启动按系统语言选一个，之后只在设置里修改。
+// App 界面语言：默认跟随所选服务器，也可以在设置里单独指定。不跟随系统语言。
 nonisolated enum AppLanguage: String, CaseIterable, Identifiable {
     case zhHans = "zh-Hans"
     case zhHant = "zh-Hant"
     case en
+    case ja
+    case ko
 
     var id: String { rawValue }
 
-    static let storageKey = "appLanguage"
+    // 用户手动指定的语言；没有值表示跟随服务器。
+    // 换了新键名：旧版"首次启动按系统语言自动保存"的值不能当成用户的手动选择。
+    static let storageKey = "appLanguageOverride"
 
-    static var current: AppLanguage {
-        HoYoServer.store.string(forKey: storageKey).flatMap(AppLanguage.init(rawValue:)) ?? guess()
+    static var override: AppLanguage? {
+        HoYoServer.store.string(forKey: storageKey).flatMap(AppLanguage.init(rawValue:))
     }
 
-    static func select(_ language: AppLanguage) {
-        HoYoServer.store.set(language.rawValue, forKey: storageKey)
-    }
-
-    // 首次启动时把系统语言对应的选项存下来，之后系统语言变了也不跟着变。
-    static func saveDefaultIfNeeded() {
-        guard AppLanguage(rawValue: HoYoServer.store.string(forKey: storageKey) ?? "") == nil else { return }
-        select(guess())
-    }
-
-    static func guess(preferred: String? = Locale.preferredLanguages.first) -> AppLanguage {
-        let language = Locale.Language(identifier: preferred ?? "en")
-        guard language.languageCode == .chinese else { return .en }
-        return language.maximalIdentifier.contains("Hant") ? .zhHant : .zhHans
-    }
+    static var current: AppLanguage { override ?? HoYoServer.current.language }
 
     var locale: Locale { Locale(identifier: rawValue) }
 
@@ -132,6 +143,8 @@ nonisolated enum AppLanguage: String, CaseIterable, Identifiable {
         case .zhHans: return "简体中文"
         case .zhHant: return "繁體中文"
         case .en:     return "English"
+        case .ja:     return "日本語"
+        case .ko:     return "한국어"
         }
     }
 
@@ -141,6 +154,8 @@ nonisolated enum AppLanguage: String, CaseIterable, Identifiable {
         case .zhHans: return "zh-cn"
         case .zhHant: return "zh-tw"
         case .en:     return "en"
+        case .ja:     return "ja"
+        case .ko:     return "ko"
         }
     }
 
@@ -149,7 +164,7 @@ nonisolated enum AppLanguage: String, CaseIterable, Identifiable {
 
     private static let bundles: [AppLanguage: Bundle] = {
         var result: [AppLanguage: Bundle] = [:]
-        for language in [AppLanguage.zhHans, .zhHant, .en] {
+        for language in AppLanguage.allCases {
             if let path = Bundle.main.path(forResource: language.rawValue, ofType: "lproj"),
                let bundle = Bundle(path: path) {
                 result[language] = bundle

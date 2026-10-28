@@ -1250,8 +1250,9 @@ struct WanwanSpeech {
         return timeLines(now: now).first
     }
 
-    private static let noGamesLine = String(localized: "老大还没告诉婉婉要盯哪个游戏呢！", bundle: .appLanguage)
-    private static let offlineLine = String(localized: "网络开小差了，婉婉先拿旧账本顶一下！", bundle: .appLanguage)
+    // 都用计算属性：static let 只在启动时算一次，App 内切换语言后不会更新。
+    private static var noGamesLine: String { String(localized: "老大还没告诉婉婉要盯哪个游戏呢！", bundle: .appLanguage) }
+    private static var offlineLine: String { String(localized: "网络开小差了，婉婉先拿旧账本顶一下！", bundle: .appLanguage) }
 
     private static func urgentLine(_ stats: ActivityStats) -> String? {
         guard let event = stats.mostUrgent, event.remaining <= 86400 else { return nil }
@@ -1287,14 +1288,14 @@ struct WanwanSpeech {
         }
     }
 
-    private static let smallTalk = [
+    private static var smallTalk: [String] { [
         String(localized: "婉婉的账本一笔都不会记错！", bundle: .appLanguage),
         String(localized: "戳我干嘛，是想看账本吗？", bundle: .appLanguage),
         String(localized: "树脂、开拓力、电量，该清的都清了吗？", bundle: .appLanguage),
         String(localized: "抽卡前先看看活动奖励，别白白错过！", bundle: .appLanguage),
         String(localized: "婉婉一直在帮你盯着呢！", bundle: .appLanguage),
         String(localized: "今天也要做一个不错过活动的老大！", bundle: .appLanguage),
-    ]
+    ] }
 
     private static func easterEgg(streak: Int) -> String? {
         switch streak {

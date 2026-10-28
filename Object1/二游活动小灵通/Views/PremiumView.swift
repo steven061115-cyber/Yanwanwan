@@ -309,7 +309,9 @@ struct PremiumView: View {
             sectionLabel(icon: "wand.and.stars", title: String(localized: "适合这样用", bundle: .appLanguage))
 
             VStack(spacing: 0) {
-                usageRow(icon: "link.badge.plus", title: String(localized: "版本公告一贴整理", bundle: .appLanguage), detail: String(localized: "复制 B站公告链接，用内置浏览器提取活动草稿。", bundle: .appLanguage))
+                usageRow(icon: "link.badge.plus", title: String(localized: "版本公告一贴整理", bundle: .appLanguage), detail: HoYoServer.current.usesBilibili
+                         ? String(localized: "复制 B站公告链接，用内置浏览器提取活动草稿。", bundle: .appLanguage)
+                         : String(localized: "粘贴版本公告链接，用内置浏览器提取活动草稿。", bundle: .appLanguage))
                 comparisonDivider
                 usageRow(icon: "bell.badge.fill", title: String(localized: "多款游戏集中盯", bundle: .appLanguage), detail: String(localized: "活动、卡池和限时任务统一进入清单。", bundle: .appLanguage))
             }

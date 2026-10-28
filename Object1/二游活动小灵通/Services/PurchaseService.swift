@@ -28,18 +28,6 @@ final class PurchaseService {
 
     var isPremium: Bool { tier == .premium }
 
-    #if DEBUG
-    private static let debugForcePremiumKey = "debug.forcePremium"
-
-    // 调试版测试开关：打开后 App 内按会员处理。后端仍按 App Store 核验结果计算每日提取额度。
-    var debugForcePremium = UserDefaults.standard.bool(forKey: PurchaseService.debugForcePremiumKey) {
-        didSet {
-            UserDefaults.standard.set(debugForcePremium, forKey: Self.debugForcePremiumKey)
-            applyEffectiveTier()
-        }
-    }
-    #endif
-
     func start() {
         guard !didStart else { return }
         didStart = true
@@ -161,12 +149,6 @@ final class PurchaseService {
     }
 
     private func applyEffectiveTier() {
-        #if DEBUG
-        if debugForcePremium {
-            tier = .premium
-            return
-        }
-        #endif
         tier = storeKitTier
     }
 

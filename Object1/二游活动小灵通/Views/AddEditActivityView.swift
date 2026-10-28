@@ -56,6 +56,7 @@ private struct SettingsFormView: View {
     @State private var notifStatus: UNAuthorizationStatus = .notDetermined
     // 写入后 App 根视图会按新服务器切换语言并重建界面。
     @AppStorage(HoYoServer.storageKey, store: HoYoServer.store) private var gameServerRaw = ""
+    // 空字符串表示跟随服务器。
     @AppStorage(AppLanguage.storageKey, store: HoYoServer.store) private var appLanguageRaw = ""
 
     var body: some View {
@@ -154,40 +155,7 @@ private struct SettingsFormView: View {
 
         sectionLabel(icon: "hand.raised.fill", iconColor: Color(hex: "4A72C4"), title: String(localized: "隐私与合规", bundle: .appLanguage))
         complianceCard
-
-        #if DEBUG
-        sectionLabel(icon: "hammer.fill", iconColor: Color.orange, title: "测试工具")
-        debugToolsCard
-        #endif
     }
-
-    #if DEBUG
-    // 只在 Xcode 调试版显示，文字不做翻译。
-    private var debugToolsCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Toggle(isOn: Binding(
-                get: { purchaseService.debugForcePremium },
-                set: { purchaseService.debugForcePremium = $0 }
-            )) {
-                Text(verbatim: "会员")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(Color.hoyoNavy)
-            }
-            .tint(Color.hoyoPink)
-
-            Text(verbatim: "打开后 App 内按会员处理（10 个自定义游戏、会员页显示为已开通）。每日提取次数由后端核验 App Store 购买，仍按免费版计算。只在 Xcode 调试版显示。")
-                .font(.caption)
-                .foregroundStyle(Color.hoyoNavy.opacity(0.45))
-        }
-        .padding(16)
-        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
-        )
-        .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
-    }
-    #endif
 
     private var complianceCard: some View {
         NavigationLink {
@@ -440,7 +408,7 @@ private struct SettingsFormView: View {
                             Text(server.displayName)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundStyle(Color.hoyoNavy)
-                            Text(server.utcOffsetLabel)
+                            Text(verbatim: "\(server.regions) · \(server.utcOffsetLabel)")
                                 .font(.caption)
                                 .foregroundStyle(Color.hoyoNavy.opacity(0.45))
                         }
@@ -476,19 +444,34 @@ private struct SettingsFormView: View {
     // MARK: - Language Card
 
     private var languageCard: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(AppLanguage.allCases.enumerated()), id: \.element.id) { idx, option in
+        // nil 表示跟随服务器。
+        let options: [AppLanguage?] = [nil] + AppLanguage.allCases
+        let serverLanguage = (HoYoServer(rawValue: gameServerRaw) ?? .current).language
+        let selectedRaw = AppLanguage(rawValue: appLanguageRaw)?.rawValue ?? ""
+        return VStack(spacing: 0) {
+            ForEach(Array(options.enumerated()), id: \.offset) { idx, option in
                 if idx > 0 { Divider().padding(.horizontal, 16) }
                 Button {
-                    appLanguageRaw = option.rawValue
+                    appLanguageRaw = option?.rawValue ?? ""
                 } label: {
                     HStack(spacing: 12) {
-                        // 语言名用各自的写法，切到看不懂的语言也能找回来。
-                        Text(verbatim: option.nativeName)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(Color.hoyoNavy)
+                        if let option {
+                            // 语言名用各自的写法，切到看不懂的语言也能找回来。
+                            Text(verbatim: option.nativeName)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(Color.hoyoNavy)
+                        } else {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("跟随服务器")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundStyle(Color.hoyoNavy)
+                                Text(verbatim: serverLanguage.nativeName)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+                            }
+                        }
                         Spacer()
-                        if (AppLanguage(rawValue: appLanguageRaw) ?? .current) == option {
+                        if selectedRaw == (option?.rawValue ?? "") {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 20))
                                 .foregroundStyle(Color.hoyoPink)
@@ -500,6 +483,13 @@ private struct SettingsFormView: View {
                 }
                 .buttonStyle(.plain)
             }
+
+            Text("默认跟随服务器，也可以单独选择。")
+                .font(.caption)
+                .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
         }
         .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
         .overlay(

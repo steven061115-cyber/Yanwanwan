@@ -10,6 +10,9 @@ struct OnboardingView: View {
 
     @State private var step = 0
 
+    // 引导页按待选服务器的语言预览，不用等保存；用户手动指定过语言时以指定的为准。
+    private var language: AppLanguage { AppLanguage.override ?? server.language }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -22,6 +25,7 @@ struct OnboardingView: View {
             }
             .animation(.easeInOut(duration: 0.3), value: step)
         }
+        .environment(\.locale, language.locale)
     }
 
     // MARK: - Step 0: Server
@@ -42,7 +46,7 @@ struct OnboardingView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
 
-                Text("活动时间和攻略平台会按所选服务器切换。")
+                Text("界面语言、活动时间和攻略平台会按所选服务器切换。")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -87,7 +91,7 @@ struct OnboardingView: View {
                     Text(verbatim: option.displayName)
                         .font(.headline)
                         .foregroundStyle(.primary)
-                    Text(verbatim: option.utcOffsetLabel)
+                    Text(verbatim: "\(option.regions(in: language)) · \(option.language.nativeName) · \(option.utcOffsetLabel)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -137,9 +141,9 @@ struct OnboardingView: View {
 
             VStack(alignment: .leading, spacing: 20) {
                 featureRow(icon: "calendar.badge.exclamationmark", color: .orange,
-                           title: String(localized: "活动倒计时", bundle: .appLanguage), desc: String(localized: "哪个快结束，婉婉第一时间告诉你", bundle: .appLanguage))
+                           title: String(localized: "活动倒计时", bundle: language.bundle), desc: String(localized: "哪个快结束，婉婉第一时间告诉你", bundle: language.bundle))
                 featureRow(icon: "bell.badge.fill", color: .red,
-                           title: String(localized: "智能通知", bundle: .appLanguage), desc: String(localized: "每天清点一次，快到期再提醒你", bundle: .appLanguage))
+                           title: String(localized: "智能通知", bundle: language.bundle), desc: String(localized: "每天清点一次，快到期再提醒你", bundle: language.bundle))
             }
             .padding(.horizontal, 32)
 
@@ -290,7 +294,7 @@ struct OnboardingView: View {
                     .font(.title)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(game.displayName)
+                    Text(game.displayName(in: language))
                         .font(.headline)
                         .foregroundStyle(.primary)
                     Text(game.englishName)

@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 
 // App Group identifier — must match in both main app and widget extension entitlements.
 // Change this to match your actual bundle ID prefix.
@@ -43,6 +44,8 @@ enum SharedWidgetData {
         guard let defaults = UserDefaults(suiteName: sharedAppGroupID),
               let data = try? JSONEncoder().encode(Array(top)) else { return }
         defaults.set(data, forKey: key)
+        // 换语言或换服务器后活动名和时间都会变，让小组件立刻重新读取，而不是等系统的刷新周期。
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     static func read() -> [WidgetEvent] {

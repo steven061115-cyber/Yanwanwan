@@ -10,11 +10,14 @@ enum HoYoGame: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var displayName: String {
+    var displayName: String { displayName(in: .current) }
+
+    // 首次引导时服务器还没保存，用这个按待选服务器的语言预览游戏名。
+    func displayName(in language: AppLanguage) -> String {
         switch self {
-        case .genshin:  return String(localized: "原神", bundle: .appLanguage)
-        case .starrail: return String(localized: "崩坏：星穹铁道", bundle: .appLanguage)
-        case .zenless:  return String(localized: "绝区零", bundle: .appLanguage)
+        case .genshin:  return String(localized: "原神", bundle: language.bundle)
+        case .starrail: return String(localized: "崩坏：星穹铁道", bundle: language.bundle)
+        case .zenless:  return String(localized: "绝区零", bundle: language.bundle)
         }
     }
 
@@ -52,10 +55,20 @@ enum HoYoGame: String, CaseIterable, Identifiable {
 }
 
 // Hashable lets RemoteEvent be used with navigationDestination(item:).
-// Equality is id-only so deduplication works; body still always re-evaluates
-// because timer-driven @State changes propagate through the view hierarchy.
+// Equality compares everything a row displays. SwiftUI skips re-rendering views whose
+// Equatable inputs compare equal, so id-only equality left the game cards showing the old
+// language after the calendar refetched the same events with translated titles.
+// Hashing stays id-only, which is still consistent with this equality.
 extension RemoteEvent: Hashable {
-    static func == (lhs: RemoteEvent, rhs: RemoteEvent) -> Bool { lhs.id == rhs.id }
+    static func == (lhs: RemoteEvent, rhs: RemoteEvent) -> Bool {
+        lhs.id == rhs.id
+            && lhs.title == rhs.title
+            && lhs.subtitle == rhs.subtitle
+            && lhs.category == rhs.category
+            && lhs.startDate == rhs.startDate
+            && lhs.endDate == rhs.endDate
+            && lhs.isDone == rhs.isDone
+    }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 

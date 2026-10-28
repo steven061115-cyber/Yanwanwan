@@ -1,15 +1,23 @@
 import SwiftUI
 import SwiftData
 
-// 国际服官网公告页。官网只有英文和一种中文版本，按 App 语言选一个。
+// 国际服官网公告页，按 App 语言选对应语言的官网，AI 照抄原文活动名最准确。
+// 国际服官网没有简体版，简体界面用繁体（异环是简体）官网。
 struct OfficialNewsPage {
     let english: String
     let chinese: String
-    // 英文官网上版本更新公告的真实标题，引导用户找对公告；中文官网的标题不同，所以只在英文界面显示。
+    let japanese: String
+    let korean: String
+    // 英文官网上版本更新公告的真实标题，引导用户找对公告；其他语言官网的标题不同，所以只在英文界面显示。
     let englishNoticeExample: String
 
     var forCurrentLanguage: String {
-        AppLanguage.current == .en ? english : chinese
+        switch AppLanguage.current {
+        case .en:              return english
+        case .ja:              return japanese
+        case .ko:              return korean
+        case .zhHans, .zhHant: return chinese
+        }
     }
 
     var noticeExampleForCurrentLanguage: String? {
@@ -29,12 +37,18 @@ enum OverseasOfficialNews {
     static let pages: [String: OfficialNewsPage] = [
         "鸣潮": .init(english: "https://wutheringwaves.kurogames.com/en/main/news",
                     chinese: "https://wutheringwaves.kurogames.com/zh-tw/main/news",
+                    japanese: "https://wutheringwaves.kurogames.com/jp/main/news",
+                    korean: "https://wutheringwaves.kurogames.com/kr/main/news",
                     englishNoticeExample: "Patch Notes for Wuthering Waves Version 3.7"),
         "终末地": .init(english: "https://endfield.gryphline.com/en-us#notice",
-                     chinese: "https://endfield.gryphline.com/zh-tw#notice",
+                     chinese: "https://endfield.gryphline.com/zh-tw/news",
+                     japanese: "https://endfield.gryphline.com/ja-jp/news",
+                     korean: "https://endfield.gryphline.com/ko-kr/news",
                      englishNoticeExample: "[Sanctuary of Ink] Version Update Notes"),
         "异环": .init(english: "https://nte.perfectworld.com/en/article/news/index.html",
                     chinese: "https://nte.perfectworld.com/cn/article/news/index.html",
+                    japanese: "https://nte.perfectworld.com/jp/article/news/index.html",
+                    korean: "https://nte.perfectworld.com/kr/article/news/index.html",
                     englishNoticeExample: "Ver. 1.4 Patch Notes"),
     ]
 
@@ -372,7 +386,7 @@ struct AIGameSearchView: View {
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color.hoyoNavy)
-                            Text("B站官方空间")
+                            Text(HoYoServer.current.usesBilibili ? "B站官方空间" : "国际服官网")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -386,7 +400,9 @@ struct AIGameSearchView: View {
         } header: {
             Text("选择游戏")
         } footer: {
-            Text("先选游戏，再按引导打开对应的 B站官方空间。")
+            Text(HoYoServer.current.usesBilibili
+                 ? "先选游戏，再按引导打开对应的 B站官方空间。"
+                 : "先选游戏，再按引导找到对应官网的版本更新公告。")
         }
     }
 
@@ -404,7 +420,9 @@ struct AIGameSearchView: View {
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.hoyoNavy)
-                    Text("已跳转 B站，请粘贴具体版本公告链接")
+                    Text(HoYoServer.current.usesBilibili
+                         ? "已跳转 B站，请粘贴具体版本公告链接"
+                         : "已在浏览器打开官网，请粘贴版本更新公告的链接")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

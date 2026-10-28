@@ -107,7 +107,9 @@ struct CustomGameDetailView: View {
                                 .animation(reduceMotion ? nil : HoyoMotion.layout, value: endingSoon.map(\.id))
                                 HStack(spacing: 4) {
                                     Image(systemName: "hand.tap").font(.caption2)
-                                    Text("轻触查看 B站攻略，长按可编辑或标记完成").font(.caption)
+                                    Text(HoYoServer.current.usesBilibili
+                                         ? "轻触查看 B站攻略，长按可编辑或标记完成"
+                                         : "轻触查看攻略，长按可编辑或标记完成").font(.caption)
                                 }
                                 .foregroundStyle(Color.hoyoNavy.opacity(0.30))
                                 .padding(.top, 2)
