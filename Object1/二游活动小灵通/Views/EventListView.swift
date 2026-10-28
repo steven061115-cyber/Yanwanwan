@@ -78,11 +78,11 @@ struct GameDetailView: View {
                             detailSectionHeader(
                                 systemImage: "bolt.fill",
                                 iconBg: Color.hoyoPink,
-                                title: "七日内临期",
+                                title: String(localized: "七日内临期", bundle: .appLanguage),
                                 count: endingSoon.count
                             )
                             if endingSoon.isEmpty {
-                                emptyState(text: "暂无临期活动", sub: "7 天内没有急事，婉婉先待命。")
+                                emptyState(text: String(localized: "暂无临期活动", bundle: .appLanguage), sub: String(localized: "7 天内没有急事，婉婉先待命。", bundle: .appLanguage))
                             } else {
                                 VStack(spacing: 8) {
                                     ForEach(endingSoon) { event in
@@ -111,11 +111,11 @@ struct GameDetailView: View {
                             detailSectionHeader(
                                 systemImage: "calendar",
                                 iconBg: Color.hoyoMint,
-                                title: "七日后待办",
+                                title: String(localized: "七日后待办", bundle: .appLanguage),
                                 count: endingLater.count
                             )
                             if endingLater.isEmpty {
-                                emptyState(text: "暂无待办活动", sub: "后面暂时没有待办，婉婉继续盯着。")
+                                emptyState(text: String(localized: "暂无待办活动", bundle: .appLanguage), sub: String(localized: "后面暂时没有待办，婉婉继续盯着。", bundle: .appLanguage))
                             } else {
                                 VStack(spacing: 8) {
                                     ForEach(endingLater) { event in
@@ -138,7 +138,7 @@ struct GameDetailView: View {
                             detailSectionHeader(
                                 systemImage: "checkmark.circle.fill",
                                 iconBg: Color.hoyoNavy.opacity(0.35),
-                                title: "已完成 & 已结束",
+                                title: String(localized: "已完成 & 已结束", bundle: .appLanguage),
                                 count: doneOrExpired.count
                             )
                             VStack(spacing: 8) {
@@ -285,8 +285,8 @@ struct GameDetailView: View {
 
     private func updatedLabel(_ date: Date) -> String {
         let secs = Int(now.timeIntervalSince(date))
-        if secs < 60   { return "刚刚更新" }
-        if secs < 3600 { return "\(secs / 60) 分钟前" }
-        return "\(secs / 3600) 小时前"
+        if secs < 60   { return String(localized: "刚刚更新", bundle: .appLanguage) }
+        if secs < 3600 { return String(localized: "\(secs / 60) 分钟前", bundle: .appLanguage) }
+        return String(localized: "\(secs / 3600) 小时前", bundle: .appLanguage)
     }
 }

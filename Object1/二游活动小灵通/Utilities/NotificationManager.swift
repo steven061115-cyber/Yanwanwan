@@ -113,12 +113,12 @@ final class NotificationManager {
 
                     let content = UNMutableNotificationContent()
                     if let late = Self.lateNightCopy(at: fireDate, gameName: act.gameName, title: act.title,
-                                                     remaining: "\(mark) 小时", variant: idx + mark, calendar: cal) {
+                                                     remaining: String(localized: "\(mark) 小时", bundle: .appLanguage), variant: idx + mark, calendar: cal) {
                         content.title = late.title
                         content.body = late.body
                     } else {
-                        content.title = "婉婉急报：活动快结束了"
-                        content.body = "《\(act.gameName)》「\(act.title)」还有 \(mark) 小时结束，老大抓紧收尾！"
+                        content.title = String(localized: "婉婉急报：活动快结束了", bundle: .appLanguage)
+                        content.body = String(localized: "《\(act.gameName)》「\(act.title)」还有 \(mark) 小时结束，老大抓紧收尾！", bundle: .appLanguage)
                     }
                     content.sound = .default
 
@@ -149,7 +149,7 @@ final class NotificationManager {
                     let remainSecs = max(0, Int(act.endDate.timeIntervalSince(baseFireDate)))
                     let days  = remainSecs / 86400
                     let hours = (remainSecs % 86400) / 3600
-                    let timeText = days > 0 ? "\(days) 天 \(hours) 小时" : "\(hours) 小时"
+                    let timeText = days > 0 ? String(localized: "\(days) 天 \(hours) 小时", bundle: .appLanguage) : String(localized: "\(hours) 小时", bundle: .appLanguage)
 
                     let content = UNMutableNotificationContent()
                     if let late = Self.lateNightCopy(at: baseFireDate, gameName: act.gameName, title: act.title,
@@ -157,8 +157,8 @@ final class NotificationManager {
                         content.title = late.title
                         content.body = late.body
                     } else {
-                        content.title = "婉婉提醒：活动快到期了"
-                        content.body = "《\(act.gameName)》「\(act.title)」还有 \(timeText)结束，婉婉帮你记着呢。"
+                        content.title = String(localized: "婉婉提醒：活动快到期了", bundle: .appLanguage)
+                        content.body = String(localized: "《\(act.gameName)》「\(act.title)」还有 \(timeText)结束，婉婉帮你记着呢。", bundle: .appLanguage)
                     }
                     content.sound = .default
 
@@ -243,8 +243,8 @@ final class NotificationManager {
 
     func scheduleTestNotification() async throws {
         let content = UNMutableNotificationContent()
-        content.title = "婉婉试铃"
-        content.body = "婉婉能准时提醒你啦，这条通知说明推送正常。"
+        content.title = String(localized: "婉婉试铃", bundle: .appLanguage)
+        content.body = String(localized: "婉婉能准时提醒你啦，这条通知说明推送正常。", bundle: .appLanguage)
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         try await UNUserNotificationCenter.current().add(
@@ -265,9 +265,9 @@ final class NotificationManager {
         let hour = calendar.component(.hour, from: date)
         guard hour >= 23 || hour < 5 else { return nil }
         let lines: [(String, String)] = [
-            ("老大太晚啦", "《\(gameName)》「\(title)」还剩 \(remaining)，清完这波体力赶紧睡吧！"),
-            ("老大，今晚的还没做", "《\(gameName)》「\(title)」今晚还没做，还剩 \(remaining)，做完就去睡！"),
-            ("夜深啦老大", "《\(gameName)》「\(title)」还剩 \(remaining)就结束了，速战速决，别熬太晚哦。"),
+            (String(localized: "老大太晚啦", bundle: .appLanguage), String(localized: "《\(gameName)》「\(title)」还剩 \(remaining)，清完这波体力赶紧睡吧！", bundle: .appLanguage)),
+            (String(localized: "老大，今晚的还没做", bundle: .appLanguage), String(localized: "《\(gameName)》「\(title)」今晚还没做，还剩 \(remaining)，做完就去睡！", bundle: .appLanguage)),
+            (String(localized: "夜深啦老大", bundle: .appLanguage), String(localized: "《\(gameName)》「\(title)」还剩 \(remaining)就结束了，速战速决，别熬太晚哦。", bundle: .appLanguage)),
         ]
         let line = lines[abs(variant) % lines.count]
         return (line.0, line.1)

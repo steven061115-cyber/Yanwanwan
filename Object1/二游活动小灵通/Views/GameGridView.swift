@@ -82,8 +82,8 @@ struct GameGridView: View {
                 customHeader
                 Spacer()
                 AnimatedEmptyState(
-                    title: "还未选择游戏",
-                    message: "老大还没选要盯的游戏，婉婉先待命。"
+                    title: String(localized: "还未选择游戏", bundle: .appLanguage),
+                    message: String(localized: "老大还没选要盯的游戏，婉婉先待命。", bundle: .appLanguage)
                 )
                 Spacer()
             }
@@ -245,8 +245,8 @@ struct GameGridView: View {
 
     private var todayLabel: String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "zh_CN")
-        f.dateFormat = "M月d日 EEEE"
+        f.locale = AppLanguage.current.locale
+        f.setLocalizedDateFormatFromTemplate("MMMdEEEE")
         return f.string(from: Date())
     }
 
@@ -289,12 +289,12 @@ struct GameGridView: View {
 
     private var overviewCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            dashSectionHeader(icon: "chart.bar.fill", iconColor: Color.hoyoPink, title: "今日速报")
+            dashSectionHeader(icon: "chart.bar.fill", iconColor: Color.hoyoPink, title: String(localized: "今日速报", bundle: .appLanguage))
 
             HStack(spacing: 10) {
-                statPill(count: totalPending,    label: "待完成",  bg: Color.hoyoPink,   fg: .white)
-                statPill(count: totalEndingSoon, label: "即将结束", bg: Color.hoyoYellow, fg: Color.hoyoNavy)
-                statPill(count: totalDone,       label: "已完成",  bg: Color.hoyoMint,   fg: .white)
+                statPill(count: totalPending,    label: String(localized: "待完成", bundle: .appLanguage),  bg: Color.hoyoPink,   fg: .white)
+                statPill(count: totalEndingSoon, label: String(localized: "即将结束", bundle: .appLanguage), bg: Color.hoyoYellow, fg: Color.hoyoNavy)
+                statPill(count: totalDone,       label: String(localized: "已完成", bundle: .appLanguage),  bg: Color.hoyoMint,   fg: .white)
             }
         }
         .padding(16)
@@ -339,7 +339,7 @@ struct GameGridView: View {
 
     private var recentlyEndedCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            dashSectionHeader(icon: "hourglass", iconColor: Color.hoyoYellow, title: "临期活动")
+            dashSectionHeader(icon: "hourglass", iconColor: Color.hoyoYellow, title: String(localized: "临期活动", bundle: .appLanguage))
                 .padding(.horizontal, 16)
                 .padding(.top, 14)
                 .padding(.bottom, 10)
@@ -381,7 +381,7 @@ struct GameGridView: View {
 
                         let days = Int(item.endDate.timeIntervalSinceNow) / 86400
                         let hours = (Int(item.endDate.timeIntervalSinceNow) % 86400) / 3600
-                        let remainLabel = days > 0 ? "\(days)天\(hours)时" : "\(hours)时"
+                        let remainLabel = days > 0 ? String(localized: "\(days)天\(hours)时", bundle: .appLanguage) : String(localized: "\(hours)时", bundle: .appLanguage)
                         let isUrgent = item.endDate.timeIntervalSinceNow <= 2 * 86400
                         Text(remainLabel)
                             .font(.system(size: 11, weight: .bold))
@@ -408,7 +408,7 @@ struct GameGridView: View {
 
     private var gameListCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            dashSectionHeader(icon: "gamecontroller.fill", iconColor: Color(hex: "6B5EA8"), title: "我的游戏")
+            dashSectionHeader(icon: "gamecontroller.fill", iconColor: Color(hex: "6B5EA8"), title: String(localized: "我的游戏", bundle: .appLanguage))
                 .padding(.horizontal, 16)
                 .padding(.top, 14)
                 .padding(.bottom, 10)
@@ -552,8 +552,8 @@ struct GamesTabView: View {
                     gamesHeader
                     Spacer()
                     AnimatedEmptyState(
-                        title: "还没有游戏",
-                        message: "点右上角 + 添加自定义游戏，或在设置中关注米哈游游戏。"
+                        title: String(localized: "还没有游戏", bundle: .appLanguage),
+                        message: String(localized: "点右上角 + 添加自定义游戏，或在设置中关注米哈游游戏。", bundle: .appLanguage)
                     )
                     Spacer()
                 }
@@ -889,13 +889,13 @@ struct MiniEventRow: View {
 
     private var compactRemaining: String {
         let rem = Int(event.remaining)
-        guard rem > 0 else { return "已结束" }
+        guard rem > 0 else { return String(localized: "已结束", bundle: .appLanguage) }
         let days    = rem / 86400
         let hours   = (rem % 86400) / 3600
         let minutes = (rem % 3600) / 60
-        if days  > 0 { return "\(days)天\(hours)时" }
-        if hours > 0 { return "\(hours)时\(minutes)分" }
-        return "\(minutes)分"
+        if days  > 0 { return String(localized: "\(days)天\(hours)时", bundle: .appLanguage) }
+        if hours > 0 { return String(localized: "\(hours)时\(minutes)分", bundle: .appLanguage) }
+        return String(localized: "\(minutes)分", bundle: .appLanguage)
     }
 
     var body: some View {
@@ -1023,7 +1023,7 @@ struct CustomGameCard: View {
                             Spacer(minLength: 4)
                             HStack(spacing: 3) {
                                 Image(systemName: "clock").font(.system(size: 10, weight: .bold))
-                                Text(event.remainingText.replacingOccurrences(of: "剩余 ", with: ""))
+                                Text(event.isDone ? String(localized: "已完成", bundle: .appLanguage) : ActivityStats.compactRemaining(event.remaining))
                                     .font(.system(size: 12, weight: .black))
                             }
                             .foregroundStyle(Color.hoyoNavy)
@@ -1250,15 +1250,15 @@ struct WanwanSpeech {
         return timeLines(now: now).first
     }
 
-    private static let noGamesLine = "老大还没告诉婉婉要盯哪个游戏呢！"
-    private static let offlineLine = "网络开小差了，婉婉先拿旧账本顶一下！"
+    private static let noGamesLine = String(localized: "老大还没告诉婉婉要盯哪个游戏呢！", bundle: .appLanguage)
+    private static let offlineLine = String(localized: "网络开小差了，婉婉先拿旧账本顶一下！", bundle: .appLanguage)
 
     private static func urgentLine(_ stats: ActivityStats) -> String? {
         guard let event = stats.mostUrgent, event.remaining <= 86400 else { return nil }
         let hours = Int(event.remaining / 3600)
-        let left = hours > 0 ? "只剩 \(hours) 小时了" : "不到 1 小时就结束了"
+        let left = hours > 0 ? String(localized: "只剩 \(hours) 小时了", bundle: .appLanguage) : String(localized: "不到 1 小时就结束了", bundle: .appLanguage)
         let title = event.title.count > 12 ? event.title.prefix(12) + "…" : event.title
-        return "老大！《\(event.gameName)》「\(title)」\(left)，冲！"
+        return String(localized: "老大！《\(event.gameName)》「\(title)」\(left)，冲！", bundle: .appLanguage)
     }
 
     private static func progressLines(stats: ActivityStats, hasGames: Bool, offline: Bool) -> [String] {
@@ -1267,40 +1267,40 @@ struct WanwanSpeech {
         if let urgent = urgentLine(stats) { lines.append(urgent) }
         if offline { lines.append(offlineLine) }
         if stats.totalEndingSoon > 0 {
-            lines.append("这周有 \(stats.totalEndingSoon) 个活动要结束，婉婉都记在账本上了！")
+            lines.append(String(localized: "这周有 \(stats.totalEndingSoon) 个活动要结束，婉婉都记在账本上了！", bundle: .appLanguage))
         }
         if stats.totalPending > 0 {
-            lines.append("还有 \(stats.totalPending) 个活动没做完，老大加油！")
+            lines.append(String(localized: "还有 \(stats.totalPending) 个活动没做完，老大加油！", bundle: .appLanguage))
         } else if stats.totalDone > 0 {
-            lines += ["全清啦！老大今天超厉害！", "账本上全打勾了，可以安心摸鱼啦！"]
+            lines += [String(localized: "全清啦！老大今天超厉害！", bundle: .appLanguage), String(localized: "账本上全打勾了，可以安心摸鱼啦！", bundle: .appLanguage)]
         }
         return lines
     }
 
     private static func timeLines(now: Date) -> [String] {
         switch Calendar.current.component(.hour, from: now) {
-        case 6..<11:  return ["早上好老大！今天的体力别忘了清！"]
-        case 11..<14: return ["午饭吃了吗？吃完再上线也不迟！"]
-        case 18..<23: return ["晚上好老大，日常做完了吗？"]
-        case 23..<24, 0..<5: return ["老大太晚啦，清完这波体力赶紧睡吧！", "再熬夜婉婉要没收你的手机了！"]
+        case 6..<11:  return [String(localized: "早上好老大！今天的体力别忘了清！", bundle: .appLanguage)]
+        case 11..<14: return [String(localized: "午饭吃了吗？吃完再上线也不迟！", bundle: .appLanguage)]
+        case 18..<23: return [String(localized: "晚上好老大，日常做完了吗？", bundle: .appLanguage)]
+        case 23..<24, 0..<5: return [String(localized: "老大太晚啦，清完这波体力赶紧睡吧！", bundle: .appLanguage), String(localized: "再熬夜婉婉要没收你的手机了！", bundle: .appLanguage)]
         default: return []
         }
     }
 
     private static let smallTalk = [
-        "婉婉的账本一笔都不会记错！",
-        "戳我干嘛，是想看账本吗？",
-        "树脂、开拓力、电量，该清的都清了吗？",
-        "抽卡前先看看活动奖励，别白白错过！",
-        "婉婉一直在帮你盯着呢！",
-        "今天也要做一个不错过活动的老大！",
+        String(localized: "婉婉的账本一笔都不会记错！", bundle: .appLanguage),
+        String(localized: "戳我干嘛，是想看账本吗？", bundle: .appLanguage),
+        String(localized: "树脂、开拓力、电量，该清的都清了吗？", bundle: .appLanguage),
+        String(localized: "抽卡前先看看活动奖励，别白白错过！", bundle: .appLanguage),
+        String(localized: "婉婉一直在帮你盯着呢！", bundle: .appLanguage),
+        String(localized: "今天也要做一个不错过活动的老大！", bundle: .appLanguage),
     ]
 
     private static func easterEgg(streak: Int) -> String? {
         switch streak {
-        case 3:  return "嘿嘿，再戳就痒啦！"
-        case 5:  return "别戳啦老大，账本要掉了！"
-        case 10: return "……婉婉生气了！（才没有）"
+        case 3:  return String(localized: "嘿嘿，再戳就痒啦！", bundle: .appLanguage)
+        case 5:  return String(localized: "别戳啦老大，账本要掉了！", bundle: .appLanguage)
+        case 10: return String(localized: "……婉婉生气了！（才没有）", bundle: .appLanguage)
         default: return nil
         }
     }

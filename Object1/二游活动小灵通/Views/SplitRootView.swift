@@ -74,9 +74,9 @@ private struct VerticalBarNavigation: ViewModifier {
             content.toolbar {
                 if hasVerticalBar {
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        tabButton(.home, title: "首页", icon: "waveform", selectedIcon: "waveform")
-                        tabButton(.games, title: "游戏", icon: "gamecontroller", selectedIcon: "gamecontroller.fill")
-                        tabButton(.settings, title: "设置", icon: "gearshape", selectedIcon: "gearshape.fill")
+                        tabButton(.home, title: String(localized: "首页", bundle: .appLanguage), icon: "waveform", selectedIcon: "waveform")
+                        tabButton(.games, title: String(localized: "游戏", bundle: .appLanguage), icon: "gamecontroller", selectedIcon: "gamecontroller.fill")
+                        tabButton(.settings, title: String(localized: "设置", bundle: .appLanguage), icon: "gearshape", selectedIcon: "gearshape.fill")
                     }
                     .axisBehavior(.verticalPreferred)
 
@@ -129,7 +129,7 @@ struct GameRouteDestination: View {
                 if let game = customGames.first(where: { $0.id == id }) {
                     CustomGameDetailView(game: game, showsBackButton: back)
                 } else {
-                    AnimatedEmptyState(title: "游戏已删除", message: "这个自定义游戏已经不在了。")
+                    AnimatedEmptyState(title: String(localized: "游戏已删除", bundle: .appLanguage), message: String(localized: "这个自定义游戏已经不在了。", bundle: .appLanguage))
                 }
             }
         }
@@ -168,9 +168,9 @@ struct SplitSidebar: View {
 
                     // Unfolded landscape: these three are in the vertical bar instead.
                     if !hasVerticalBar {
-                        navRow(.home, icon: "waveform", title: "首页")
-                        navRow(.games, icon: "gamecontroller.fill", title: "游戏总览")
-                        navRow(.settings, icon: "gearshape.fill", title: "设置")
+                        navRow(.home, icon: "waveform", title: String(localized: "首页", bundle: .appLanguage))
+                        navRow(.games, icon: "gamecontroller.fill", title: String(localized: "游戏总览", bundle: .appLanguage))
+                        navRow(.settings, icon: "gearshape.fill", title: String(localized: "设置", bundle: .appLanguage))
                     }
 
                     Text("我的游戏")
@@ -292,9 +292,9 @@ struct SplitSidebar: View {
 
     private var miniStats: some View {
         HStack(spacing: 6) {
-            statPill(count: stats.totalPending,    label: "待完成",  bg: Color.hoyoPink,   fg: .white)
-            statPill(count: stats.totalEndingSoon, label: "即将结束", bg: Color.hoyoYellow, fg: Color.hoyoNavy)
-            statPill(count: stats.totalDone,       label: "已完成",  bg: Color.hoyoMint,   fg: .white)
+            statPill(count: stats.totalPending,    label: String(localized: "待完成", bundle: .appLanguage),  bg: Color.hoyoPink,   fg: .white)
+            statPill(count: stats.totalEndingSoon, label: String(localized: "即将结束", bundle: .appLanguage), bg: Color.hoyoYellow, fg: Color.hoyoNavy)
+            statPill(count: stats.totalDone,       label: String(localized: "已完成", bundle: .appLanguage),  bg: Color.hoyoMint,   fg: .white)
         }
     }
 
@@ -379,7 +379,7 @@ struct SplitSidebar: View {
                 HStack {
                     Text("已完成 \(progress.done)/\(progress.total)")
                     Spacer()
-                    Text(soonest.map { "最近 " + ActivityStats.compactRemaining($0) } ?? "已全清")
+                    Text(soonest.map { String(localized: "最近 \(ActivityStats.compactRemaining($0))", bundle: .appLanguage) } ?? String(localized: "已全清", bundle: .appLanguage))
                 }
                 .font(.system(size: 10, weight: .bold))
                 .opacity(0.7)

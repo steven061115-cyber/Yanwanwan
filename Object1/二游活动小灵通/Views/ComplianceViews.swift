@@ -96,20 +96,20 @@ struct PrivacyConsentView: View {
 
     private var title: String {
         switch step {
-        case .ask: "欢迎使用二游活动小灵通"
-        case .explain: "需要你的同意"
-        case .declined: "你未同意隐私政策"
+        case .ask: String(localized: "欢迎使用二游活动小灵通", bundle: .appLanguage)
+        case .explain: String(localized: "需要你的同意", bundle: .appLanguage)
+        case .declined: String(localized: "你未同意隐私政策", bundle: .appLanguage)
         }
     }
 
     private var message: String {
         switch step {
         case .ask:
-            "活动、提醒等数据保存在本机；同意后才会联网获取游戏活动。只有你主动使用 AI 整理时，才会上传公告内容。"
+            String(localized: "活动、提醒等数据保存在本机；同意后才会联网获取游戏活动。只有你主动使用 AI 整理时，才会上传公告内容。", bundle: .appLanguage)
         case .explain:
-            "获取游戏活动需要联网，我们需要先征得你的同意。若不同意，App 将无法提供活动数据。"
+            String(localized: "获取游戏活动需要联网，我们需要先征得你的同意。若不同意，App 将无法提供活动数据。", bundle: .appLanguage)
         case .declined:
-            "我们不会联网、生成安装标识或申请通知权限。你可以随时重新查看并同意。"
+            String(localized: "我们不会联网、生成安装标识或申请通知权限。你可以随时重新查看并同意。", bundle: .appLanguage)
         }
     }
 
@@ -117,11 +117,11 @@ struct PrivacyConsentView: View {
     private var buttons: some View {
         switch step {
         case .ask:
-            consentButtons(secondary: "不同意") { step = .explain }
+            consentButtons(secondary: String(localized: "不同意", bundle: .appLanguage)) { step = .explain }
         case .explain:
-            consentButtons(secondary: "仍不同意") { step = .declined }
+            consentButtons(secondary: String(localized: "仍不同意", bundle: .appLanguage)) { step = .declined }
         case .declined:
-            primaryButton("重新查看") { step = .ask }
+            primaryButton(String(localized: "重新查看", bundle: .appLanguage)) { step = .ask }
         }
     }
 
@@ -137,7 +137,7 @@ struct PrivacyConsentView: View {
             }
             .buttonStyle(.plain)
 
-            primaryButton("同意并继续") {
+            primaryButton(String(localized: "同意并继续", bundle: .appLanguage)) {
                 PrivacyConsent.acceptCurrentVersion()
                 onAccept()
             }
@@ -166,9 +166,9 @@ enum LegalDocument: String, Identifiable {
 
     var title: String {
         switch self {
-        case .privacy: "隐私政策"
-        case .terms: "服务条款"
-        case .thirdParties: "第三方信息共享清单"
+        case .privacy: String(localized: "隐私政策", bundle: .appLanguage)
+        case .terms: String(localized: "服务条款", bundle: .appLanguage)
+        case .thirdParties: String(localized: "第三方信息共享清单", bundle: .appLanguage)
         }
     }
 }
@@ -270,10 +270,10 @@ struct AIProcessingDisclosureView: View {
 
             if showDetails {
                 VStack(alignment: .leading, spacing: 10) {
-                    detailRow("同时发送", "随机安装标识与会员核验凭证，用于额度控制；不会上传你在 App 中创建的其他游戏或活动")
-                    detailRow("服务提供者", ComplianceConfig.aiProvider)
-                    detailRow("模型", ComplianceConfig.aiModelName)
-                    detailRow("模型备案信息", ComplianceConfig.aiFilingNumber)
+                    detailRow(String(localized: "同时发送", bundle: .appLanguage), String(localized: "随机安装标识与会员核验凭证，用于额度控制；不会上传你在 App 中创建的其他游戏或活动", bundle: .appLanguage))
+                    detailRow(String(localized: "服务提供者", bundle: .appLanguage), ComplianceConfig.aiProvider)
+                    detailRow(String(localized: "模型", bundle: .appLanguage), ComplianceConfig.aiModelName)
+                    detailRow(String(localized: "模型备案信息", bundle: .appLanguage), ComplianceConfig.aiFilingNumber)
                 }
                 .padding(14)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -429,22 +429,22 @@ struct DataManagementView: View {
             switch action {
             case .local:
                 try clearLocalData()
-                resultMessage = "本地活动、设置、通知和小组件数据已清除。"
+                resultMessage = String(localized: "本地活动、设置、通知和小组件数据已清除。", bundle: .appLanguage)
             case .server:
                 try await deleteServerData()
                 InstallID.reset()
-                resultMessage = "服务器额度记录已删除，安装标识已重置。"
+                resultMessage = String(localized: "服务器额度记录已删除，安装标识已重置。", bundle: .appLanguage)
             case .all:
                 try await deleteServerData()
                 try clearLocalData()
                 InstallID.reset()
-                resultMessage = "本地数据和服务器额度记录已删除。"
+                resultMessage = String(localized: "本地数据和服务器额度记录已删除。", bundle: .appLanguage)
             case .withdraw:
                 PrivacyConsent.withdraw()
-                resultMessage = "已撤回同意。请重新启动 App；在再次同意前不会启动联网服务。"
+                resultMessage = String(localized: "已撤回同意。请重新启动 App；在再次同意前不会启动联网服务。", bundle: .appLanguage)
             }
         } catch {
-            resultMessage = "操作未全部完成：\(error.localizedDescription)"
+            resultMessage = String(localized: "操作未全部完成：\(error.localizedDescription)", bundle: .appLanguage)
         }
     }
 
@@ -473,19 +473,19 @@ struct DataManagementView: View {
 
     private func actionTitle(_ action: Action) -> String {
         switch action {
-        case .local: "确认清除本地数据"
-        case .server: "确认删除并重置"
-        case .all: "确认删除全部数据"
-        case .withdraw: "确认撤回同意"
+        case .local: String(localized: "确认清除本地数据", bundle: .appLanguage)
+        case .server: String(localized: "确认删除并重置", bundle: .appLanguage)
+        case .all: String(localized: "确认删除全部数据", bundle: .appLanguage)
+        case .withdraw: String(localized: "确认撤回同意", bundle: .appLanguage)
         }
     }
 
     private func actionMessage(_ action: Action) -> String {
         switch action {
-        case .local: "会删除设备内的游戏、活动、缓存、设置和通知。"
-        case .server: "会删除当前安装标识对应的服务器额度记录，并生成新的安装标识。"
-        case .all: "会同时删除设备数据和当前安装标识对应的服务器记录。"
-        case .withdraw: "撤回后需要重新同意隐私政策才能继续使用联网功能。"
+        case .local: String(localized: "会删除设备内的游戏、活动、缓存、设置和通知。", bundle: .appLanguage)
+        case .server: String(localized: "会删除当前安装标识对应的服务器额度记录，并生成新的安装标识。", bundle: .appLanguage)
+        case .all: String(localized: "会同时删除设备数据和当前安装标识对应的服务器记录。", bundle: .appLanguage)
+        case .withdraw: String(localized: "撤回后需要重新同意隐私政策才能继续使用联网功能。", bundle: .appLanguage)
         }
     }
 }

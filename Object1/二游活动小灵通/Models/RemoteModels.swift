@@ -12,9 +12,9 @@ enum HoYoGame: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .genshin:  return "原神"
-        case .starrail: return "崩坏：星穹铁道"
-        case .zenless:  return "绝区零"
+        case .genshin:  return String(localized: "原神", bundle: .appLanguage)
+        case .starrail: return String(localized: "崩坏：星穹铁道", bundle: .appLanguage)
+        case .zenless:  return String(localized: "绝区零", bundle: .appLanguage)
         }
     }
 
@@ -123,21 +123,21 @@ struct RemoteEvent: Identifiable {
 
     var endDateShort: String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.dateFormat = "M月d日"
+        f.locale = AppLanguage.current.locale
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f.string(from: endDate)
     }
 
     var remainingText: String {
-        if isDone { return "已完成" }
+        if isDone { return String(localized: "已完成", bundle: .appLanguage) }
         let rem = Int(remaining)
-        if rem <= 0 { return "已结束" }
+        if rem <= 0 { return String(localized: "已结束", bundle: .appLanguage) }
         let days    = rem / 86400
         let hours   = (rem % 86400) / 3600
         let minutes = (rem % 3600) / 60
-        if days  > 0 { return "剩余 \(days)天 \(hours)时" }
-        if hours > 0 { return "剩余 \(hours)时 \(minutes)分" }
-        return "剩余 \(minutes)分"
+        if days  > 0 { return String(localized: "剩余 \(days)天 \(hours)时", bundle: .appLanguage) }
+        if hours > 0 { return String(localized: "剩余 \(hours)时 \(minutes)分", bundle: .appLanguage) }
+        return String(localized: "剩余 \(minutes)分", bundle: .appLanguage)
     }
 
     var urgency: Urgency {
@@ -152,22 +152,27 @@ struct RemoteEvent: Identifiable {
 
     // MARK: Factory
 
-    static func from(_ e: APIEvent, game: HoYoGame, completedIds: Set<String>) -> RemoteEvent {
+    // ID 始终用接口原始时间，换服务器不影响完成状态。
+    private static func date(_ timestamp: Int, server: HoYoServer) -> Date {
+        server.adjusted(Date(timeIntervalSince1970: TimeInterval(timestamp)))
+    }
+
+    static func from(_ e: APIEvent, game: HoYoGame, server: HoYoServer, completedIds: Set<String>) -> RemoteEvent {
         let id = "\(game.rawValue)_event_\(e.id)"
         return RemoteEvent(
             id:        id,
             game:      game,
             title:     e.name,
             category:  "活动",
-            startDate: Date(timeIntervalSince1970: TimeInterval(e.startTime)),
-            endDate:   Date(timeIntervalSince1970: TimeInterval(e.endTime)),
+            startDate: date(e.startTime, server: server),
+            endDate:   date(e.endTime, server: server),
             subtitle:  e.typeName,
             imageURL:  e.imageUrl.flatMap { URL(string: $0) },
             isDone:    completedIds.contains(id)
         )
     }
 
-    static func from(_ c: APIChallenge, game: HoYoGame, completedIds: Set<String>) -> RemoteEvent? {
+    static func from(_ c: APIChallenge, game: HoYoGame, server: HoYoServer, completedIds: Set<String>) -> RemoteEvent? {
         guard let startTime = c.startTime, let endTime = c.endTime else { return nil }
         // Challenge IDs from the upstream API are not globally unique. For example,
         // Genshin may return both Spiral Abyss and Imaginarium Theater with id == 0.
@@ -187,8 +192,8 @@ struct RemoteEvent: Identifiable {
             game:      game,
             title:     c.name,
             category:  "挑战",
-            startDate: Date(timeIntervalSince1970: TimeInterval(startTime)),
-            endDate:   Date(timeIntervalSince1970: TimeInterval(endTime)),
+            startDate: date(startTime, server: server),
+            endDate:   date(endTime, server: server),
             subtitle:  c.typeName,
             imageURL:  nil,
             isDone:    completedIds.contains(id)

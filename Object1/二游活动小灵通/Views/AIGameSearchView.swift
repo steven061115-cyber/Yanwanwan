@@ -1,6 +1,37 @@
 import SwiftUI
 import SwiftData
 
+// 国际服官网公告页。官网只有英文和一种中文版本，按 App 语言选一个。
+struct OfficialNewsPage {
+    let english: String
+    let chinese: String
+
+    var forCurrentLanguage: String {
+        AppLanguage.current == .en ? english : chinese
+    }
+}
+
+enum OverseasOfficialNews {
+    // 键是游戏名的中文原文，也是 Localizable 里的翻译键。
+    static let pages: [String: OfficialNewsPage] = [
+        "鸣潮": .init(english: "https://wutheringwaves.kurogames.com/en/main/news",
+                    chinese: "https://wutheringwaves.kurogames.com/zh-tw/main/news"),
+        "终末地": .init(english: "https://endfield.gryphline.com/en-us#notice",
+                     chinese: "https://endfield.gryphline.com/zh-tw#notice"),
+        "异环": .init(english: "https://nte.perfectworld.com/en/article/news/index.html",
+                    chinese: "https://nte.perfectworld.com/cn/article/news/index.html"),
+    ]
+
+    // 自定义游戏的名字是添加时的语言写的，三种语言的译名都认。
+    static func page(forGameName name: String) -> OfficialNewsPage? {
+        for (key, page) in pages {
+            let names = AppLanguage.allCases.map { String(localized: String.LocalizationValue(key), bundle: $0.bundle) }
+            if key == name || names.contains(name) { return page }
+        }
+        return nil
+    }
+}
+
 struct AIGameSearchView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss)      private var dismiss
@@ -9,18 +40,28 @@ struct AIGameSearchView: View {
     @Query private var prefsQuery: [UserPreferences]
     @Query private var customGames: [CustomGame]
 
-    private let recommendedBilibiliSpaces: [RecommendedBilibiliSpace] = [
-        .init(name: "鸣潮", emoji: "🌊", colorHex: CustomGamePalette.mint.rawValue, url: "https://b23.tv/Wdixy1J"),
-        .init(name: "战双帕弥什", emoji: "⚔️", colorHex: CustomGamePalette.purple.rawValue, url: "https://b23.tv/AZBFXO0"),
-        .init(name: "终末地", emoji: "🧭", colorHex: CustomGamePalette.yellow.rawValue, url: "https://b23.tv/LwktPtX"),
-        .init(name: "异环", emoji: "🔮", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/4zzUBvF"),
-        .init(name: "幻塔", emoji: "🗼", colorHex: CustomGamePalette.pink.rawValue, url: "https://b23.tv/Akp3x70"),
-        .init(name: "洛克王国世界", emoji: "👑", colorHex: CustomGamePalette.yellow.rawValue, url: "https://b23.tv/StJcE8K"),
-        .init(name: "少女前线2追放", emoji: "🎯", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/aNZgNA8"),
-        .init(name: "碧蓝航线", emoji: "⚓", colorHex: CustomGamePalette.mint.rawValue, url: "https://b23.tv/vW1KLKz"),
-        .init(name: "尘白禁区", emoji: "❄️", colorHex: CustomGamePalette.purple.rawValue, url: "https://b23.tv/0d6PbvL"),
-        .init(name: "碧蓝档案", emoji: "📘", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/DQmnvde")
+    // 国服显示全部推荐游戏，走 B站；其他服务器只显示有国际服官网公告页的几款。
+    private let allRecommendedBilibiliSpaces: [RecommendedBilibiliSpace] = [
+        .init(name: String(localized: "鸣潮", bundle: .appLanguage), emoji: "🌊", colorHex: CustomGamePalette.mint.rawValue, url: "https://b23.tv/Wdixy1J",
+              overseasNews: OverseasOfficialNews.pages["鸣潮"]),
+        .init(name: String(localized: "战双帕弥什", bundle: .appLanguage), emoji: "⚔️", colorHex: CustomGamePalette.purple.rawValue, url: "https://b23.tv/AZBFXO0"),
+        .init(name: String(localized: "终末地", bundle: .appLanguage), emoji: "🧭", colorHex: CustomGamePalette.yellow.rawValue, url: "https://b23.tv/LwktPtX",
+              overseasNews: OverseasOfficialNews.pages["终末地"]),
+        .init(name: String(localized: "异环", bundle: .appLanguage), emoji: "🔮", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/4zzUBvF",
+              overseasNews: OverseasOfficialNews.pages["异环"]),
+        .init(name: String(localized: "幻塔", bundle: .appLanguage), emoji: "🗼", colorHex: CustomGamePalette.pink.rawValue, url: "https://b23.tv/Akp3x70"),
+        .init(name: String(localized: "洛克王国世界", bundle: .appLanguage), emoji: "👑", colorHex: CustomGamePalette.yellow.rawValue, url: "https://b23.tv/StJcE8K"),
+        .init(name: String(localized: "少女前线2追放", bundle: .appLanguage), emoji: "🎯", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/aNZgNA8"),
+        .init(name: String(localized: "碧蓝航线", bundle: .appLanguage), emoji: "⚓", colorHex: CustomGamePalette.mint.rawValue, url: "https://b23.tv/vW1KLKz"),
+        .init(name: String(localized: "尘白禁区", bundle: .appLanguage), emoji: "❄️", colorHex: CustomGamePalette.purple.rawValue, url: "https://b23.tv/0d6PbvL"),
+        .init(name: String(localized: "碧蓝档案", bundle: .appLanguage), emoji: "📘", colorHex: CustomGamePalette.violet.rawValue, url: "https://b23.tv/DQmnvde")
     ]
+
+    private var recommendedBilibiliSpaces: [RecommendedBilibiliSpace] {
+        HoYoServer.current == .china
+            ? allRecommendedBilibiliSpaces
+            : allRecommendedBilibiliSpaces.filter { $0.overseasNews != nil }
+    }
 
     private enum AddGameStep {
         case chooseGame
@@ -40,6 +81,8 @@ struct AIGameSearchView: View {
     @State private var saveLimitMessage: String? = nil
     @State private var saveErrorMessage: String? = nil
     @State private var pendingRecommendedSpace: RecommendedBilibiliSpace? = nil
+    // 说明页完全关闭后再打开，避免和内置浏览器的弹出冲突。
+    @State private var spaceToOpenAfterGuide: RecommendedBilibiliSpace? = nil
     @State private var webExtractorItem: WebExtractorTarget? = nil
     @State private var showAIDisclosure = false
     @State private var pendingExtractionURL: URL? = nil
@@ -54,6 +97,8 @@ struct AIGameSearchView: View {
         let emoji: String
         let colorHex: String
         let url: String
+        // 国际服官网公告页；海外服务器下用默认浏览器打开，用户找到具体公告后复制链接回来粘贴。
+        var overseasNews: OfficialNewsPage? = nil
 
         var id: String { name }
     }
@@ -61,6 +106,8 @@ struct AIGameSearchView: View {
     private struct BilibiliOfficialSpaceGuideSheet: View {
         let space: RecommendedBilibiliSpace
         let onOpen: () -> Void
+
+        private var usesBilibili: Bool { HoYoServer.current.usesBilibili }
 
         @Environment(\.dismiss) private var dismiss
 
@@ -78,7 +125,7 @@ struct AIGameSearchView: View {
                                 Text(space.name)
                                     .font(.headline)
                                     .foregroundStyle(Color.hoyoNavy)
-                                Text("B站官方空间")
+                                Text(usesBilibili ? String(localized: "B站官方空间", bundle: .appLanguage) : String(localized: "国际服官网", bundle: .appLanguage))
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -87,12 +134,11 @@ struct AIGameSearchView: View {
                     }
 
                     Section {
-                        guideStep(number: "1", title: "打开官方空间",
-                                  detail: "点下方按钮跳转到手机上的 B站 App。")
-                        guideStep(number: "2", title: "寻找图文，选择最新版本公告",
-                                  detail: "在官方空间里进入「图文」内容，选择最新版本的综合公告，不要选单个活动介绍。")
-                        guideStep(number: "3", title: "分享并复制链接",
-                                  detail: "在公告页点分享，复制 b23.tv 短链，回到本页点「粘贴」。")
+                        if usesBilibili {
+                            bilibiliSteps
+                        } else {
+                            officialSiteSteps
+                        }
                     } header: {
                         Label("操作步骤", systemImage: "list.number")
                             .textCase(nil)
@@ -102,25 +148,28 @@ struct AIGameSearchView: View {
 
                     Section {
                         Button {
-                            dismiss()
                             onOpen()
+                            dismiss()
                         } label: {
                             HStack {
                                 Spacer()
-                                Label("去 B站", systemImage: "arrow.up.forward.app")
+                                Label(usesBilibili ? String(localized: "去 B站", bundle: .appLanguage) : String(localized: "打开官网公告", bundle: .appLanguage),
+                                      systemImage: "arrow.up.forward.app")
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
                         }
                         .foregroundStyle(Color.hoyoPink)
                     } footer: {
-                        Text("从 B站复制公告链接后回到本页，使用「粘贴」按钮填入公告链接。")
+                        Text(usesBilibili
+                             ? String(localized: "从 B站复制公告链接后回到本页，使用「粘贴」按钮填入公告链接。", bundle: .appLanguage)
+                             : String(localized: "从官网复制公告链接后回到本页，使用「粘贴」按钮填入公告链接。", bundle: .appLanguage))
                     }
                 }
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
                 .background(Color.hoyoBg)
-                .navigationTitle("去 B站找公告")
+                .navigationTitle(usesBilibili ? String(localized: "去 B站找公告", bundle: .appLanguage) : String(localized: "去官网找公告", bundle: .appLanguage))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -128,6 +177,26 @@ struct AIGameSearchView: View {
                     }
                 }
             }
+        }
+
+        @ViewBuilder
+        private var bilibiliSteps: some View {
+            guideStep(number: "1", title: String(localized: "打开官方空间", bundle: .appLanguage),
+                      detail: String(localized: "点下方按钮跳转到手机上的 B站 App。", bundle: .appLanguage))
+            guideStep(number: "2", title: String(localized: "寻找图文，选择最新版本公告", bundle: .appLanguage),
+                      detail: String(localized: "在官方空间里进入「图文」内容，选择最新版本的综合公告，不要选单个活动介绍。", bundle: .appLanguage))
+            guideStep(number: "3", title: String(localized: "分享并复制链接", bundle: .appLanguage),
+                      detail: String(localized: "在公告页点分享，复制 b23.tv 短链，回到本页点「粘贴」。", bundle: .appLanguage))
+        }
+
+        @ViewBuilder
+        private var officialSiteSteps: some View {
+            guideStep(number: "1", title: String(localized: "打开官网公告页", bundle: .appLanguage),
+                      detail: String(localized: "点下方按钮，在浏览器里打开国际服官网的公告页。", bundle: .appLanguage))
+            guideStep(number: "2", title: String(localized: "点开最新版本公告", bundle: .appLanguage),
+                      detail: String(localized: "选择最新版本的更新公告或活动一览，不要选单个活动介绍。", bundle: .appLanguage))
+            guideStep(number: "3", title: String(localized: "复制链接", bundle: .appLanguage),
+                      detail: String(localized: "复制这篇公告的网址，回到本页点「粘贴」。", bundle: .appLanguage))
         }
 
         @ViewBuilder
@@ -165,9 +234,13 @@ struct AIGameSearchView: View {
             .scrollContentBackground(.hidden)
             .background(Color.hoyoBg)
             .sheet(isPresented: $showLinkGuide) { BilibiliLinkGuideSheet() }
-            .sheet(item: $pendingRecommendedSpace) { space in
+            .sheet(item: $pendingRecommendedSpace, onDismiss: {
+                guard let space = spaceToOpenAfterGuide else { return }
+                spaceToOpenAfterGuide = nil
+                openRecommendedSpace(space)
+            }) { space in
                 BilibiliOfficialSpaceGuideSheet(space: space) {
-                    openRecommendedSpace(space)
+                    spaceToOpenAfterGuide = space
                 }
             }
             .sheet(isPresented: $showPremium) { PremiumView() }
@@ -305,7 +378,7 @@ struct AIGameSearchView: View {
                     .background(Color(hex: colorHex).opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(gameName.isEmpty ? "未选择游戏" : gameName)
+                    Text(gameName.isEmpty ? String(localized: "未选择游戏", bundle: .appLanguage) : gameName)
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.hoyoNavy)
@@ -322,7 +395,7 @@ struct AIGameSearchView: View {
 
         Section {
             HStack(spacing: 10) {
-                TextField("https://b23.tv/...", text: $articleURL)
+                TextField(HoYoServer.current.usesBilibili ? "https://b23.tv/..." : "https://...", text: $articleURL)
                     .keyboardType(.URL)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
@@ -338,25 +411,32 @@ struct AIGameSearchView: View {
                 .foregroundStyle(Color.hoyoPink)
             }
         } header: {
-            HStack(spacing: 4) {
-                Text("B站公告链接")
-                Button { showLinkGuide = true } label: {
-                    Image(systemName: "questionmark.circle")
-                        .foregroundStyle(Color.hoyoPink)
+            if HoYoServer.current.usesBilibili {
+                HStack(spacing: 4) {
+                    Text("B站公告链接")
+                    Button { showLinkGuide = true } label: {
+                        Image(systemName: "questionmark.circle")
+                            .foregroundStyle(Color.hoyoPink)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+            } else {
+                Text("公告链接")
             }
         } footer: {
-            Text("粘贴从 B站 App 里复制出来的具体版本公告分享链接（b23.tv/…），再用内置浏览器提取内容。")
+            Text(HoYoServer.current.usesBilibili
+                 ? String(localized: "粘贴从 B站 App 里复制出来的具体版本公告分享链接（b23.tv/…），再用内置浏览器提取内容。", bundle: .appLanguage)
+                 : String(localized: "要粘贴的是某个版本具体活动公告的页面链接（例如「2.5 版本活动一览」），不是官网的新闻列表页。粘贴后用内置浏览器提取内容。", bundle: .appLanguage))
         }
 
         Section {
             Button {
-                Task { await openBilibiliPage() }
+                Task { await openArticlePage() }
             } label: {
                 HStack {
                     Spacer()
-                    Label("打开 B站公告页面", systemImage: "tv.fill")
+                    Label(HoYoServer.current.usesBilibili ? String(localized: "打开 B站公告页面", bundle: .appLanguage) : String(localized: "打开公告页面", bundle: .appLanguage),
+                          systemImage: HoYoServer.current.usesBilibili ? "tv.fill" : "safari.fill")
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.hoyoPink)
                     Spacer()
@@ -383,7 +463,7 @@ struct AIGameSearchView: View {
                             Text(draft.title)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                            Text("\(draft.endDateShort)结束 · \(draft.category)")
+                            Text("\(draft.endDateShort)结束 · \(localizedEventCategory(draft.category))")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -407,12 +487,12 @@ struct AIGameSearchView: View {
         }
     }
 
-    private func openBilibiliPage() async {
+    private func openArticlePage() async {
         let raw = articleURL.trimmingCharacters(in: .whitespaces)
         guard !raw.isEmpty else { return }
         let urlString = extractFirstURL(from: raw) ?? raw
         guard let url = URL(string: urlString) else {
-            aiService.errorMessage = "无法解析链接，请检查格式"
+            aiService.errorMessage = String(localized: "无法解析链接，请检查格式", bundle: .appLanguage)
             return
         }
         let entitlementProof = await purchaseService.currentEntitlementJWS()
@@ -444,8 +524,18 @@ struct AIGameSearchView: View {
         pendingRecommendedSpace = nil
         currentStep = .pasteLink
 
+        // 海外：用默认浏览器打开国际服官网公告页，用户找到具体公告后复制链接回来粘贴。
+        if !HoYoServer.current.usesBilibili, let news = space.overseasNews {
+            guard let url = URL(string: news.forCurrentLanguage) else {
+                aiService.errorMessage = String(localized: "无法打开 \(space.name) 的官网", bundle: .appLanguage)
+                return
+            }
+            openURL(url)
+            return
+        }
+
         guard let url = URL(string: space.url) else {
-            aiService.errorMessage = "无法打开 \(space.name) 的 B站主页"
+            aiService.errorMessage = String(localized: "无法打开 \(space.name) 的 B站主页", bundle: .appLanguage)
             return
         }
         openURL(url)
@@ -454,7 +544,7 @@ struct AIGameSearchView: View {
     private func pasteArticleURL() {
         let pasted = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !pasted.isEmpty else {
-            aiService.errorMessage = "剪贴板里没有可粘贴的公告链接"
+            aiService.errorMessage = String(localized: "剪贴板里没有可粘贴的公告链接", bundle: .appLanguage)
             return
         }
 
@@ -497,7 +587,7 @@ struct AIGameSearchView: View {
             dismiss()
         } catch {
             modelContext.rollback()
-            saveErrorMessage = "保存失败：\(error.localizedDescription)"
+            saveErrorMessage = String(localized: "保存失败：\(error.localizedDescription)", bundle: .appLanguage)
         }
     }
 

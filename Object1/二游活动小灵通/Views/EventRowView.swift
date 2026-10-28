@@ -26,15 +26,15 @@ struct EventRowView: View {
     }
 
     private var compactRemaining: String {
-        if event.isDone { return "已完成" }
+        if event.isDone { return String(localized: "已完成", bundle: .appLanguage) }
         let rem = Int(event.remaining)
-        if rem <= 0 { return "已结束" }
+        if rem <= 0 { return String(localized: "已结束", bundle: .appLanguage) }
         let days    = rem / 86400
         let hours   = (rem % 86400) / 3600
         let minutes = (rem % 3600) / 60
-        if days  > 0 { return "\(days)天\(hours)时" }
-        if hours > 0 { return "\(hours)时\(minutes)分" }
-        return "\(minutes)分"
+        if days  > 0 { return String(localized: "\(days)天\(hours)时", bundle: .appLanguage) }
+        if hours > 0 { return String(localized: "\(hours)时\(minutes)分", bundle: .appLanguage) }
+        return String(localized: "\(minutes)分", bundle: .appLanguage)
     }
 
     private var pillColor: Color {
@@ -123,7 +123,7 @@ struct EventRowView: View {
                             .lineLimit(1)
 
                         if !event.isDone && event.remaining > 0 {
-                            Text("\(event.endDateShort)结束 · \(event.category)")
+                            Text("\(event.endDateShort)结束 · \(localizedEventCategory(event.category))")
                                 .font(.caption2)
                                 .foregroundStyle(Color.hoyoNavy.opacity(0.35))
                         }
@@ -135,7 +135,7 @@ struct EventRowView: View {
                     HStack(spacing: 3) {
                         Image(systemName: showReadStamp ? "checkmark" : "clock")
                             .font(.system(size: 10, weight: .bold))
-                        Text(showReadStamp ? "已阅" : compactRemaining)
+                        Text(showReadStamp ? String(localized: "已阅", bundle: .appLanguage) : compactRemaining)
                             .font(.system(size: 12, weight: .black))
                     }
                     .foregroundStyle(showReadStamp ? Color.white : pillTextColor)

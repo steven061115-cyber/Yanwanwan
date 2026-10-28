@@ -2,6 +2,18 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+// 分类以中文原文存储和比较，只在显示时翻译。
+func localizedEventCategory(_ raw: String) -> String {
+    switch raw {
+    case "活动":     return String(localized: "活动", bundle: .appLanguage)
+    case "挑战":     return String(localized: "挑战", bundle: .appLanguage)
+    case "版本活动": return String(localized: "版本活动", bundle: .appLanguage)
+    case "周常任务": return String(localized: "周常任务", bundle: .appLanguage)
+    case "副本挑战": return String(localized: "副本挑战", bundle: .appLanguage)
+    default:         return raw
+    }
+}
+
 // MARK: - SwiftData Models
 
 @Model
@@ -82,24 +94,22 @@ final class CustomEvent {
     var remaining: TimeInterval { endDate.timeIntervalSinceNow }
 
     var remainingText: String {
-        if isDone { return "已完成" }
+        if isDone { return String(localized: "已完成", bundle: .appLanguage) }
         let rem = Int(remaining)
-        if rem <= 0 { return "已结束" }
+        if rem <= 0 { return String(localized: "已结束", bundle: .appLanguage) }
         let days  = rem / 86400
         let hours = (rem % 86400) / 3600
-        if days > 0 { return "剩余 \(days)天 \(hours)时" }
-        return "剩余 \(hours)时"
+        if days > 0 { return String(localized: "剩余 \(days)天 \(hours)时", bundle: .appLanguage) }
+        return String(localized: "剩余 \(hours)时", bundle: .appLanguage)
     }
 
     var endDateShort: String {
+        // 按手机所在时区显示，和米哈游游戏的活动一致；国内用户手机就是北京时间。
         let f = DateFormatter()
-        f.timeZone = TimeZone(identifier: "Asia/Shanghai")
-        f.locale = Locale(identifier: "en_US_POSIX")
-        var bjCal = Calendar.current
-        bjCal.timeZone = TimeZone(identifier: "Asia/Shanghai")!
-        let hour   = bjCal.component(.hour,   from: endDate)
-        let minute = bjCal.component(.minute, from: endDate)
-        f.dateFormat = (hour == 0 && minute == 0) ? "M月d日" : "M月d日 HH:mm"
+        f.locale = AppLanguage.current.locale
+        let hour   = Calendar.current.component(.hour,   from: endDate)
+        let minute = Calendar.current.component(.minute, from: endDate)
+        f.setLocalizedDateFormatFromTemplate((hour == 0 && minute == 0) ? "MMMd" : "MMMdHHmm")
         return f.string(from: endDate)
     }
 
@@ -124,14 +134,12 @@ struct AIEventDraft: Identifiable {
     var isSelected: Bool = true
 
     var endDateShort: String {
+        // 按手机所在时区显示，和米哈游游戏的活动一致；国内用户手机就是北京时间。
         let f = DateFormatter()
-        f.timeZone = TimeZone(identifier: "Asia/Shanghai")
-        f.locale = Locale(identifier: "en_US_POSIX")
-        var bjCal = Calendar.current
-        bjCal.timeZone = TimeZone(identifier: "Asia/Shanghai")!
-        let hour   = bjCal.component(.hour,   from: endDate)
-        let minute = bjCal.component(.minute, from: endDate)
-        f.dateFormat = (hour == 0 && minute == 0) ? "M月d日" : "M月d日 HH:mm"
+        f.locale = AppLanguage.current.locale
+        let hour   = Calendar.current.component(.hour,   from: endDate)
+        let minute = Calendar.current.component(.minute, from: endDate)
+        f.setLocalizedDateFormatFromTemplate((hour == 0 && minute == 0) ? "MMMd" : "MMMdHHmm")
         return f.string(from: endDate)
     }
 }

@@ -14,26 +14,6 @@ struct EventGuideView: View {
     private var prefs: UserPreferences? { prefsQuery.first }
     private var isUrgent: Bool { event.urgency == .critical || event.urgency == .warning }
 
-    private var bilibiliSearchKeyword: String {
-        let q = "\(event.game.displayName) \(event.title) 攻略"
-        return q.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-    }
-
-    private var bilibiliAppSearchURL: URL {
-        URL(string: "bilibili://search?keyword=\(bilibiliSearchKeyword)")!
-    }
-
-    private var bilibiliWebSearchURL: URL {
-        URL(string: "https://search.bilibili.com/all?keyword=\(bilibiliSearchKeyword)")!
-    }
-
-    // 优先唤起 B站 App，未安装时回退到网页搜索
-    private func openBilibiliSearch() {
-        openURL(bilibiliAppSearchURL) { accepted in
-            if !accepted { openURL(bilibiliWebSearchURL) }
-        }
-    }
-
     var body: some View {
         ZStack {
             Color.white.ignoresSafeArea()
@@ -54,7 +34,7 @@ struct EventGuideView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     heroCard
-                    bilibiliCard
+                    guideVideoCard
                     detailCard
                 }
                 .padding(16)
@@ -140,14 +120,14 @@ struct EventGuideView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "calendar")
                         .font(.system(size: 11, weight: .semibold))
-                    Text(event.endDateShort + "结束")
+                    Text("\(event.endDateShort)结束")
                         .font(.system(size: 12, weight: .semibold))
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 12).padding(.vertical, 7)
                 .background(.white.opacity(0.20), in: Capsule())
 
-                Text(event.category)
+                Text(localizedEventCategory(event.category))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12).padding(.vertical, 7)
@@ -166,19 +146,22 @@ struct EventGuideView: View {
         .overlay(RoundedRectangle(cornerRadius: 24).stroke(Color.hoyoNavy, lineWidth: 2.5))
     }
 
-    // MARK: - Bilibili Card
+    // MARK: - Guide Video Card
 
-    private var bilibiliCard: some View {
-        Button { openBilibiliSearch() } label: {
+    private var guideVideoCard: some View {
+        Button {
+            let gameName = HoYoServer.current.usesBilibili ? event.game.displayName : event.game.englishName
+            GuideVideoSearch.open(gameName: gameName, eventTitle: event.title, using: openURL)
+        } label: {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "00A1D6"))
+                    .fill(GuideVideoSearch.brandColor)
                     .frame(width: 48, height: 48)
-                    .overlay(Text("bili").font(.system(size: 12, weight: .black)).foregroundStyle(.white))
+                    .overlay(GuideVideoSearch.badge)
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.hoyoNavy, lineWidth: 1.5))
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("在哔哩哔哩搜索攻略")
+                    Text(GuideVideoSearch.title)
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(Color.hoyoNavy)
                     Text(event.title)
@@ -223,10 +206,10 @@ struct EventGuideView: View {
 
             let isUrgentTime = event.remaining > 0 && event.remaining <= 2 * 86400
             let rows: [(String, String, String, Bool)] = [
-                ("gamecontroller.fill", "所属游戏", event.game.emoji + " " + event.game.displayName, false),
-                ("tag.fill",            "活动类型", event.category,                                   false),
-                ("calendar",           "结束时间", event.endDateShort + "结束",                       false),
-                ("clock",              "剩余时间", event.remaining > 0 ? event.remainingText : "已结束", true),
+                ("gamecontroller.fill", String(localized: "所属游戏", bundle: .appLanguage), event.game.emoji + " " + event.game.displayName, false),
+                ("tag.fill",            String(localized: "活动类型", bundle: .appLanguage), localizedEventCategory(event.category),                                   false),
+                ("calendar",           String(localized: "结束时间", bundle: .appLanguage), String(localized: "\(event.endDateShort)结束", bundle: .appLanguage), false),
+                ("clock",              String(localized: "剩余时间", bundle: .appLanguage), event.remaining > 0 ? event.remainingText : String(localized: "已结束", bundle: .appLanguage), true),
             ]
 
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in

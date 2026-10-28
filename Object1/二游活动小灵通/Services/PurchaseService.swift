@@ -28,6 +28,18 @@ final class PurchaseService {
 
     var isPremium: Bool { tier == .premium }
 
+    #if DEBUG
+    private static let debugForcePremiumKey = "debug.forcePremium"
+
+    // 调试版测试开关：打开后 App 内按会员处理。后端仍按 App Store 核验结果计算每日提取额度。
+    var debugForcePremium = UserDefaults.standard.bool(forKey: PurchaseService.debugForcePremiumKey) {
+        didSet {
+            UserDefaults.standard.set(debugForcePremium, forKey: Self.debugForcePremiumKey)
+            applyEffectiveTier()
+        }
+    }
+    #endif
+
     func start() {
         guard !didStart else { return }
         didStart = true
@@ -61,7 +73,7 @@ final class PurchaseService {
                     return lhs.displayName < rhs.displayName
                 }
         } catch {
-            errorMessage = "会员商品加载失败：请检查网络或稍后再试"
+            errorMessage = String(localized: "会员商品加载失败：请检查网络或稍后再试", bundle: .appLanguage)
         }
     }
 
@@ -72,7 +84,7 @@ final class PurchaseService {
         }
 
         guard let product = premiumProduct else {
-            errorMessage = "会员商品暂不可用，请稍后再试"
+            errorMessage = String(localized: "会员商品暂不可用，请稍后再试", bundle: .appLanguage)
             return false
         }
 
@@ -86,7 +98,7 @@ final class PurchaseService {
         }
 
         guard let product = lifetimeProduct else {
-            errorMessage = "一休尼会员商品暂不可用，请稍后再试"
+            errorMessage = String(localized: "一休尼会员商品暂不可用，请稍后再试", bundle: .appLanguage)
             return false
         }
 
@@ -109,7 +121,7 @@ final class PurchaseService {
                 return false
             }
         } catch {
-            errorMessage = "购买失败：请确认网络和 App Store 账户状态后重试"
+            errorMessage = String(localized: "购买失败：请确认网络和 App Store 账户状态后重试", bundle: .appLanguage)
             return false
         }
     }
@@ -119,7 +131,7 @@ final class PurchaseService {
             try await AppStore.sync()
             await refreshEntitlements()
         } catch {
-            errorMessage = "恢复购买失败：请确认网络和 App Store 账户状态后重试"
+            errorMessage = String(localized: "恢复购买失败：请确认网络和 App Store 账户状态后重试", bundle: .appLanguage)
         }
     }
 
@@ -149,6 +161,12 @@ final class PurchaseService {
     }
 
     private func applyEffectiveTier() {
+        #if DEBUG
+        if debugForcePremium {
+            tier = .premium
+            return
+        }
+        #endif
         tier = storeKitTier
     }
 

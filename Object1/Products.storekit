@@ -3,7 +3,7 @@
     "eula" : "",
     "policies" : [
       {
-        "locale" : "zh_CN",
+        "locale" : "zh_Hans",
         "policyText" : "",
         "policyURL" : ""
       }
@@ -22,7 +22,7 @@
         {
           "description" : "解锁 10 个自定义游戏和每日 5 次 AI 公告提取额度。",
           "displayName" : "一休尼会员",
-          "locale" : "zh_CN"
+          "locale" : "zh_Hans"
         }
       ],
       "productID" : "ailesson.path.Object1.premium.lifetime",
@@ -36,7 +36,7 @@
     "_billingIssuesEnabled" : false,
     "_disableDialogs" : false,
     "_failTransactionsEnabled" : false,
-    "_locale" : "zh_CN",
+    "_locale" : "zh_Hans",
     "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "CHN",
     "_storeKitErrors" : [
@@ -44,6 +44,9 @@
     ],
     "_timeRate" : 0
   },
+  "subscriptionBundleGroups" : [
+
+  ],
   "subscriptionGroups" : [
     {
       "id" : "C16F198D",
@@ -56,6 +59,15 @@
           "adHocOffers" : [
 
           ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "3",
+              "displayPrice" : "3",
+              "internalID" : "02DAB810",
+              "isEnabled" : true
+            }
+          ],
           "codeOffers" : [
 
           ],
@@ -63,12 +75,14 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "2312F34C",
-          "introductoryOffer" : null,
+          "introductoryOffers" : [
+
+          ],
           "localizations" : [
             {
               "description" : "解锁 10 个自定义游戏和每日 5 次 AI 公告提取额度。",
               "displayName" : "月度会员",
-              "locale" : "zh_CN"
+              "locale" : "zh_Hans"
             }
           ],
           "productID" : "ailesson.path.Object1.premium.monthly",
@@ -83,8 +97,11 @@
       ]
     }
   ],
+  "subscriptionSuiteGroups" : [
+
+  ],
   "version" : {
-    "major" : 4,
-    "minor" : 0
+    "major" : 6,
+    "minor" : 3
   }
 }

@@ -50,6 +50,9 @@
             ReferencedContainer = "container:&#x4e8c;&#x6e38;&#x6d3b;&#x52a8;&#x5c0f;&#x7075;&#x901a;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "../../Products.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

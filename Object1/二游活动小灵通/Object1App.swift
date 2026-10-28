@@ -7,6 +7,8 @@ struct Object1App: App {
     @State private var purchaseService = PurchaseService()
 
     init() {
+        HoYoServer.saveDefaultIfNeeded()
+        AppLanguage.saveDefaultIfNeeded()
         applyAppearance()
     }
 
@@ -86,22 +88,39 @@ private struct AppRootView: View {
     let purchaseService: PurchaseService
 
     @State private var showSplash = true
+    // Lives here rather than in ContentView so the current tab survives a language rebuild.
+    @State private var router = AppRouter()
     @AppStorage(PrivacyConsent.acceptedVersionKey) private var acceptedPrivacyVersion = ""
+    @AppStorage(HoYoServer.storageKey, store: HoYoServer.store) private var gameServerRaw = ""
+    @AppStorage(AppLanguage.storageKey, store: HoYoServer.store) private var appLanguageRaw = ""
+
+    private var language: AppLanguage {
+        _ = appLanguageRaw
+        return AppLanguage.current
+    }
+
+    // 换语言或换服务器都重建界面：前者刷新文字，后者按新服务器重新换算活动时间。
+    private var rebuildID: String {
+        "\(language.rawValue)|\(gameServerRaw)"
+    }
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ZStack {
             if acceptedPrivacyVersion == ComplianceConfig.privacyVersion {
-                ContentView()
+                ContentView(router: router)
                     .modelContainer(modelContainer)
                     .environment(activityService)
                     .environment(purchaseService)
+                    // String(localized:) 的结果不会随环境刷新，换语言时重建界面。
+                    .id(rebuildID)
                     .transition(.opacity)
             } else {
                 PrivacyConsentView {
                     acceptedPrivacyVersion = ComplianceConfig.privacyVersion
                     startConsentedServices()
                 }
+                .id(rebuildID)
                 .transition(.opacity)
             }
 
@@ -111,6 +130,7 @@ private struct AppRootView: View {
                     .zIndex(1)
             }
         }
+        .environment(\.locale, language.locale)
         .animation(.easeOut(duration: 0.35), value: showSplash)
         .background(FullScreenWindowRequest())
         .onAppear {

@@ -3,6 +3,8 @@ import SwiftData
 
 struct OnboardingView: View {
     @Binding var isPresented: Bool
+    // 先只记在这里，引导页关闭后由 ContentView 保存。
+    @Binding var server: HoYoServer
     @Query private var prefsQuery: [UserPreferences]
     private var prefs: UserPreferences? { prefsQuery.first }
 
@@ -12,8 +14,9 @@ struct OnboardingView: View {
         NavigationStack {
             Group {
                 switch step {
-                case 0:  welcomeStep
-                case 1:  gameSelectStep
+                case 0:  serverSelectStep
+                case 1:  welcomeStep
+                case 2:  gameSelectStep
                 default: doneStep
                 }
             }
@@ -21,7 +24,95 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 0: Welcome
+    // MARK: - Step 0: Server
+
+    private var serverSelectStep: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 12) {
+                Image(systemName: "globe.asia.australia.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(Color.hoyoMint)
+                    .padding(.top, 48)
+
+                // 还没选语言，标题中英双语。
+                Text(verbatim: "选择你的服务器")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Text(verbatim: "Choose your game server")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+
+                Text("活动时间和攻略平台会按所选服务器切换。")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+            .padding(.bottom, 28)
+
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(HoYoServer.allCases) { option in
+                        serverCard(option)
+                    }
+                }
+                .padding(.horizontal, 24)
+            }
+
+            Button {
+                withAnimation { step = 1 }
+            } label: {
+                Text("下一步")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.hoyoPink)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 12)
+            .padding(.bottom, 40)
+        }
+    }
+
+    @ViewBuilder
+    private func serverCard(_ option: HoYoServer) -> some View {
+        let selected = option == server
+        Button {
+            server = option
+        } label: {
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(verbatim: option.displayName)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(verbatim: option.utcOffsetLabel)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                    .font(.title2)
+                    .foregroundStyle(selected ? Color.hoyoPink : Color.secondary.opacity(0.4))
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(selected ? Color.hoyoPink.opacity(0.1) : Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(selected ? Color.hoyoPink : Color.clear, lineWidth: 1.5)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .animation(.spring(duration: 0.25), value: selected)
+    }
+
+    // MARK: - Step 1: Welcome
 
     private var welcomeStep: some View {
         VStack(spacing: 32) {
@@ -46,16 +137,16 @@ struct OnboardingView: View {
 
             VStack(alignment: .leading, spacing: 20) {
                 featureRow(icon: "calendar.badge.exclamationmark", color: .orange,
-                           title: "活动倒计时", desc: "哪个快结束，婉婉第一时间告诉你")
+                           title: String(localized: "活动倒计时", bundle: .appLanguage), desc: String(localized: "哪个快结束，婉婉第一时间告诉你", bundle: .appLanguage))
                 featureRow(icon: "bell.badge.fill", color: .red,
-                           title: "智能通知", desc: "每天清点一次，快到期再提醒你")
+                           title: String(localized: "智能通知", bundle: .appLanguage), desc: String(localized: "每天清点一次，快到期再提醒你", bundle: .appLanguage))
             }
             .padding(.horizontal, 32)
 
             Spacer()
 
             Button {
-                withAnimation { step = 1 }
+                withAnimation { step = 2 }
             } label: {
                 Text("婉婉，开工！")
                     .font(.headline)
@@ -70,7 +161,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 1: Game Selection
+    // MARK: - Step 2: Game Selection
 
     private var gameSelectStep: some View {
         VStack(spacing: 0) {
@@ -102,7 +193,7 @@ struct OnboardingView: View {
             Spacer()
 
             Button {
-                withAnimation { step = 2 }
+                withAnimation { step = 3 }
             } label: {
                 Text("下一步")
                     .font(.headline)
@@ -118,7 +209,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 2: Done
+    // MARK: - Step 3: Done
 
     private var doneStep: some View {
         VStack(spacing: 32) {

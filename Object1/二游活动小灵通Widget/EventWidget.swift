@@ -32,8 +32,8 @@ struct EventEntry: TimelineEntry {
 struct EventTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> EventEntry {
         EventEntry(date: .now, events: [
-            WidgetEvent(id: "p", title: "示例活动名称", gameEmoji: "🌿",
-                        gameName: "原神", endDate: .now.addingTimeInterval(3 * 86400), urgencyLevel: 1)
+            WidgetEvent(id: "p", title: String(localized: "示例活动名称", bundle: .appLanguage), gameEmoji: "🌿",
+                        gameName: String(localized: "原神", bundle: .appLanguage), endDate: .now.addingTimeInterval(3 * 86400), urgencyLevel: 1)
         ])
     }
 
@@ -63,10 +63,10 @@ private func urgencyColor(_ level: Int) -> Color {
 private func daysLeft(_ e: WidgetEvent) -> String {
     let secs = e.endDate.timeIntervalSinceNow
     let days = Int(secs / 86400)
-    if days > 0 { return "剩\(days)天" }
+    if days > 0 { return String(localized: "剩\(days)天", bundle: .appLanguage) }
     let hours = Int(secs / 3600)
-    if hours > 0 { return "剩\(hours)时" }
-    return "即将结束"
+    if hours > 0 { return String(localized: "剩\(hours)时", bundle: .appLanguage) }
+    return String(localized: "即将结束", bundle: .appLanguage)
 }
 
 // Countdown capsule pill, styled after the app's in-list countdown badge
@@ -179,7 +179,7 @@ private struct MediumWidgetView: View {
                         .fontDesign(.rounded)
                 }
                 Spacer()
-                Text(entry.date.formatted(.dateTime.month().day()))
+                Text(entry.date.formatted(.dateTime.month().day().locale(AppLanguage.current.locale)))
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(Color.hoyoNavy.opacity(0.35))
                     .fontDesign(.rounded)
@@ -218,6 +218,8 @@ struct EventCountdownWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: EventTimelineProvider()) { entry in
             EventWidgetEntryView(entry: entry)
+                // 和主 App 一样，语言跟随所选服务器。
+                .environment(\.locale, AppLanguage.current.locale)
                 .containerBackground(for: .widget) {
                     LinearGradient(
                         colors: [Color.hoyoBg, Color.hoyoPink.opacity(0.20)],

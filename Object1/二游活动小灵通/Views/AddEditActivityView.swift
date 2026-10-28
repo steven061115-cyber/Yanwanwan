@@ -54,6 +54,9 @@ private struct SettingsFormView: View {
     @State private var addSuccessVisible = false
     @State private var previousCustomGameCount = 0
     @State private var notifStatus: UNAuthorizationStatus = .notDetermined
+    // 写入后 App 根视图会按新服务器切换语言并重建界面。
+    @AppStorage(HoYoServer.storageKey, store: HoYoServer.store) private var gameServerRaw = ""
+    @AppStorage(AppLanguage.storageKey, store: HoYoServer.store) private var appLanguageRaw = ""
 
     var body: some View {
         ZStack {
@@ -127,25 +130,64 @@ private struct SettingsFormView: View {
     // 会员、关注的游戏、自定义游戏：账号和游戏相关
     @ViewBuilder
     private var accountSections: some View {
-        sectionLabel(icon: "crown.fill", iconColor: Color.hoyoYellow, title: "会员权益")
+        sectionLabel(icon: "crown.fill", iconColor: Color.hoyoYellow, title: String(localized: "会员权益", bundle: .appLanguage))
         membershipCard
 
-        sectionLabel(icon: "bookmark.fill", iconColor: Color.hoyoPink, title: "关注的游戏")
+        sectionLabel(icon: "bookmark.fill", iconColor: Color.hoyoPink, title: String(localized: "关注的游戏", bundle: .appLanguage))
         followedGamesCard
 
-        sectionLabel(icon: "shippingbox.fill", iconColor: Color(hex: "E8895A"), title: "自定义游戏")
+        sectionLabel(icon: "shippingbox.fill", iconColor: Color(hex: "E8895A"), title: String(localized: "自定义游戏", bundle: .appLanguage))
         addGameButton
     }
 
     // 提醒设置、隐私与合规：App 行为相关
     @ViewBuilder
     private var appSections: some View {
-        sectionLabel(icon: "bell.badge.fill", iconColor: Color.hoyoPink, title: "提醒设置")
+        sectionLabel(icon: "globe", iconColor: Color.hoyoMint, title: String(localized: "游戏服务器", bundle: .appLanguage))
+        gameServerCard
+
+        sectionLabel(icon: "character.bubble.fill", iconColor: Color(hex: "6B5EA8"), title: String(localized: "语言", bundle: .appLanguage))
+        languageCard
+
+        sectionLabel(icon: "bell.badge.fill", iconColor: Color.hoyoPink, title: String(localized: "提醒设置", bundle: .appLanguage))
         notificationCard
 
-        sectionLabel(icon: "hand.raised.fill", iconColor: Color(hex: "4A72C4"), title: "隐私与合规")
+        sectionLabel(icon: "hand.raised.fill", iconColor: Color(hex: "4A72C4"), title: String(localized: "隐私与合规", bundle: .appLanguage))
         complianceCard
+
+        #if DEBUG
+        sectionLabel(icon: "hammer.fill", iconColor: Color.orange, title: "测试工具")
+        debugToolsCard
+        #endif
     }
+
+    #if DEBUG
+    // 只在 Xcode 调试版显示，文字不做翻译。
+    private var debugToolsCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Toggle(isOn: Binding(
+                get: { purchaseService.debugForcePremium },
+                set: { purchaseService.debugForcePremium = $0 }
+            )) {
+                Text(verbatim: "会员")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Color.hoyoNavy)
+            }
+            .tint(Color.hoyoPink)
+
+            Text(verbatim: "打开后 App 内按会员处理（10 个自定义游戏、会员页显示为已开通）。每日提取次数由后端核验 App Store 购买，仍按免费版计算。只在 Xcode 调试版显示。")
+                .font(.caption)
+                .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+        }
+        .padding(16)
+        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
+        )
+        .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
+    }
+    #endif
 
     private var complianceCard: some View {
         NavigationLink {
@@ -384,6 +426,89 @@ private struct SettingsFormView: View {
         .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
     }
 
+    // MARK: - Game Server Card
+
+    private var gameServerCard: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(HoYoServer.allCases.enumerated()), id: \.element.id) { idx, server in
+                if idx > 0 { Divider().padding(.horizontal, 16) }
+                Button {
+                    gameServerRaw = server.rawValue
+                } label: {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(server.displayName)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(Color.hoyoNavy)
+                            Text(server.utcOffsetLabel)
+                                .font(.caption)
+                                .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+                        }
+                        Spacer()
+                        if (HoYoServer(rawValue: gameServerRaw) ?? .current) == server {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 20))
+                                .foregroundStyle(Color.hoyoPink)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+
+            Text("活动时间和攻略平台会按所选服务器切换。")
+                .font(.caption)
+                .foregroundStyle(Color.hoyoNavy.opacity(0.45))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+        }
+        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
+        )
+        .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
+    }
+
+    // MARK: - Language Card
+
+    private var languageCard: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(AppLanguage.allCases.enumerated()), id: \.element.id) { idx, option in
+                if idx > 0 { Divider().padding(.horizontal, 16) }
+                Button {
+                    appLanguageRaw = option.rawValue
+                } label: {
+                    HStack(spacing: 12) {
+                        // 语言名用各自的写法，切到看不懂的语言也能找回来。
+                        Text(verbatim: option.nativeName)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(Color.hoyoNavy)
+                        Spacer()
+                        if (AppLanguage(rawValue: appLanguageRaw) ?? .current) == option {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 20))
+                                .foregroundStyle(Color.hoyoPink)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.hoyoNavy.opacity(0.10), lineWidth: 1.5)
+        )
+        .shadow(color: Color.hoyoNavy.opacity(0.06), radius: 10, x: 0, y: 3)
+    }
+
     // MARK: - Custom Games Card
 
     @ViewBuilder
@@ -545,7 +670,7 @@ private struct SettingsFormView: View {
                 NotificationManager.shared.rescheduleAll()
             } catch {
                 modelContext.rollback()
-                deleteErrorMessage = "删除失败：\(error.localizedDescription)"
+                deleteErrorMessage = String(localized: "删除失败：\(error.localizedDescription)", bundle: .appLanguage)
             }
             deleteFragmentsSeparated = false
             deletingGameID = nil
@@ -730,10 +855,10 @@ private struct SettingsFormView: View {
 
     private var notifStatusText: String {
         switch notifStatus {
-        case .authorized:  return "已开启"
-        case .provisional: return "临时授权"
-        case .denied:      return "已拒绝"
-        default:           return "未请求"
+        case .authorized:  return String(localized: "已开启", bundle: .appLanguage)
+        case .provisional: return String(localized: "临时授权", bundle: .appLanguage)
+        case .denied:      return String(localized: "已拒绝", bundle: .appLanguage)
+        default:           return String(localized: "未请求", bundle: .appLanguage)
         }
     }
 

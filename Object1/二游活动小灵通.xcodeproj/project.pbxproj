@@ -40,6 +40,12 @@
 		7C0000012FEB000000000001 /* ComplianceViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0000022FEB000000000001 /* ComplianceViews.swift */; };
 		7D0000112FEC000000000001 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0000012FEC000000000001 /* AppRouter.swift */; };
 		7D0000122FEC000000000001 /* SplitRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0000022FEC000000000001 /* SplitRootView.swift */; };
+		7E0000112FED000000000001 /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0000012FED000000000001 /* GameServer.swift */; };
+		7E0000122FED000000000001 /* GuideVideoSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0000022FED000000000001 /* GuideVideoSearch.swift */; };
+		7E0000132FED000000000001 /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0000012FED000000000001 /* GameServer.swift */; };
+		7E0000212FED000000000001 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7E0000032FED000000000001 /* Localizable.xcstrings */; };
+		7E0000222FED000000000001 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7E0000042FED000000000001 /* InfoPlist.xcstrings */; };
+		7E0000232FED000000000001 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7E0000032FED000000000001 /* Localizable.xcstrings */; };
 		A1B13B82ECC9FBD828B657B8 /* Object1WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4FC8B42FE5427D00914720 /* Object1WidgetBundle.swift */; };
 		D8EE75CD5715C1987021A11C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4FC89F2FE5427D00914720 /* Theme.swift */; };
 		F3AA2BBA8391940D60597954 /* EventWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4FC8B32FE5427D00914720 /* EventWidget.swift */; };
@@ -110,6 +116,10 @@
 		7C0000022FEB000000000001 /* ComplianceViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceViews.swift; sourceTree = "<group>"; };
 		7D0000012FEC000000000001 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		7D0000022FEC000000000001 /* SplitRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitRootView.swift; sourceTree = "<group>"; };
+		7E0000012FED000000000001 /* GameServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServer.swift; sourceTree = "<group>"; };
+		7E0000022FED000000000001 /* GuideVideoSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideVideoSearch.swift; sourceTree = "<group>"; };
+		7E0000032FED000000000001 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		7E0000042FED000000000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		9AFAA15792A8D1F6CBD08B29 /* Object1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Object1.entitlements; sourceTree = "<group>"; };
 		E2E60EF6B294DE55488C9D2A /* EventWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EventWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -168,6 +178,8 @@
 			children = (
 				6F4FC89D2FE5427D00914720 /* NotificationManager.swift */,
 				7A0000032FE9000000000001 /* InstallID.swift */,
+				7E0000022FED000000000001 /* GuideVideoSearch.swift */,
+				7E0000012FED000000000001 /* GameServer.swift */,
 				7D0000012FEC000000000001 /* AppRouter.swift */,
 				6F4FC89E2FE5427D00914720 /* SharedWidgetData.swift */,
 				6F4FC89F2FE5427D00914720 /* Theme.swift */,
@@ -209,6 +221,8 @@
 				6F4FC8B02FE5427D00914720 /* Object1App.swift */,
 				9AFAA15792A8D1F6CBD08B29 /* Object1.entitlements */,
 				7B0000032FEA000000000001 /* PrivacyInfo.xcprivacy */,
+				7E0000032FED000000000001 /* Localizable.xcstrings */,
+				7E0000042FED000000000001 /* InfoPlist.xcstrings */,
 			);
 			path = "二游活动小灵通";
 			sourceTree = "<group>";
@@ -309,6 +323,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = 6F7B88DF2FDBFA2000168FF0;
 			minimizedProjectReferenceProxies = 1;
@@ -331,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B0000022FEA000000000001 /* PrivacyInfo.xcprivacy in Resources */,
+				7E0000232FED000000000001 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +357,8 @@
 			files = (
 				6F4FC8B92FE5427D00914720 /* Assets.xcassets in Resources */,
 				7B0000012FEA000000000001 /* PrivacyInfo.xcprivacy in Resources */,
+				7E0000212FED000000000001 /* Localizable.xcstrings in Resources */,
+				7E0000222FED000000000001 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +372,7 @@
 				F3AA2BBA8391940D60597954 /* EventWidget.swift in Sources */,
 				A1B13B82ECC9FBD828B657B8 /* Object1WidgetBundle.swift in Sources */,
 				D8EE75CD5715C1987021A11C /* Theme.swift in Sources */,
+				7E0000132FED000000000001 /* GameServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +393,8 @@
 				7A0000112FE9000000000001 /* EntitlementTier.swift in Sources */,
 				7A0000122FE9000000000001 /* PurchaseService.swift in Sources */,
 				7A0000132FE9000000000001 /* InstallID.swift in Sources */,
+				7E0000122FED000000000001 /* GuideVideoSearch.swift in Sources */,
+				7E0000112FED000000000001 /* GameServer.swift in Sources */,
 				7A0000142FE9000000000001 /* PremiumView.swift in Sources */,
 				6F4FC8C52FE5427D00914720 /* EventListView.swift in Sources */,
 				6F4FC8C62FE5427D00914720 /* Object1App.swift in Sources */,

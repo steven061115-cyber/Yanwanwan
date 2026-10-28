@@ -19,17 +19,19 @@ final class ActivityService {
         preferences.removeLegacyChallengeState()
         let games        = preferences.followedGames
         let completedIds = Set(preferences.completedEventIds)
+        let server       = HoYoServer.current
+        let lang         = AppLanguage.current.calendarLang
 
         var fetched: [RemoteEvent] = []
         var hadNetworkError = false
 
         for game in games {
             do {
-                let response = try await fetchCalendar(for: game, lang: "zh-cn")
+                let response = try await fetchCalendar(for: game, lang: lang)
                 if let data = try? makeEncoder().encode(response) {
                     preferences.setCachedJSON(data, for: game)
                 }
-                fetched += buildEvents(from: response, game: game, completedIds: completedIds)
+                fetched += buildEvents(from: response, game: game, server: server, completedIds: completedIds)
             } catch is GameNotSupported {
                 // API doesn't have data for this game yet — skip silently, no error banner.
             } catch is CancellationError {
@@ -39,7 +41,7 @@ final class ActivityService {
                 hadNetworkError = true
                 if let cached = preferences.cachedJSON(for: game),
                    let response = try? makeDecoder().decode(CalendarResponse.self, from: cached) {
-                    fetched += buildEvents(from: response, game: game, completedIds: completedIds)
+                    fetched += buildEvents(from: response, game: game, server: server, completedIds: completedIds)
                 }
             }
         }
@@ -47,7 +49,7 @@ final class ActivityService {
         if hadNetworkError && fetched.isEmpty {
             // Network failed and no cache available — keep whatever events are already shown
             // (populated by loadFromCache before this refresh ran) and surface the error.
-            errorMessage = "网络开小差了，婉婉先给你看缓存数据"
+            errorMessage = String(localized: "网络开小差了，婉婉先给你看缓存数据", bundle: .appLanguage)
         } else {
             // Success or partial cache fallback — update events list.
             events = sorted(fetched)
@@ -72,12 +74,13 @@ final class ActivityService {
     func loadFromCache(preferences: UserPreferences) {
         preferences.removeLegacyChallengeState()
         let completedIds = Set(preferences.completedEventIds)
+        let server       = HoYoServer.current
         var cached: [RemoteEvent] = []
 
         for game in preferences.followedGames {
             if let data = preferences.cachedJSON(for: game),
                let response = try? makeDecoder().decode(CalendarResponse.self, from: data) {
-                cached += buildEvents(from: response, game: game, completedIds: completedIds)
+                cached += buildEvents(from: response, game: game, server: server, completedIds: completedIds)
             }
         }
 
@@ -102,7 +105,7 @@ final class ActivityService {
     // Callers can silently skip rather than showing an error banner.
     private struct GameNotSupported: Error {}
 
-    private func fetchCalendar(for game: HoYoGame, lang: String = "zh-cn") async throws -> CalendarResponse {
+    private func fetchCalendar(for game: HoYoGame, lang: String) async throws -> CalendarResponse {
         // 经自己的后端缓存代理请求，上游不可用时后端会返回最近一次成功的数据。
         guard let url = APIConfig.calendarURL(game: game.rawValue, lang: lang) else {
             throw URLError(.badURL)
@@ -119,11 +122,12 @@ final class ActivityService {
     private func buildEvents(
         from response: CalendarResponse,
         game: HoYoGame,
+        server: HoYoServer,
         completedIds: Set<String>
     ) -> [RemoteEvent] {
         var result: [RemoteEvent] = []
-        result += response.events.map     { RemoteEvent.from($0, game: game, completedIds: completedIds) }
-        result += response.challenges.compactMap { RemoteEvent.from($0, game: game, completedIds: completedIds) }
+        result += response.events.map     { RemoteEvent.from($0, game: game, server: server, completedIds: completedIds) }
+        result += response.challenges.compactMap { RemoteEvent.from($0, game: game, server: server, completedIds: completedIds) }
 
         var seenIds = Set<String>()
         return result.filter {

@@ -144,12 +144,12 @@ struct ActivityStats {
 
     static func compactRemaining(_ remaining: TimeInterval) -> String {
         let rem = Int(remaining)
-        guard rem > 0 else { return "已结束" }
+        guard rem > 0 else { return String(localized: "已结束", bundle: .appLanguage) }
         let days    = rem / 86400
         let hours   = (rem % 86400) / 3600
         let minutes = (rem % 3600) / 60
-        if days  > 0 { return "\(days)天\(hours)时" }
-        if hours > 0 { return "\(hours)时\(minutes)分" }
-        return "\(minutes)分"
+        if days  > 0 { return String(localized: "\(days)天\(hours)时", bundle: .appLanguage) }
+        if hours > 0 { return String(localized: "\(hours)时\(minutes)分", bundle: .appLanguage) }
+        return String(localized: "\(minutes)分", bundle: .appLanguage)
     }
 }

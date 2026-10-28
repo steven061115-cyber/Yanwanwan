@@ -89,9 +89,9 @@ struct CustomGameDetailView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             detailSectionHeader(systemImage: "bolt.fill",
                                                 iconBg: endingSoon.isEmpty ? Color.hoyoNavy.opacity(0.35) : Color.hoyoPink,
-                                                title: "七日内临期", count: endingSoon.count)
+                                                title: String(localized: "七日内临期", bundle: .appLanguage), count: endingSoon.count)
                             if endingSoon.isEmpty {
-                                emptyState(text: "暂无临期活动", sub: "7 天内没有急事，婉婉先待命。")
+                                emptyState(text: String(localized: "暂无临期活动", bundle: .appLanguage), sub: String(localized: "7 天内没有急事，婉婉先待命。", bundle: .appLanguage))
                             } else {
                                 VStack(spacing: 8) {
                                     ForEach(endingSoon) { event in
@@ -118,9 +118,9 @@ struct CustomGameDetailView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             detailSectionHeader(systemImage: "calendar",
                                                 iconBg: Color.hoyoMint,
-                                                title: "七日后待办", count: endingLater.count)
+                                                title: String(localized: "七日后待办", bundle: .appLanguage), count: endingLater.count)
                             if endingLater.isEmpty {
-                                emptyState(text: "暂无待办活动", sub: "后面暂时没有待办，婉婉继续盯着。")
+                                emptyState(text: String(localized: "暂无待办活动", bundle: .appLanguage), sub: String(localized: "后面暂时没有待办，婉婉继续盯着。", bundle: .appLanguage))
                             } else {
                                 VStack(spacing: 8) {
                                     ForEach(endingLater) { event in
@@ -143,7 +143,7 @@ struct CustomGameDetailView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             detailSectionHeader(systemImage: "checkmark.circle.fill",
                                                 iconBg: Color.hoyoNavy.opacity(0.35),
-                                                title: "已完成 & 已结束", count: doneOrExpired.count)
+                                                title: String(localized: "已完成 & 已结束", bundle: .appLanguage), count: doneOrExpired.count)
                             VStack(spacing: 8) {
                                 ForEach(doneOrExpired) { event in
                                     CustomEventRow(
@@ -189,7 +189,7 @@ struct CustomGameDetailView: View {
             Text(aiService.quotaLimitMessage ?? "")
         }
         .sheet(isPresented: $showURLInput) {
-            ArticleURLInputView(url: $articleURL) {
+            ArticleURLInputView(url: $articleURL, officialNews: OverseasOfficialNews.page(forGameName: game.name)) {
                 showURLInput = false
                 let raw = articleURL.trimmingCharacters(in: .whitespaces)
                 let urlString = extractFirstURL(from: raw) ?? raw
@@ -262,7 +262,7 @@ struct CustomGameDetailView: View {
             return true
         } catch {
             modelContext.rollback()
-            saveErrorMessage = "保存失败：\(error.localizedDescription)"
+            saveErrorMessage = String(localized: "保存失败：\(error.localizedDescription)", bundle: .appLanguage)
             return false
         }
     }
@@ -412,7 +412,7 @@ struct EditEventView: View {
 
                 Section("分类") {
                     Picker("分类", selection: $event.category) {
-                        ForEach(categories, id: \.self) { Text($0).tag($0) }
+                        ForEach(categories, id: \.self) { Text(localizedEventCategory($0)).tag($0) }
                     }
                     .pickerStyle(.menu)
                 }
@@ -465,7 +465,7 @@ struct RefreshConfirmView: View {
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(draft.title)
                                     .font(.subheadline).fontWeight(.medium)
-                                Text("\(draft.endDateShort)结束 · \(draft.category)")
+                                Text("\(draft.endDateShort)结束 · \(localizedEventCategory(draft.category))")
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                         }
@@ -512,30 +512,61 @@ struct RefreshConfirmView: View {
 
 struct ArticleURLInputView: View {
     @Binding var url: String
+    // 海外服务器下，推荐游戏可以用默认浏览器打开国际服官网公告页。
+    var officialNews: OfficialNewsPage? = nil
     let onConfirm: () -> Void
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     @State private var showLinkGuide = false
+
+    private var usesBilibili: Bool { HoYoServer.current.usesBilibili }
 
     var body: some View {
         NavigationStack {
             Form {
+                if !usesBilibili, let officialNews {
+                    Section {
+                        Button {
+                            if let pageURL = URL(string: officialNews.forCurrentLanguage) {
+                                openURL(pageURL)
+                            }
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Label("打开官网公告", systemImage: "safari.fill")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color.hoyoPink)
+                                Spacer()
+                            }
+                        }
+                    } footer: {
+                        Text("在官网找到最新版本公告，复制链接后回到这里粘贴。")
+                    }
+                }
+
                 Section {
-                    TextField("https://b23.tv/...", text: $url)
+                    TextField(usesBilibili ? "https://b23.tv/..." : "https://...", text: $url)
                         .keyboardType(.URL)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                 } header: {
-                    HStack(spacing: 4) {
-                        Text("B站公告链接")
-                        Button { showLinkGuide = true } label: {
-                            Image(systemName: "questionmark.circle")
-                                .foregroundStyle(Color.hoyoPink)
+                    if usesBilibili {
+                        HStack(spacing: 4) {
+                            Text("B站公告链接")
+                            Button { showLinkGuide = true } label: {
+                                Image(systemName: "questionmark.circle")
+                                    .foregroundStyle(Color.hoyoPink)
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
+                    } else {
+                        Text("公告链接")
                     }
                 } footer: {
-                    Text("粘贴哔哩哔哩版本公告的分享链接（b23.tv/…），应用会用内置浏览器打开，如遇验证码请手动通过后点「提取内容」。")
+                    Text(usesBilibili
+                         ? String(localized: "粘贴哔哩哔哩版本公告的分享链接（b23.tv/…），应用会用内置浏览器打开，如遇验证码请手动通过后点「提取内容」。", bundle: .appLanguage)
+                         : String(localized: "要粘贴的是某个版本具体活动公告的页面链接（例如「2.5 版本活动一览」），不是官网的新闻列表页。粘贴后用内置浏览器提取内容。", bundle: .appLanguage))
                 }
 
                 Section {
@@ -544,7 +575,8 @@ struct ArticleURLInputView: View {
                     } label: {
                         HStack {
                             Spacer()
-                            Label("打开 B站公告页面", systemImage: "tv.fill")
+                            Label(usesBilibili ? String(localized: "打开 B站公告页面", bundle: .appLanguage) : String(localized: "打开公告页面", bundle: .appLanguage),
+                                  systemImage: usesBilibili ? "tv.fill" : "safari.fill")
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color.hoyoPink)
                             Spacer()
@@ -593,13 +625,13 @@ struct CustomEventRow: View {
     }
 
     private var compactRemaining: String {
-        if event.isDone { return "已完成" }
+        if event.isDone { return String(localized: "已完成", bundle: .appLanguage) }
         let rem = Int(event.remaining)
-        if rem <= 0 { return "已结束" }
+        if rem <= 0 { return String(localized: "已结束", bundle: .appLanguage) }
         let days = rem / 86400; let hours = (rem % 86400) / 3600; let mins = (rem % 3600) / 60
-        if days  > 0 { return "\(days)天\(hours)时" }
-        if hours > 0 { return "\(hours)时\(mins)分" }
-        return "\(mins)分"
+        if days  > 0 { return String(localized: "\(days)天\(hours)时", bundle: .appLanguage) }
+        if hours > 0 { return String(localized: "\(hours)时\(mins)分", bundle: .appLanguage) }
+        return String(localized: "\(mins)分", bundle: .appLanguage)
     }
 
     private var borderColor: Color {
@@ -643,7 +675,7 @@ struct CustomEventRow: View {
                             .strikethrough(event.isDone, color: Color.hoyoNavy.opacity(0.35))
                             .lineLimit(1)
                         if !event.isDone && event.remaining > 0 {
-                            Text("\(event.endDateShort)结束 · \(event.category)")
+                            Text("\(event.endDateShort)结束 · \(localizedEventCategory(event.category))")
                                 .font(.caption2)
                                 .foregroundStyle(Color.hoyoNavy.opacity(0.35))
                         }
@@ -654,7 +686,7 @@ struct CustomEventRow: View {
                     // Countdown pill
                     HStack(spacing: 3) {
                         Image(systemName: showReadStamp ? "checkmark" : "clock").font(.system(size: 10, weight: .bold))
-                        Text(showReadStamp ? "已阅" : compactRemaining).font(.system(size: 12, weight: .black))
+                        Text(showReadStamp ? String(localized: "已阅", bundle: .appLanguage) : compactRemaining).font(.system(size: 12, weight: .black))
                     }
                     .foregroundStyle(showReadStamp ? Color.white : ((event.isDone || event.remaining <= 0) ? Color.secondary : (isUrgent ? Color.white : Color.hoyoNavy)))
                     .padding(.horizontal, 11).padding(.vertical, 6)
@@ -811,26 +843,6 @@ struct CustomEventGuideView: View {
     private var prefs: UserPreferences? { prefsQuery.first }
     private var isUrgent: Bool { !event.isDone && event.remaining > 0 && event.remaining <= 2 * 86400 }
 
-    private var bilibiliSearchKeyword: String {
-        let q = "\(gameName) \(event.title) 攻略"
-        return q.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-    }
-
-    private var bilibiliAppSearchURL: URL {
-        URL(string: "bilibili://search?keyword=\(bilibiliSearchKeyword)")!
-    }
-
-    private var bilibiliWebSearchURL: URL {
-        URL(string: "https://search.bilibili.com/all?keyword=\(bilibiliSearchKeyword)")!
-    }
-
-    // 优先唤起 B站 App，未安装时回退到网页搜索
-    private func openBilibiliSearch() {
-        openURL(bilibiliAppSearchURL) { accepted in
-            if !accepted { openURL(bilibiliWebSearchURL) }
-        }
-    }
-
     var body: some View {
         ZStack {
             Color.white.ignoresSafeArea()
@@ -851,7 +863,7 @@ struct CustomEventGuideView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     heroCard
-                    bilibiliCard
+                    guideVideoCard
                     detailCard
                 }
                 .padding(16)
@@ -932,13 +944,13 @@ struct CustomEventGuideView: View {
             HStack(spacing: 8) {
                 HStack(spacing: 4) {
                     Image(systemName: "calendar").font(.system(size: 11, weight: .semibold))
-                    Text(event.endDateShort + "结束").font(.system(size: 12, weight: .semibold))
+                    Text("\(event.endDateShort)结束").font(.system(size: 12, weight: .semibold))
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 12).padding(.vertical, 7)
                 .background(.white.opacity(0.20), in: Capsule())
 
-                Text(event.category)
+                Text(localizedEventCategory(event.category))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12).padding(.vertical, 7)
@@ -957,19 +969,21 @@ struct CustomEventGuideView: View {
         .overlay(RoundedRectangle(cornerRadius: 24).stroke(Color.hoyoNavy, lineWidth: 2.5))
     }
 
-    // MARK: - Bilibili Card
+    // MARK: - Guide Video Card
 
-    private var bilibiliCard: some View {
-        Button { openBilibiliSearch() } label: {
+    private var guideVideoCard: some View {
+        Button {
+            GuideVideoSearch.open(gameName: gameName, eventTitle: event.title, using: openURL)
+        } label: {
             HStack(spacing: 14) {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "00A1D6"))
+                    .fill(GuideVideoSearch.brandColor)
                     .frame(width: 48, height: 48)
-                    .overlay(Text("bili").font(.system(size: 12, weight: .black)).foregroundStyle(.white))
+                    .overlay(GuideVideoSearch.badge)
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.hoyoNavy, lineWidth: 1.5))
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("在哔哩哔哩搜索攻略")
+                    Text(GuideVideoSearch.title)
                         .font(.system(size: 14, weight: .bold)).foregroundStyle(Color.hoyoNavy)
                     Text(event.title)
                         .font(.system(size: 12)).foregroundStyle(Color.hoyoNavy.opacity(0.40)).lineLimit(1)
@@ -1009,10 +1023,10 @@ struct CustomEventGuideView: View {
             .padding(.horizontal, 16).padding(.top, 16).padding(.bottom, 10)
 
             let rows: [(String, String, String, Bool)] = [
-                ("gamecontroller.fill", "所属游戏", gameEmoji + " " + gameName, false),
-                ("tag.fill",            "活动类型", event.category,              false),
-                ("calendar",           "结束时间", event.endDateShort + "结束",  false),
-                ("clock",              "剩余时间", event.remaining > 0 ? event.remainingText : "已结束", true),
+                ("gamecontroller.fill", String(localized: "所属游戏", bundle: .appLanguage), gameEmoji + " " + gameName, false),
+                ("tag.fill",            String(localized: "活动类型", bundle: .appLanguage), localizedEventCategory(event.category),              false),
+                ("calendar",           String(localized: "结束时间", bundle: .appLanguage), String(localized: "\(event.endDateShort)结束", bundle: .appLanguage), false),
+                ("clock",              String(localized: "剩余时间", bundle: .appLanguage), event.remaining > 0 ? event.remainingText : String(localized: "已结束", bundle: .appLanguage), true),
             ]
 
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
@@ -1095,12 +1109,12 @@ struct BilibiliLinkGuideSheet: View {
             List {
                 // ── 操作步骤 ──────────────────────────────────────────────
                 Section {
-                    stepRow(number: "1", title: "打开哔哩哔哩搜索版本公告",
-                            detail: "在 B站搜索「游戏名 + 版本号 + 活动一览」，例如「鸣潮 2.x 版本活动一览」，找官方账号发布的综合公告专栏文章。")
-                    stepRow(number: "2", title: "选整个版本的综合公告",
-                            detail: "要选标题包含版本号、内容列出多个活动时间表的文章，而不是单个活动的独立介绍页。")
-                    stepRow(number: "3", title: "分享 → 复制链接",
-                            detail: "点击文章右上角「分享」按钮，选「复制链接」，会得到 b23.tv/xxx 格式的短链，粘贴到输入框即可。")
+                    stepRow(number: "1", title: String(localized: "打开哔哩哔哩搜索版本公告", bundle: .appLanguage),
+                            detail: String(localized: "在 B站搜索「游戏名 + 版本号 + 活动一览」，例如「鸣潮 2.x 版本活动一览」，找官方账号发布的综合公告专栏文章。", bundle: .appLanguage))
+                    stepRow(number: "2", title: String(localized: "选整个版本的综合公告", bundle: .appLanguage),
+                            detail: String(localized: "要选标题包含版本号、内容列出多个活动时间表的文章，而不是单个活动的独立介绍页。", bundle: .appLanguage))
+                    stepRow(number: "3", title: String(localized: "分享 → 复制链接", bundle: .appLanguage),
+                            detail: String(localized: "点击文章右上角「分享」按钮，选「复制链接」，会得到 b23.tv/xxx 格式的短链，粘贴到输入框即可。", bundle: .appLanguage))
                 } header: {
                     Label("操作步骤", systemImage: "list.number")
                         .textCase(nil)
@@ -1246,18 +1260,18 @@ struct CompleteTaskGuideSheet: View {
                 Section {
                     stepRow(
                         number: "1",
-                        title:  "收到每日提醒",
-                        detail: "每天在你设置的时间（默认 21:00），婉婉只提醒 7 天内快结束的活动。"
+                        title:  String(localized: "收到每日提醒", bundle: .appLanguage),
+                        detail: String(localized: "每天在你设置的时间（默认 21:00），婉婉只提醒 7 天内快结束的活动。", bundle: .appLanguage)
                     )
                     stepRow(
                         number: "2",
-                        title:  "下拉或长按通知横幅",
-                        detail: "通知出现在屏幕顶部时，向下滑动通知横幅；若在锁屏上，长按通知卡片。"
+                        title:  String(localized: "下拉或长按通知横幅", bundle: .appLanguage),
+                        detail: String(localized: "通知出现在屏幕顶部时，向下滑动通知横幅；若在锁屏上，长按通知卡片。", bundle: .appLanguage)
                     )
                     stepRow(
                         number: "3",
-                        title: "点击【已完成】",
-                        detail: "展开后会出现【已完成】按钮，点击即可直接标记，不需要解锁或打开 App。"
+                        title: String(localized: "点击【已完成】", bundle: .appLanguage),
+                        detail: String(localized: "展开后会出现【已完成】按钮，点击即可直接标记，不需要解锁或打开 App。", bundle: .appLanguage)
                     )
                 } header: {
                     Label("方法二：通知快捷操作", systemImage: "bell.badge")

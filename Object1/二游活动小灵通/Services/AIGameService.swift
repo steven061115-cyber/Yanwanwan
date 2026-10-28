@@ -15,7 +15,7 @@ final class AIGameService {
 
     func canStartExtraction(entitlementTier: EntitlementTier, appStoreTransactionJWS: String? = nil) async -> Bool {
         guard APIConfig.isAIBackendConfigured, let url = APIConfig.quotaURL else {
-            errorMessage = "请先部署提取后端，并在 APIConfig.swift 填入后端地址"
+            errorMessage = String(localized: "请先部署提取后端，并在 APIConfig.swift 填入后端地址", bundle: .appLanguage)
             return false
         }
 
@@ -34,12 +34,12 @@ final class AIGameService {
             if let http = response as? HTTPURLResponse, http.statusCode != 200 {
                 let apiError = try? JSONDecoder().decode(ExtractionErrorResponse.self, from: data)
                 let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
-                errorMessage = "提取后端错误（\(http.statusCode)）：\(message.prefix(120))"
+                errorMessage = String(localized: "提取后端错误（\(http.statusCode)）：\(message.prefix(120))", bundle: .appLanguage)
                 return false
             }
 
             guard let quota = try? JSONDecoder().decode(QuotaResponse.self, from: data) else {
-                errorMessage = "提取次数状态异常，请重试"
+                errorMessage = String(localized: "提取次数状态异常，请重试", bundle: .appLanguage)
                 return false
             }
 
@@ -51,9 +51,9 @@ final class AIGameService {
             return false
         } catch {
             if let urlError = error as? URLError {
-                errorMessage = "提取次数检查失败：\(urlError.localizedDescription)"
+                errorMessage = String(localized: "提取次数检查失败：\(urlError.localizedDescription)", bundle: .appLanguage)
             } else {
-                errorMessage = "提取次数检查失败：\(error.localizedDescription)"
+                errorMessage = String(localized: "提取次数检查失败：\(error.localizedDescription)", bundle: .appLanguage)
             }
             return false
         }
@@ -67,7 +67,7 @@ final class AIGameService {
         appStoreTransactionJWS: String? = nil
     ) async -> [AIEventDraft] {
         guard APIConfig.isAIBackendConfigured, APIConfig.aiExtractorURL != nil else {
-            errorMessage = "请先部署提取后端，并在 APIConfig.swift 填入后端地址"
+            errorMessage = String(localized: "请先部署提取后端，并在 APIConfig.swift 填入后端地址", bundle: .appLanguage)
             return []
         }
 
@@ -84,7 +84,7 @@ final class AIGameService {
             appStoreTransactionJWS: appStoreTransactionJWS
         )
         if drafts.isEmpty && errorMessage == nil && quotaLimitMessage == nil {
-            errorMessage = "婉婉没在这页找到活动，确认一下是不是版本公告？"
+            errorMessage = String(localized: "婉婉没在这页找到活动，确认一下是不是版本公告？", bundle: .appLanguage)
         }
         return drafts
     }
@@ -116,9 +116,11 @@ final class AIGameService {
               let bodyData = try? JSONEncoder().encode(ExtractionRequest(
                 gameName: gameName,
                 articleURL: articleURL?.absoluteString,
-                text: searchText
+                text: searchText,
+                serverUtcOffsetMinutes: HoYoServer.current.utcOffsetHours * 60,
+                language: AppLanguage.current.rawValue
               )) else {
-            errorMessage = "提取后端请求构建失败"
+            errorMessage = String(localized: "提取后端请求构建失败", bundle: .appLanguage)
             return []
         }
 
@@ -138,16 +140,16 @@ final class AIGameService {
                     return []
                 }
                 if apiError?.error == "rate_limited" {
-                    errorMessage = apiError?.message ?? "请求过于频繁，请稍后再试"
+                    errorMessage = apiError?.message ?? String(localized: "请求过于频繁，请稍后再试", bundle: .appLanguage)
                     return []
                 }
                 let message = apiError?.message ?? String(data: data, encoding: .utf8) ?? ""
-                errorMessage = "提取后端错误（\(http.statusCode)）：\(message.prefix(120))"
+                errorMessage = String(localized: "提取后端错误（\(http.statusCode)）：\(message.prefix(120))", bundle: .appLanguage)
                 return []
             }
 
             guard let wrapper = try? JSONDecoder().decode(ExtractionResponse.self, from: data) else {
-                errorMessage = "提取结果格式异常，请重试"
+                errorMessage = String(localized: "提取结果格式异常，请重试", bundle: .appLanguage)
                 return []
             }
 
@@ -170,16 +172,16 @@ final class AIGameService {
             if let urlError = error as? URLError {
                 switch urlError.code {
                 case .timedOut:
-                    errorMessage = "请求超时：处理长公告可能需要更久，请确认后端仍在运行后重试。"
+                    errorMessage = String(localized: "请求超时：处理长公告可能需要更久，请确认后端仍在运行后重试。", bundle: .appLanguage)
                 case .cannotConnectToHost, .cannotFindHost, .networkConnectionLost:
-                    errorMessage = "提取后端连接失败：请确认后端已启动，且手机和 Mac 在同一 Wi-Fi。"
+                    errorMessage = String(localized: "提取后端连接失败：请确认后端已启动，且手机和 Mac 在同一 Wi-Fi。", bundle: .appLanguage)
                 case .notConnectedToInternet:
-                    errorMessage = "网络不可用：请检查当前网络连接。"
+                    errorMessage = String(localized: "网络不可用：请检查当前网络连接。", bundle: .appLanguage)
                 default:
-                    errorMessage = "网络请求失败：\(urlError.localizedDescription)"
+                    errorMessage = String(localized: "网络请求失败：\(urlError.localizedDescription)", bundle: .appLanguage)
                 }
             } else {
-                errorMessage = "提取失败：\(error.localizedDescription)"
+                errorMessage = String(localized: "提取失败：\(error.localizedDescription)", bundle: .appLanguage)
             }
             return []
         }
@@ -202,6 +204,10 @@ final class AIGameService {
         let gameName: String
         let articleURL: String?
         let text: String
+        // 公告写"服务器时间"或没写时区时，后端按这个时区换算。后端统一返回北京时间。
+        let serverUtcOffsetMinutes: Int
+        // 活动名按这个语言输出（zh-Hans / zh-Hant / en）。
+        let language: String
     }
 
     private struct ExtractionResponse: Decodable {

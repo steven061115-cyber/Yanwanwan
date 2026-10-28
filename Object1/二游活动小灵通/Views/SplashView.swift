@@ -18,7 +18,7 @@ private struct SplashWanwanView: View { // still private — only SplashView use
     @State private var rootOpacity: Double  = 1
     @State private var floatY:      CGFloat = 0
 
-    private let slackTexts = ["婉婉加载中…", "清点活动中", "翻公告中", "整理待办中", "等老大吩咐中"]
+    private let slackTexts = [String(localized: "婉婉加载中…", bundle: .appLanguage), String(localized: "清点活动中", bundle: .appLanguage), String(localized: "翻公告中", bundle: .appLanguage), String(localized: "整理待办中", bundle: .appLanguage), String(localized: "等老大吩咐中", bundle: .appLanguage)]
 
     var body: some View {
         ZStack {

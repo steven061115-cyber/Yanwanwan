@@ -110,8 +110,8 @@ struct PremiumView: View {
             }
 
             HStack(spacing: 10) {
-                metricPill(title: "自定义游戏", value: "10 个", icon: "gamecontroller.fill")
-                metricPill(title: "AI 提取", value: "5 次/日", icon: "sparkles")
+                metricPill(title: String(localized: "自定义游戏", bundle: .appLanguage), value: String(localized: "10 个", bundle: .appLanguage), icon: "gamecontroller.fill")
+                metricPill(title: String(localized: "AI 提取", bundle: .appLanguage), value: String(localized: "5 次/日", bundle: .appLanguage), icon: "sparkles")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -162,35 +162,35 @@ struct PremiumView: View {
 
     private var benefitSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionLabel(icon: "sparkles", title: "会员权益")
+            sectionLabel(icon: "sparkles", title: String(localized: "会员权益", bundle: .appLanguage))
 
             LazyVGrid(columns: benefitColumns, spacing: 10) {
                 benefitCard(
                     icon: "gamecontroller.fill",
-                    title: "多游戏盯梢",
-                    value: "10 个",
-                    detail: "自定义游戏上限",
+                    title: String(localized: "多游戏盯梢", bundle: .appLanguage),
+                    value: String(localized: "10 个", bundle: .appLanguage),
+                    detail: String(localized: "自定义游戏上限", bundle: .appLanguage),
                     tint: Color.hoyoPink
                 )
                 benefitCard(
                     icon: "doc.text.magnifyingglass",
-                    title: "公告提取",
-                    value: "5 次/日",
-                    detail: "每日 AI 整理额度",
+                    title: String(localized: "公告提取", bundle: .appLanguage),
+                    value: String(localized: "5 次/日", bundle: .appLanguage),
+                    detail: String(localized: "每日 AI 整理额度", bundle: .appLanguage),
                     tint: Color.hoyoMint
                 )
                 benefitCard(
                     icon: "checklist",
-                    title: "活动清单",
-                    value: "批量生成",
-                    detail: "公告链接变待办",
+                    title: String(localized: "活动清单", bundle: .appLanguage),
+                    value: String(localized: "批量生成", bundle: .appLanguage),
+                    detail: String(localized: "公告链接变待办", bundle: .appLanguage),
                     tint: Color(hex: "4A72C4")
                 )
                 benefitCard(
                     icon: "arrow.clockwise",
-                    title: "每日恢复",
-                    value: "自动刷新",
-                    detail: "额度次日继续用",
+                    title: String(localized: "每日恢复", bundle: .appLanguage),
+                    value: String(localized: "自动刷新", bundle: .appLanguage),
+                    detail: String(localized: "额度次日继续用", bundle: .appLanguage),
                     tint: Color.hoyoYellow
                 )
             }
@@ -236,16 +236,16 @@ struct PremiumView: View {
 
     private var planComparison: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionLabel(icon: "tablecells.fill", title: "额度对比")
+            sectionLabel(icon: "tablecells.fill", title: String(localized: "额度对比", bundle: .appLanguage))
 
             VStack(spacing: 0) {
                 comparisonHeader
                 comparisonDivider
-                comparisonRow(title: "自定义游戏", free: "1 个", premium: "10 个")
+                comparisonRow(title: String(localized: "自定义游戏", bundle: .appLanguage), free: String(localized: "1 个", bundle: .appLanguage), premium: String(localized: "10 个", bundle: .appLanguage))
                 comparisonDivider
-                comparisonRow(title: "AI 提取", free: "2 次/日", premium: "5 次/日")
+                comparisonRow(title: String(localized: "AI 提取", bundle: .appLanguage), free: String(localized: "2 次/日", bundle: .appLanguage), premium: String(localized: "5 次/日", bundle: .appLanguage))
                 comparisonDivider
-                comparisonRow(title: "推荐场景", free: "轻量使用", premium: "多游常驻")
+                comparisonRow(title: String(localized: "推荐场景", bundle: .appLanguage), free: String(localized: "轻量使用", bundle: .appLanguage), premium: String(localized: "多游常驻", bundle: .appLanguage))
             }
             .padding(14)
             .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
@@ -306,12 +306,12 @@ struct PremiumView: View {
 
     private var usageSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionLabel(icon: "wand.and.stars", title: "适合这样用")
+            sectionLabel(icon: "wand.and.stars", title: String(localized: "适合这样用", bundle: .appLanguage))
 
             VStack(spacing: 0) {
-                usageRow(icon: "link.badge.plus", title: "版本公告一贴整理", detail: "复制 B站公告链接，用内置浏览器提取活动草稿。")
+                usageRow(icon: "link.badge.plus", title: String(localized: "版本公告一贴整理", bundle: .appLanguage), detail: String(localized: "复制 B站公告链接，用内置浏览器提取活动草稿。", bundle: .appLanguage))
                 comparisonDivider
-                usageRow(icon: "bell.badge.fill", title: "多款游戏集中盯", detail: "活动、卡池和限时任务统一进入清单。")
+                usageRow(icon: "bell.badge.fill", title: String(localized: "多款游戏集中盯", bundle: .appLanguage), detail: String(localized: "活动、卡池和限时任务统一进入清单。", bundle: .appLanguage))
             }
             .padding(.horizontal, 14)
             .background(Color.hoyoCardBg, in: RoundedRectangle(cornerRadius: 18))
@@ -325,7 +325,7 @@ struct PremiumView: View {
 
     private var purchaseSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionLabel(icon: "creditcard.fill", title: "选择方案")
+            sectionLabel(icon: "creditcard.fill", title: String(localized: "选择方案", bundle: .appLanguage))
 
             if purchaseService.isPremium {
                 premiumStatus
@@ -397,10 +397,10 @@ struct PremiumView: View {
             if let product = purchaseService.premiumProduct {
                 purchaseOptionButton(
                     product: product,
-                    title: introductoryOfferText(for: product) ?? "月度会员",
+                    title: introductoryOfferText(for: product) ?? String(localized: "月度会员", bundle: .appLanguage),
                     subtitle: introductoryOfferText(for: product) == nil
-                        ? "\(product.displayPrice)/月 · 灵活体验"
-                        : "之后 \(product.displayPrice)/月，可随时取消",
+                        ? String(localized: "\(product.displayPrice)/月 · 灵活体验", bundle: .appLanguage)
+                        : String(localized: "之后 \(product.displayPrice)/月，可随时取消", bundle: .appLanguage),
                     icon: "calendar.badge.clock",
                     tint: Color.hoyoPink,
                     isPrimary: true
@@ -410,8 +410,8 @@ struct PremiumView: View {
             if let product = purchaseService.lifetimeProduct {
                 purchaseOptionButton(
                     product: product,
-                    title: "一休尼会员",
-                    subtitle: "\(product.displayPrice) · 一次买断长期使用",
+                    title: String(localized: "一休尼会员", bundle: .appLanguage),
+                    subtitle: String(localized: "\(product.displayPrice) · 一次买断长期使用", bundle: .appLanguage),
                     icon: "infinity",
                     tint: Color.hoyoNavy,
                     isPrimary: false
@@ -589,7 +589,7 @@ struct PremiumView: View {
             HStack(spacing: 7) {
                 Image(systemName: isPurchasing ? "hourglass" : "creditcard.fill")
                     .font(.system(size: 12, weight: .black))
-                Text(isPurchasing ? "正在拉起 App Store 支付" : purchaseCTATitle(for: product, isPrimary: isPrimary))
+                Text(isPurchasing ? String(localized: "正在拉起 App Store 支付", bundle: .appLanguage) : purchaseCTATitle(for: product, isPrimary: isPrimary))
                     .font(.system(size: 15, weight: .black, design: .rounded))
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
@@ -615,10 +615,10 @@ struct PremiumView: View {
 
     private func purchaseCTATitle(for product: Product, isPrimary: Bool) -> String {
         if introductoryOfferText(for: product) != nil {
-            return "立即开通试用"
+            return String(localized: "立即开通试用", bundle: .appLanguage)
         }
 
-        return isPrimary ? "立即支付 \(product.displayPrice)" : "购买 \(product.displayPrice)"
+        return isPrimary ? String(localized: "立即支付 \(product.displayPrice)", bundle: .appLanguage) : String(localized: "购买 \(product.displayPrice)", bundle: .appLanguage)
     }
 
     private func celebratePurchase() {
@@ -665,21 +665,21 @@ struct PremiumView: View {
               offer.paymentMode == .freeTrial
         else { return nil }
 
-        return "免费试用 \(subscriptionPeriodText(offer.period))"
+        return String(localized: "免费试用 \(subscriptionPeriodText(offer.period))", bundle: .appLanguage)
     }
 
     private func subscriptionPeriodText(_ period: Product.SubscriptionPeriod) -> String {
         switch period.unit {
         case .day:
-            return "\(period.value) 天"
+            return String(localized: "\(period.value) 天", bundle: .appLanguage)
         case .week:
-            return "\(period.value) 周"
+            return String(localized: "\(period.value) 周", bundle: .appLanguage)
         case .month:
-            return "\(period.value) 个月"
+            return String(localized: "\(period.value) 个月", bundle: .appLanguage)
         case .year:
-            return "\(period.value) 年"
+            return String(localized: "\(period.value) 年", bundle: .appLanguage)
         @unknown default:
-            return "\(period.value) 个周期"
+            return String(localized: "\(period.value) 个周期", bundle: .appLanguage)
         }
     }
 

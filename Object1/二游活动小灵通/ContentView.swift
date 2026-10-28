@@ -8,13 +8,18 @@ struct ContentView: View {
     @Query private var prefsQuery: [UserPreferences]
     @AppStorage("onboardingDone") private var onboardingDone = false
     @State private var showOnboarding = false
-    @State private var router = AppRouter()
+    @State private var onboardingServer = HoYoServer.current
+    @State private var router: AppRouter
     @State private var hasVerticalBar = false
     @Namespace private var gameZoom
 
     // Regular width: unfolded Duo or Pro Max landscape.
     private var isWide: Bool { horizontalSizeClass == .regular }
     private static let sidebarWidth: CGFloat = 290
+
+    init(router: AppRouter = AppRouter()) {
+        _router = State(initialValue: router)
+    }
 
     var body: some View {
         // One view tree for both widths, so the current page keeps its scroll position and pushes.
@@ -42,8 +47,10 @@ struct ContentView: View {
         .fontDesign(.rounded)
         .fullScreenCover(isPresented: $showOnboarding, onDismiss: {
             onboardingDone = true
+            // 引导页关闭后再保存：保存会触发换语言重建，引导页开着时保存会被直接关掉。
+            HoYoServer.select(onboardingServer)
         }) {
-            OnboardingView(isPresented: $showOnboarding)
+            OnboardingView(isPresented: $showOnboarding, server: $onboardingServer)
         }
         .task {
             if prefsQuery.isEmpty {
@@ -151,10 +158,10 @@ struct FloatingTabBar: View {
     @Namespace private var selectionAnimation
 
     var body: some View {
-        HStack(spacing: 0) {
-            tabButton(index: 0, icon: "waveform",           label: "首页")
-            tabButton(index: 1, icon: "gamecontroller.fill", label: "游戏")
-            tabButton(index: 2, icon: "gearshape.fill",     label: "设置")
+        // 中文标签只有两个字，三个都能显示；英文等较长的标签放不下时，只给选中的标签显示文字。
+        ViewThatFits(in: .horizontal) {
+            tabRow(showsAllLabels: true)
+            tabRow(showsAllLabels: false)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
@@ -171,8 +178,16 @@ struct FloatingTabBar: View {
         .padding(.bottom, 16)
     }
 
+    private func tabRow(showsAllLabels: Bool) -> some View {
+        HStack(spacing: 0) {
+            tabButton(index: 0, icon: "waveform",           label: String(localized: "首页", bundle: .appLanguage), showsLabel: showsAllLabels)
+            tabButton(index: 1, icon: "gamecontroller.fill", label: String(localized: "游戏", bundle: .appLanguage), showsLabel: showsAllLabels)
+            tabButton(index: 2, icon: "gearshape.fill",     label: String(localized: "设置", bundle: .appLanguage), showsLabel: showsAllLabels)
+        }
+    }
+
     @ViewBuilder
-    private func tabButton(index: Int, icon: String, label: String) -> some View {
+    private func tabButton(index: Int, icon: String, label: String, showsLabel: Bool) -> some View {
         let isSelected = selectedTab == index
         Button {
             if let onSelect {
@@ -188,9 +203,14 @@ struct FloatingTabBar: View {
                     .font(.system(size: 16, weight: .black))
                     .scaleEffect(isSelected && !reduceMotion ? 1.12 : 1)
                     .rotationEffect(.degrees(isSelected && !reduceMotion ? -4 : 0))
-                Text(label)
-                    .font(.system(size: 15, weight: .black))
+                if showsLabel || isSelected {
+                    Text(label)
+                        .font(.system(size: 15, weight: .black))
+                        .lineLimit(1)
+                }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(label)
             .foregroundStyle(isSelected ? .white : Color.hoyoNavy.opacity(0.50))
             .padding(.vertical, 14)
             .padding(.horizontal, isSelected ? 26 : 22)
