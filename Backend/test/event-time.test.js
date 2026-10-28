@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   convertEventTimesToBeijing,
   formatOffset,
+  serverRegionName,
   normalizeServerOffset,
   parseOffsetMinutes,
   toBeijingTime
@@ -56,4 +57,11 @@ test('formats offsets for the prompt', () => {
   assert.equal(formatOffset(480), '+08:00');
   assert.equal(formatOffset(-300), '-05:00');
   assert.equal(formatOffset(330), '+05:30');
+});
+
+test('names the server region from the offset the app sends', () => {
+  assert.equal(serverRegionName(-300), 'Americas（美服）');
+  assert.equal(serverRegionName(60), 'Europe（欧服）');
+  assert.equal(serverRegionName(480), 'Asia（亚服）/ 国服');
+  assert.equal(serverRegionName(330), 'UTC+05:30');
 });

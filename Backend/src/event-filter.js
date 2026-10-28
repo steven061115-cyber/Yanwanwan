@@ -12,7 +12,10 @@ const EXCLUDED_EVENT_PATTERNS = [
   /\b(banners?|wish(es)?|warps?|convene|headhunting|gacha|rate[- ]?up|signal search|recruitment)\b/i,
   // 与中文规则"角色|武器"对应
   /\b(characters?|weapons?)\b/i,
-  /\b(check-?in|log-?in|login) (event|rewards?|bonus)\b|\bdaily (check-?in|login)\b/i
+  /\b(check-?in|log-?in|login|sign-?in) (event|rewards?|bonus)\b|\bdaily (check-?in|login|sign-?in)\b/i,
+  // 各游戏的抽取 / 开箱 / 外观售卖叫法（鸣潮、终末地、异环）
+  /\b(arsenal issue|re-?factor|arc research|mystery box(es)?|limited s-class|featured (resonator|weapon))\b/i,
+  /\b(outfits?|skins?)\b.*\b(shop|sale|discount|price)\b|\b(shop|sale|discount)\b.*\b(outfits?|skins?)\b/i
 ];
 
 export function normalizeExtractedEvents(events) {

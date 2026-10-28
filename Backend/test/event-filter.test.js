@@ -51,3 +51,30 @@ test('excludes gacha and login events from global English and Traditional Chines
   assert.equal(shouldExcludeEvent({ title: 'Wishful Thinking Trials', category: '版本活动' }), false);
   assert.equal(shouldExcludeEvent({ title: '無憂無慮大雪仗', category: '版本活动' }), false);
 });
+
+test('excludes Endfield and NTE gacha, sign-in and outfit sales', () => {
+  const excluded = [
+    '[Spirit\'s Restoration] Sign-In Event',
+    '[Moongleam Issue] Arsenal Issue Open',
+    '[Tender Sprig Issue] RE-Factor Issue #1 Open',
+    '[Rejuvenation] Chartered Headhunting',
+    'Roostfeather Special Arc Research Program',
+    'New Mystery Box Event: "Born to Race"',
+    'New Limited S-Class Character: Blackbird',
+    'New Blackbird Outfit "Wandering Stars" Added to Shop'
+  ];
+  for (const title of excluded) {
+    assert.equal(shouldExcludeEvent({ title, category: '版本活动' }), true, title);
+  }
+
+  const kept = [
+    '[Contingency Readiness] Limited-Time Event',
+    '[Arena of Games] Challenge Event',
+    '"Pukaland Travelogue" Limited-Time Event',
+    '"Terminal Depths" Limited-Time Event',
+    'Season of Phantasia'
+  ];
+  for (const title of kept) {
+    assert.equal(shouldExcludeEvent({ title, category: '版本活动' }), false, title);
+  }
+});

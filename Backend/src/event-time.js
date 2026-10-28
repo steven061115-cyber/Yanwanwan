@@ -68,3 +68,13 @@ export function formatOffset(minutes) {
   const abs = Math.abs(minutes);
   return `${sign}${String(Math.floor(abs / 60)).padStart(2, '0')}:${String(abs % 60).padStart(2, '0')}`;
 }
+
+// 只从 App 传来的偏移推断服务器，供提示词选择"按服务器分列"的那一行时间。
+export function serverRegionName(offsetMinutes) {
+  switch (offsetMinutes) {
+    case -300: return 'Americas（美服）';
+    case 60: return 'Europe（欧服）';
+    case 480: return 'Asia（亚服）/ 国服';
+    default: return `UTC${formatOffset(offsetMinutes)}`;
+  }
+}

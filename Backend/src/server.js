@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDatabase } from './db.js';
 import { normalizeExtractedEvents } from './event-filter.js';
-import { convertEventTimesToBeijing, formatOffset, normalizeServerOffset } from './event-time.js';
+import { convertEventTimesToBeijing, formatOffset, normalizeServerOffset, serverRegionName } from './event-time.js';
 import { DEFAULT_OUTPUT_LANGUAGE, normalizeOutputLanguage, outputLanguageName } from './output-language.js';
 import {
   SUPPORTED_CALENDAR_GAMES,
@@ -408,8 +408,17 @@ startDate / endDate 照抄公告原文里的时间，自己不要换算时区，
 - 写明其他 UTC/GMT 偏移（如 "UTC-5"、"GMT+1"）→ 对应偏移
 - 写明"服务器时间""server time""伺服器時間"，或没有注明时区 → 用户所在服务器的偏移（见用户消息）
 如果公告只给了日期没有时间，填 "YYYY-MM-DD 00:00"。
-如果公告写的是"当前版本结束""版本维护时""until the end of Version X""before the Version X update"等，
-请根据上下文中的版本结束或更新维护时间推断并填入；"版本更新后""after the Version X update"开始的活动，startDate 填更新维护结束的时间。
+如果日期没写年份（如 "September 30"、"Oct. 15"），按公告发布日期和今天推断年份；跨年时注意年份递增。
+公告按服务器分别给出时间时（如 "Asia Server" / "Americas / Europe Server"、"亚服" / "美服"），只采用用户所在服务器那一行。
+
+开始时间：
+- "版本更新后""(after update)""After the Version X update""After [版本名] version update" → startDate 填本次更新维护的结束时间（公告开头一般写明维护时间段）。
+
+结束时间：
+- 写明具体时间 → 照抄。
+- "当前版本结束""版本维护时""Before version update and maintenance""Before the next version update""until the end of Version X""before Version X ends" →
+  如果公告写明了下个版本的更新时间，用那个时间；
+  如果没写，用本公告中所有活动里出现的最晚的具体结束时间作为近似值。不要凭空编造日期。
 
 【活动名称】
 title 使用用户消息里指定的输出语言：
@@ -428,11 +437,17 @@ category 不翻译，始终使用下面规定的中文值。
 收录类型：
 1. 版本限时活动（有明确开始和结束时间）
 2. 周常任务（endDate 填当前版本的维护时间）
-3. 副本/关卡挑战
+3. 副本/关卡挑战（包括有时限的赛季、轮换挑战）
+
+不收录：
+- 没有结束时间的常驻内容，如新剧情、新地图、新玩法系统（"Available: After the Version X update"、"Permanently available" 且没有截止时间）。
+- 同一活动下的"内容更新时间""Event Content Update Time"等子时间点，不要单独作为活动。
 
 排除：社交媒体活动、充值礼包、线下活动、官方直播、投票问卷、每日签到/打卡活动、登录/累计登录/签到奖励、时装/皮肤折扣或销售活动。
 必须排除所有卡池/抽卡相关内容，包括但不限于角色或武器祈愿、跃迁、寻访、调频、UP 池、复刻池、概率提升、补给、招募、召唤、唤取，
-以及英文公告里的 Banner、Wish、Warp、Convene、Headhunting、Gacha、Rate Up 等。
+以及英文公告里的 Banner、Wish、Warp、Convene、Headhunting、Gacha、Rate Up、Featured Resonator / Weapon、
+Arsenal Issue、RE-Factor、Arc Research Program、Mystery Box、Limited S-Class Character 等抽取或开箱内容。
+也排除 Sign-In / Check-in / Login 签到活动，以及 Outfit、Skin、商店折扣等外观售卖。
 同时排除标题或分类中包含"角色"或"武器"（英文为 Character / Weapon）的条目。
 
 返回 JSON 格式如下：
@@ -448,12 +463,12 @@ category 规则：
 
   const user = `
 游戏：${gameName}
-用户所在服务器的 UTC 偏移：${formatOffset(serverOffsetMinutes)}
+用户所在服务器：${serverRegionName(serverOffsetMinutes)}（UTC 偏移 ${formatOffset(serverOffsetMinutes)}）
 活动名称输出语言：${languageName}
 今天（北京时间）：${today}
 示例版本结束时间：${exampleEnd}
 
-以下是从公告页面提取的正文：
+以下是从公告页面提取的正文（开头一般有公告发布日期）：
 ${text}
 `.trim();
 
