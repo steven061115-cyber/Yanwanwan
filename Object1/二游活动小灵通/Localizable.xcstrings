@@ -200,6 +200,28 @@
         }
       }
     },
+    "%lld 个自定义游戏和 %lld 次每日提取已生效": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld custom games and %lld daily extractions are active"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个自定义游戏和 %lld 次每日提取已生效"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 個自定義遊戲和 %lld 次每日提取已生效"
+          }
+        }
+      }
+    },
     "%lld 个进行中": {
       "localizations": {
         "en": {
@@ -424,6 +446,28 @@
         }
       }
     },
+    "%lld 次/日": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/day"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 次/日"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 次/日"
+          }
+        }
+      }
+    },
     "%lld分": {
       "localizations": {
         "en": {
@@ -552,72 +596,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "10 個"
-          }
-        }
-      }
-    },
-    "10 个自定义游戏和 5 次每日提取已生效": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 custom games and 5 daily extractions are active"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 个自定义游戏和 5 次每日提取已生效"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "10 個自定義遊戲和 5 次每日提取已生效"
-          }
-        }
-      }
-    },
-    "2 次/日": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2/day"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2 次/日"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2 次/日"
-          }
-        }
-      }
-    },
-    "5 次/日": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5/day"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 次/日"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 次/日"
           }
         }
       }

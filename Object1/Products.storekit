@@ -20,7 +20,7 @@
       "internalID" : "59FCCF61",
       "localizations" : [
         {
-          "description" : "解锁 10 个自定义游戏和每日 5 次 AI 公告提取额度。",
+          "description" : "解锁 10 个自定义游戏和每日 30 次 AI 公告提取额度。",
           "displayName" : "一休尼会员",
           "locale" : "zh_Hans"
         }
@@ -80,7 +80,7 @@
           ],
           "localizations" : [
             {
-              "description" : "解锁 10 个自定义游戏和每日 5 次 AI 公告提取额度。",
+              "description" : "解锁 10 个自定义游戏和每日 30 次 AI 公告提取额度。",
               "displayName" : "月度会员",
               "locale" : "zh_Hans"
             }

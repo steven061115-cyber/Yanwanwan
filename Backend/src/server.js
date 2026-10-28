@@ -46,7 +46,7 @@ const database = createDatabase({
 const EXTRACTION_PROMPT_VERSION = 3;
 const dailyLimits = {
   free: 2,
-  premium: 5
+  premium: 30
 };
 const rateLimits = {
   quota: {

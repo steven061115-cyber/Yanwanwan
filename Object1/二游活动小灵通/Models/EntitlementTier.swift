@@ -21,7 +21,7 @@ enum EntitlementTier: String, Codable, Sendable {
     var dailyAIQueries: Int {
         switch self {
         case .free:    return 2
-        case .premium: return 5
+        case .premium: return 30
         }
     }
 

@@ -111,7 +111,7 @@ struct PremiumView: View {
 
             HStack(spacing: 10) {
                 metricPill(title: String(localized: "自定义游戏", bundle: .appLanguage), value: String(localized: "10 个", bundle: .appLanguage), icon: "gamecontroller.fill")
-                metricPill(title: String(localized: "AI 提取", bundle: .appLanguage), value: String(localized: "5 次/日", bundle: .appLanguage), icon: "sparkles")
+                metricPill(title: String(localized: "AI 提取", bundle: .appLanguage), value: String(localized: "\(EntitlementTier.premium.dailyAIQueries) 次/日", bundle: .appLanguage), icon: "sparkles")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -175,7 +175,7 @@ struct PremiumView: View {
                 benefitCard(
                     icon: "doc.text.magnifyingglass",
                     title: String(localized: "公告提取", bundle: .appLanguage),
-                    value: String(localized: "5 次/日", bundle: .appLanguage),
+                    value: String(localized: "\(EntitlementTier.premium.dailyAIQueries) 次/日", bundle: .appLanguage),
                     detail: String(localized: "每日 AI 整理额度", bundle: .appLanguage),
                     tint: Color.hoyoMint
                 )
@@ -243,7 +243,7 @@ struct PremiumView: View {
                 comparisonDivider
                 comparisonRow(title: String(localized: "自定义游戏", bundle: .appLanguage), free: String(localized: "1 个", bundle: .appLanguage), premium: String(localized: "10 个", bundle: .appLanguage))
                 comparisonDivider
-                comparisonRow(title: String(localized: "AI 提取", bundle: .appLanguage), free: String(localized: "2 次/日", bundle: .appLanguage), premium: String(localized: "5 次/日", bundle: .appLanguage))
+                comparisonRow(title: String(localized: "AI 提取", bundle: .appLanguage), free: String(localized: "\(EntitlementTier.free.dailyAIQueries) 次/日", bundle: .appLanguage), premium: String(localized: "\(EntitlementTier.premium.dailyAIQueries) 次/日", bundle: .appLanguage))
                 comparisonDivider
                 comparisonRow(title: String(localized: "推荐场景", bundle: .appLanguage), free: String(localized: "轻量使用", bundle: .appLanguage), premium: String(localized: "多游常驻", bundle: .appLanguage))
             }
@@ -432,7 +432,7 @@ struct PremiumView: View {
                 Text("当前已是会员")
                     .font(.system(size: 15, weight: .black, design: .rounded))
                     .foregroundStyle(Color.hoyoNavy)
-                Text("10 个自定义游戏和 5 次每日提取已生效")
+                Text("\(EntitlementTier.premium.maxCustomGames) 个自定义游戏和 \(EntitlementTier.premium.dailyAIQueries) 次每日提取已生效")
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.hoyoNavy.opacity(0.46))

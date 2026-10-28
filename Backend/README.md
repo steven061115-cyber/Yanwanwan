@@ -126,7 +126,7 @@ curl -X POST http://127.0.0.1:8787/api/extract-events \
 后端按 `X-Install-ID` 和北京时间日期记录提取调用次数：
 
 - 免费版：每日 2 次
-- 会员：每日 5 次
+- 会员：每日 30 次
 - 同一 IP 默认每小时最多 30 次提取请求，避免伪造设备 ID 绕过每日次数后刷 DeepSeek 成本。可通过 `EXTRACT_RATE_LIMIT_PER_HOUR` 调整。
 
 用户发起提取时会先检查并预扣次数；命中缓存时直接返回数据库结果并消耗 1 次，缓存未命中时调用 DeepSeek。DeepSeek 失败或缓存查询失败会退回次数。App 会把 StoreKit 当前权益的交易 JWS 放在 `X-App-Store-Transaction`，后端验证产品 ID、Bundle ID、吊销状态和过期时间后才按会员额度处理；没有凭证或验证失败时按免费版处理。部署在 Railway 这类反向代理后面时，设置 `TRUST_PROXY_HEADERS=true` 才会使用真实客户端 IP 做限流；本地直连环境保持默认 `false`。
