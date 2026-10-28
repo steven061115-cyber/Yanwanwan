@@ -44,8 +44,17 @@ test('URL cache key is shared by link and unchanged content, not by game name', 
 
   assert.notEqual(functionStart, -1);
   assert.notEqual(functionEnd, -1);
-  assert.match(urlBranch, /return `url:\$\{normalizedUrl\}:sha256:\$\{contentHash\}`/);
+  assert.match(urlBranch, /return `url:\$\{normalizedUrl\}:sha256:\$\{contentHash\}\$\{variantSuffix\}`/);
   assert.ok(!urlBranch.includes('gameName'));
+});
+
+test('cache key separates servers and output languages, keeping old keys for UTC+8 Simplified Chinese', () => {
+  const functionStart = serverSource.indexOf('function buildExtractionCacheKey');
+  const functionEnd = serverSource.indexOf('function normalizeArticleURL', functionStart);
+  const functionBody = serverSource.slice(functionStart, functionEnd);
+
+  assert.match(functionBody, /serverOffsetMinutes === 480 \? '' : `:tz:\$\{serverOffsetMinutes\}`/);
+  assert.match(functionBody, /outputLanguage === DEFAULT_OUTPUT_LANGUAGE \? '' : `:lang:\$\{outputLanguage\}`/);
 });
 
 test('quota endpoint reads daily usage without reserving quota', () => {

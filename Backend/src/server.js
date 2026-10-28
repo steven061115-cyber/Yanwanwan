@@ -5,6 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDatabase } from './db.js';
 import { normalizeExtractedEvents } from './event-filter.js';
+import { convertEventTimesToBeijing, formatOffset, normalizeServerOffset } from './event-time.js';
+import { DEFAULT_OUTPUT_LANGUAGE, normalizeOutputLanguage, outputLanguageName } from './output-language.js';
 import {
   SUPPORTED_CALENDAR_GAMES,
   createCalendarProxy,
@@ -258,6 +260,9 @@ async function handleExtractEvents(req, res) {
   const gameName = typeof body.gameName === 'string' ? body.gameName.trim() : '';
   const articleUrl = typeof body.articleURL === 'string' ? body.articleURL.trim() : '';
   const text = typeof body.text === 'string' ? body.text.trim() : '';
+  // 旧版 App 不传这个字段，按北京时间处理。
+  const serverOffsetMinutes = normalizeServerOffset(body.serverUtcOffsetMinutes ?? 480);
+  const outputLanguage = normalizeOutputLanguage(body.language);
 
   if (!installId || installId.length > 120) {
     sendJSON(res, 400, {
@@ -287,7 +292,7 @@ async function handleExtractEvents(req, res) {
   const limitedText = text.slice(0, maxTextChars);
   const normalizedUrl = normalizeArticleURL(articleUrl);
   const contentHash = hashText(limitedText);
-  const cacheKey = buildExtractionCacheKey({ normalizedUrl, contentHash, gameName });
+  const cacheKey = buildExtractionCacheKey({ normalizedUrl, contentHash, gameName, serverOffsetMinutes, outputLanguage });
 
   // Every user-triggered extraction consumes quota, whether served from cache or DeepSeek.
   let reservedQuota = null;
@@ -338,7 +343,9 @@ async function handleExtractEvents(req, res) {
   try {
     events = await extractEventsWithDeepSeek({
       gameName,
-      text: limitedText
+      text: limitedText,
+      serverOffsetMinutes,
+      outputLanguage
     });
   } catch (error) {
     // DeepSeek failures should not consume user quota.
@@ -380,17 +387,40 @@ async function handleExtractEvents(req, res) {
   });
 }
 
-async function extractEventsWithDeepSeek({ gameName, text }) {
+async function extractEventsWithDeepSeek({
+  gameName,
+  text,
+  serverOffsetMinutes = 480,
+  outputLanguage = DEFAULT_OUTPUT_LANGUAGE
+}) {
+  const languageName = outputLanguageName(outputLanguage);
   const today = formatDateOnlyInShanghai(new Date());
   const exampleEnd = formatDateTimeInShanghai(new Date(Date.now() + 21 * 86400 * 1000));
 
   const system = `
 你是一个从游戏公告中提取结构化活动数据的助手，必须以 JSON 格式返回结果。
 
-【时间规则】所有时间使用北京时间（UTC+8），格式严格为 "YYYY-MM-DD HH:mm"（例如 "2025-06-25 10:00"）。
-必须按照原文公告中给出的具体时间填写，不得只写日期、不得省略小时分钟、不得换算时区。
+【时间规则】
+startDate / endDate 照抄公告原文里的时间，自己不要换算时区，格式严格为 "YYYY-MM-DD HH:mm"（例如 "2025-06-25 10:00"）。
+公告可能用任何语言和日期写法（如 "2025/06/25 10:00"、"June 25, 10:00"、"6月25日 10:00"），都转成上面的格式。
+同时用 startOffset / endOffset 写出该时间所用的 UTC 偏移，格式 "+08:00"、"-05:00"：
+- 写明"北京时间"或"UTC+8" → "+08:00"
+- 写明其他 UTC/GMT 偏移（如 "UTC-5"、"GMT+1"）→ 对应偏移
+- 写明"服务器时间""server time""伺服器時間"，或没有注明时区 → 用户所在服务器的偏移（见用户消息）
 如果公告只给了日期没有时间，填 "YYYY-MM-DD 00:00"。
-如果公告写的是"当前版本结束"或"版本维护时"，请根据上下文中版本结束时间推断并填入。
+如果公告写的是"当前版本结束""版本维护时""until the end of Version X""before the Version X update"等，
+请根据上下文中的版本结束或更新维护时间推断并填入；"版本更新后""after the Version X update"开始的活动，startDate 填更新维护结束的时间。
+
+【活动名称】
+title 使用用户消息里指定的输出语言：
+- 原文已经是该语言 → 照抄原文名称
+- 原文是其他语言 → 翻译成该语言；如果知道游戏官方在该语言下的活动译名，优先使用官方译名
+- 繁體中文使用台灣常用語
+category 不翻译，始终使用下面规定的中文值。
+
+【正文来源】
+正文可能来自 B站专栏，也可能来自游戏国际服官网网页，可能夹杂导航栏、其他新闻标题、页脚、版权声明等无关文字。
+只从版本公告正文中提取活动，忽略其他新闻标题和网站菜单。
 
 【提取规则】请提取所有相关活动的起止时间，即使公告只写了"当前版本结束"，也请尽量提取。
 过期判断将由客户端处理，不需要在此过滤。
@@ -401,11 +431,12 @@ async function extractEventsWithDeepSeek({ gameName, text }) {
 3. 副本/关卡挑战
 
 排除：社交媒体活动、充值礼包、线下活动、官方直播、投票问卷、每日签到/打卡活动、登录/累计登录/签到奖励、时装/皮肤折扣或销售活动。
-必须排除所有卡池/抽卡相关内容，包括但不限于角色或武器祈愿、跃迁、寻访、调频、UP 池、复刻池、概率提升、补给、招募、召唤、唤取等。
-同时排除标题或分类中包含"角色"或"武器"的条目。
+必须排除所有卡池/抽卡相关内容，包括但不限于角色或武器祈愿、跃迁、寻访、调频、UP 池、复刻池、概率提升、补给、招募、召唤、唤取，
+以及英文公告里的 Banner、Wish、Warp、Convene、Headhunting、Gacha、Rate Up 等。
+同时排除标题或分类中包含"角色"或"武器"（英文为 Character / Weapon）的条目。
 
 返回 JSON 格式如下：
-{"events":[{"title":"活动名","startDate":"YYYY-MM-DD HH:mm","endDate":"YYYY-MM-DD HH:mm","category":"版本活动"}]}
+{"events":[{"title":"活动名","startDate":"YYYY-MM-DD HH:mm","startOffset":"+08:00","endDate":"YYYY-MM-DD HH:mm","endOffset":"+08:00","category":"版本活动"}]}
 
 category 规则：
 - 版本限时活动 → "版本活动"
@@ -417,6 +448,8 @@ category 规则：
 
   const user = `
 游戏：${gameName}
+用户所在服务器的 UTC 偏移：${formatOffset(serverOffsetMinutes)}
+活动名称输出语言：${languageName}
 今天（北京时间）：${today}
 示例版本结束时间：${exampleEnd}
 
@@ -469,7 +502,8 @@ ${text}
 
   const parsed = JSON.parse(extractJSONPayload(content));
   const rawEvents = Array.isArray(parsed.events) ? parsed.events : [];
-  return normalizeExtractedEvents(rawEvents);
+  // 统一换算成北京时间再返回，App 按北京时间解析。
+  return normalizeExtractedEvents(rawEvents.map((event) => convertEventTimesToBeijing(event, serverOffsetMinutes)));
 }
 
 function extractJSONPayload(content) {
@@ -752,12 +786,22 @@ function hashText(text) {
   return createHash('sha256').update(text, 'utf8').digest('hex');
 }
 
-function buildExtractionCacheKey({ normalizedUrl, contentHash, gameName }) {
+function buildExtractionCacheKey({
+  normalizedUrl,
+  contentHash,
+  gameName,
+  serverOffsetMinutes = 480,
+  outputLanguage = DEFAULT_OUTPUT_LANGUAGE
+}) {
+  // 公告写"服务器时间"时，不同服务器换算结果不同；活动名按语言输出，也要分开缓存。
+  // UTC+8 和简体中文不加后缀，沿用改动前的缓存（当时都按北京时间、中文处理）。
+  const variantSuffix = (serverOffsetMinutes === 480 ? '' : `:tz:${serverOffsetMinutes}`)
+    + (outputLanguage === DEFAULT_OUTPUT_LANGUAGE ? '' : `:lang:${outputLanguage}`);
   if (normalizedUrl) {
-    return `url:${normalizedUrl}:sha256:${contentHash}`;
+    return `url:${normalizedUrl}:sha256:${contentHash}${variantSuffix}`;
   }
 
-  return `text:${gameName.toLowerCase()}:sha256:${contentHash}`;
+  return `text:${gameName.toLowerCase()}:sha256:${contentHash}${variantSuffix}`;
 }
 
 function normalizeArticleURL(rawUrl) {

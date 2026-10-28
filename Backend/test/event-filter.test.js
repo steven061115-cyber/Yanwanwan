@@ -35,3 +35,19 @@ test('recognizes common gacha naming variants', () => {
   assert.equal(shouldExcludeEvent({ title: '精准补给 破晓强袭', category: '版本活动' }), true);
   assert.equal(shouldExcludeEvent({ title: '联合作战挑战', category: '副本挑战' }), false);
 });
+
+test('excludes gacha and login events from global English and Traditional Chinese notices', () => {
+  assert.equal(shouldExcludeEvent({ title: 'Featured Resonator Convene: Thawborn Renewal', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Event Wish: Ballad in Goblets', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Limited Headhunting', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Character Event Warp', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Daily Check-in', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Login Event: Gift of Stars', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: '角色活動喚取', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: '每日簽到', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Character Trial: Lingyang', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Weapon Event: Abyssal Moon', category: '版本活动' }), true);
+  assert.equal(shouldExcludeEvent({ title: 'Carefree Snowball Fight', category: '版本活动' }), false);
+  assert.equal(shouldExcludeEvent({ title: 'Wishful Thinking Trials', category: '版本活动' }), false);
+  assert.equal(shouldExcludeEvent({ title: '無憂無慮大雪仗', category: '版本活动' }), false);
+});
