@@ -78,3 +78,27 @@ export function serverRegionName(offsetMinutes) {
     default: return `UTC${formatOffset(offsetMinutes)}`;
   }
 }
+
+// "下个版本更新前结束"且公告没写日期时，AI 只填这个占位符，由下面的代码统一换成具体时间。
+// 让 AI 自己比较、推算日期并不可靠（实测会编出公告里没有的时间）。
+export const VERSION_END_PLACEHOLDER = 'VERSION_END';
+
+// 占位符换成本次所有活动里最晚的具体结束时间（已是北京时间 "YYYY-MM-DD HH:mm"）。
+// 一个具体结束时间都没有时，带占位符的活动无法确定结束时间，直接丢弃。
+export function resolveVersionEndPlaceholders(events) {
+  if (!Array.isArray(events)) return [];
+  const isConcrete = (value) => typeof value === 'string' && DATE_TIME_PATTERN.test(value.trim());
+  const isPlaceholder = (value) => typeof value === 'string' && value.trim().toUpperCase() === VERSION_END_PLACEHOLDER;
+
+  const latestEnd = events
+    .map((event) => event?.endDate)
+    .filter(isConcrete)
+    .map((value) => value.trim())
+    .sort()
+    .at(-1);
+
+  return events.flatMap((event) => {
+    if (!event || !isPlaceholder(event.endDate)) return [event];
+    return latestEnd ? [{ ...event, endDate: latestEnd }] : [];
+  });
+}

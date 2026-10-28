@@ -5,7 +5,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDatabase } from './db.js';
 import { normalizeExtractedEvents } from './event-filter.js';
-import { convertEventTimesToBeijing, formatOffset, normalizeServerOffset, serverRegionName } from './event-time.js';
+import {
+  VERSION_END_PLACEHOLDER,
+  convertEventTimesToBeijing,
+  formatOffset,
+  normalizeServerOffset,
+  resolveVersionEndPlaceholders,
+  serverRegionName
+} from './event-time.js';
 import { DEFAULT_OUTPUT_LANGUAGE, normalizeOutputLanguage, outputLanguageName } from './output-language.js';
 import {
   SUPPORTED_CALENDAR_GAMES,
@@ -35,6 +42,8 @@ const database = createDatabase({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined
 });
+// 提取提示词或时间处理规则有改动时加 1，让旧的缓存结果失效。
+const EXTRACTION_PROMPT_VERSION = 3;
 const dailyLimits = {
   free: 2,
   premium: 5
@@ -418,7 +427,7 @@ startDate / endDate 照抄公告原文里的时间，自己不要换算时区，
 - 写明具体时间 → 照抄。
 - "当前版本结束""版本维护时""Before version update and maintenance""Before the next version update""until the end of Version X""before Version X ends" →
   如果公告写明了下个版本的更新时间，用那个时间；
-  如果没写，用本公告中所有活动里出现的最晚的具体结束时间作为近似值。不要凭空编造日期。
+  如果没写，endDate 填 "${VERSION_END_PLACEHOLDER}"，endOffset 留空。不要自己推算或编造日期。
 
 【活动名称】
 title 使用用户消息里指定的输出语言：
@@ -436,7 +445,7 @@ category 不翻译，始终使用下面规定的中文值。
 
 收录类型：
 1. 版本限时活动（有明确开始和结束时间）
-2. 周常任务（endDate 填当前版本的维护时间）
+2. 周常任务（endDate 填当前版本的维护时间；公告没写时同样填 "${VERSION_END_PLACEHOLDER}"）
 3. 副本/关卡挑战（包括有时限的赛季、轮换挑战）
 
 不收录：
@@ -518,7 +527,8 @@ ${text}
   const parsed = JSON.parse(extractJSONPayload(content));
   const rawEvents = Array.isArray(parsed.events) ? parsed.events : [];
   // 统一换算成北京时间再返回，App 按北京时间解析。
-  return normalizeExtractedEvents(rawEvents.map((event) => convertEventTimesToBeijing(event, serverOffsetMinutes)));
+  const converted = rawEvents.map((event) => convertEventTimesToBeijing(event, serverOffsetMinutes));
+  return normalizeExtractedEvents(resolveVersionEndPlaceholders(converted));
 }
 
 function extractJSONPayload(content) {
@@ -809,9 +819,8 @@ function buildExtractionCacheKey({
   outputLanguage = DEFAULT_OUTPUT_LANGUAGE
 }) {
   // 公告写"服务器时间"时，不同服务器换算结果不同；活动名按语言输出，也要分开缓存。
-  // UTC+8 和简体中文不加后缀，沿用改动前的缓存（当时都按北京时间、中文处理）。
-  const variantSuffix = (serverOffsetMinutes === 480 ? '' : `:tz:${serverOffsetMinutes}`)
-    + (outputLanguage === DEFAULT_OUTPUT_LANGUAGE ? '' : `:lang:${outputLanguage}`);
+  // 提示词版本变了，旧结果一律不再使用。
+  const variantSuffix = `:p${EXTRACTION_PROMPT_VERSION}:tz:${serverOffsetMinutes}:lang:${outputLanguage}`;
   if (normalizedUrl) {
     return `url:${normalizedUrl}:sha256:${contentHash}${variantSuffix}`;
   }

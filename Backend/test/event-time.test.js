@@ -6,6 +6,7 @@ import {
   serverRegionName,
   normalizeServerOffset,
   parseOffsetMinutes,
+  resolveVersionEndPlaceholders,
   toBeijingTime
 } from '../src/event-time.js';
 
@@ -64,4 +65,27 @@ test('names the server region from the offset the app sends', () => {
   assert.equal(serverRegionName(60), 'Europe（欧服）');
   assert.equal(serverRegionName(480), 'Asia（亚服）/ 国服');
   assert.equal(serverRegionName(330), 'UTC+05:30');
+});
+
+test('replaces version-end placeholders with the latest concrete end time', () => {
+  const events = resolveVersionEndPlaceholders([
+    { title: 'Arena of Games', endDate: '2026-11-19 17:00' },
+    { title: 'Back to the Rustics', endDate: 'VERSION_END' },
+    { title: 'Sanity Supply', endDate: '2026-11-25 06:00' },
+    { title: 'Season of Fervor', endDate: 'version_end' }
+  ]);
+
+  assert.deepEqual(events.map((event) => event.endDate), [
+    '2026-11-19 17:00',
+    '2026-11-25 06:00',
+    '2026-11-25 06:00',
+    '2026-11-25 06:00'
+  ]);
+});
+
+test('drops placeholder events when no concrete end time exists', () => {
+  const events = resolveVersionEndPlaceholders([
+    { title: 'Weekly Bounty', endDate: 'VERSION_END' }
+  ]);
+  assert.deepEqual(events, []);
 });
