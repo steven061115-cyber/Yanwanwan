@@ -19,6 +19,8 @@ import {
   createCalendarProxy,
   normalizeCalendarLang
 } from './calendar-proxy.js';
+import { FreeIPDailyLimiter } from './free-ip-limit.js';
+import { privacyPolicyHTML, resolveLegalLang, termsOfServiceHTML } from './legal-pages.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -48,6 +50,10 @@ const dailyLimits = {
   free: 2,
   premium: 30
 };
+// Several honest users can share one IP (home Wi-Fi, carrier NAT), so this sits well above dailyLimits.free.
+const freeIPLimiter = new FreeIPDailyLimiter(
+  parsePositiveInteger(process.env.FREE_EXTRACT_PER_IP_PER_DAY, 10)
+);
 const rateLimits = {
   quota: {
     name: 'quota',
@@ -114,12 +120,12 @@ async function handleRequest(req, res) {
   }
 
   if (req.method === 'GET' && pathname === '/privacy') {
-    sendHTML(res, 200, privacyPolicyHTML());
+    sendHTML(res, 200, privacyPolicyHTML(legalLangFor(req)));
     return;
   }
 
   if (req.method === 'GET' && pathname === '/terms') {
-    sendHTML(res, 200, termsOfServiceHTML());
+    sendHTML(res, 200, termsOfServiceHTML(legalLangFor(req)));
     return;
   }
 
@@ -303,11 +309,26 @@ async function handleExtractEvents(req, res) {
   const contentHash = hashText(limitedText);
   const cacheKey = buildExtractionCacheKey({ normalizedUrl, contentHash, gameName, serverOffsetMinutes, outputLanguage });
 
+  // The free quota is keyed on the install ID, which users can reset in the app,
+  // so free extractions are also capped per IP to stop resets from minting new quota.
+  const today = formatDateOnlyInShanghai(new Date());
+  const clientAddress = getClientAddress(req);
+  const usesFreeIPSlot = tier === 'free';
+  const releaseFreeIPSlot = () => {
+    if (usesFreeIPSlot) freeIPLimiter.release(clientAddress, today);
+  };
+  if (usesFreeIPSlot && !freeIPLimiter.reserve(clientAddress, today)) {
+    const quota = await getDailyQuota({ installId, tier });
+    sendDailyLimitExceeded(res, { tier, quota: { ...quota, used: quota.limit } });
+    return;
+  }
+
   // Every user-triggered extraction consumes quota, whether served from cache or DeepSeek.
   let reservedQuota = null;
   if (database.isEnabled) {
     reservedQuota = await reserveDailyUsage({ installId, tier });
     if (!reservedQuota) {
+      releaseFreeIPSlot();
       const quota = await getDailyQuota({ installId, tier });
       sendDailyLimitExceeded(res, { tier, quota });
       return;
@@ -315,6 +336,7 @@ async function handleExtractEvents(req, res) {
   } else {
     const quota = await getDailyQuota({ installId, tier });
     if (quota.used >= quota.limit) {
+      releaseFreeIPSlot();
       sendDailyLimitExceeded(res, { tier, quota });
       return;
     }
@@ -325,6 +347,7 @@ async function handleExtractEvents(req, res) {
     try {
       cached = await database.getCachedExtraction({ cacheKey });
     } catch (error) {
+      releaseFreeIPSlot();
       if (reservedQuota) {
         await refundDailyUsage({ installId, tier }).catch((refundError) => {
           console.error('Failed to refund daily usage after cache lookup error', refundError);
@@ -358,6 +381,7 @@ async function handleExtractEvents(req, res) {
     });
   } catch (error) {
     // DeepSeek failures should not consume user quota.
+    releaseFreeIPSlot();
     if (reservedQuota) {
       await refundDailyUsage({ installId, tier }).catch((refundError) => {
         console.error('Failed to refund daily AI usage', refundError);
@@ -791,6 +815,14 @@ function dailyLimitMessage(tier) {
     : `免费版今日 ${limit} 次提取额度已用完。升级会员后每日可提取 ${dailyLimits.premium} 次。`;
 }
 
+function legalLangFor(req) {
+  let queryLang = null;
+  try {
+    queryLang = new URL(req.url, 'http://localhost').searchParams.get('lang');
+  } catch {}
+  return resolveLegalLang(queryLang, getHeader(req, 'accept-language'));
+}
+
 function getPathname(rawUrl) {
   try {
     return new URL(rawUrl, 'http://localhost').pathname;
@@ -975,106 +1007,11 @@ function sendJSON(res, status, payload) {
 function sendHTML(res, status, html) {
   res.writeHead(status, {
     'Content-Type': 'text/html; charset=utf-8',
-    'Cache-Control': 'public, max-age=300'
+    'Cache-Control': 'public, max-age=300',
+    // Legal pages pick their language from Accept-Language when ?lang= is absent.
+    Vary: 'Accept-Language'
   });
   res.end(html);
-}
-
-function legalPageHTML({ title, updatedAt, body }) {
-  return `<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${title} | 二游活动小灵通</title>
-  <style>
-    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17213b; background: #f7f8fb; }
-    body { margin: 0; }
-    main { max-width: 760px; margin: 0 auto; padding: 40px 18px 56px; }
-    h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.2; }
-    h2 { margin: 28px 0 10px; font-size: 18px; }
-    p, li { font-size: 15px; line-height: 1.75; }
-    p { margin: 0 0 12px; }
-    ul { margin: 0; padding-left: 20px; }
-    a { color: #d83d84; }
-    .updated { color: #69748a; font-size: 13px; }
-  </style>
-</head>
-<body>
-  <main>
-    <h1>${title}</h1>
-    <p class="updated">更新日期：${updatedAt}</p>
-    ${body}
-  </main>
-</body>
-</html>`;
-}
-
-function privacyPolicyHTML() {
-  return legalPageHTML({
-    title: '隐私政策',
-    updatedAt: '2026-07-18',
-    body: `
-    <p>二游活动小灵通用于整理游戏活动和提醒。我们遵循最小必要原则，不出售用户数据，也不进行跨 App 或跨网站追踪。</p>
-
-    <h2>运营者与联系</h2>
-    <p>本服务由二游活动小灵通开发者运营。正式发布前将在此补充运营者真实名称、联系邮箱和注册地址。用户可通过公开联系方式提出查阅、更正、删除、撤回同意或投诉请求。</p>
-
-    <h2>我们会处理的数据</h2>
-    <ul>
-      <li>安装标识：App 会生成一个随机安装标识，用于后端计算每日 AI 提取额度和基础限流。</li>
-      <li>公告内容：仅当你主动使用 AI 提取时，游戏名、公告链接和公告正文会发送到后端，用于整理活动。共享结果缓存不保存安装标识与结果之间的映射。</li>
-      <li>购买凭证：开通会员后，App 会把 App Store 交易凭证发送给后端，只用于验证会员额度。</li>
-      <li>本地内容：你创建的游戏、活动、通知设置和小组件数据主要保存在设备本地；如果系统启用 iCloud，同步由 Apple iCloud 处理。</li>
-    </ul>
-
-    <h2>第三方服务与 AI 公示</h2>
-    <p>AI 提取功能通过我们的后端调用 DeepSeek；正式发布前将在 App 和本页补充实际模型名称及备案号。Apple 提供 App 内购买、iCloud 和通知能力；活动数据接口用于获取公开活动时间。付款信息不经过我们的服务器。</p>
-
-    <h2>数据保留</h2>
-    <p>后端仅按提供服务及安全审计所需的最短期限保留安装标识对应的额度记录。提取缓存保存公告内容哈希、链接和结构化结果，不保存原始公告正文。用户可在 App 的“管理我的数据”中删除额度记录并重置安装标识。</p>
-
-    <h2>存储地域与跨境</h2>
-    <p>当前测试环境可能使用境外云服务。正式面向中国大陆运营前，将迁移至已备案的数据基础设施，或依法履行适用的数据跨境义务。</p>
-
-    <h2>你的权利</h2>
-    <p>你可在 App 内清除本地数据、删除当前安装标识对应的服务器记录、撤回隐私同意。撤回后，在再次同意前 App 不会启动联网服务。</p>
-
-    <h2>未成年人保护</h2>
-    <p>本 App 不以未成年人为主要服务对象。未成年人应在监护人指导下使用 AI 功能和购买服务。</p>
-
-    <h2>联系我们</h2>
-    <p>如需隐私相关支持，请通过 App Store 产品页提供的开发者联系方式联系我们。</p>`
-  });
-}
-
-function termsOfServiceHTML() {
-  return legalPageHTML({
-    title: '服务条款',
-    updatedAt: '2026-07-18',
-    body: `
-    <p>使用二游活动小灵通，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。</p>
-
-    <h2>会员与购买</h2>
-    <ul>
-      <li>月度会员为自动续订订阅，价格以 App Store 购买页显示为准。</li>
-      <li>一休尼会员为一次性购买项目，购买后可长期使用当前会员权益。</li>
-      <li>购买、续订、取消和退款由 Apple App Store 处理。你可以在系统账户的订阅管理中取消月度会员。</li>
-      <li>月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。</li>
-    </ul>
-
-    <h2>会员权益</h2>
-    <p>会员当前包含更高的自定义游戏数量上限和每日 AI 提取额度。具体额度以 App 内展示为准。为了保证服务稳定，我们仍可能对异常高频请求进行限制。</p>
-
-    <h2>使用限制</h2>
-    <p>请勿批量滥用接口、绕过额度限制、提交违法内容，或将本服务用于侵犯他人权益的用途。</p>
-
-    <h2>Apple 标准协议</h2>
-    <p>App 内购买还受 <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Apple 标准许可协议</a> 约束。</p>
-
-    <h2>联系我们</h2>
-    <p>如需服务相关支持，请通过 App Store 产品页提供的开发者联系方式联系我们。</p>`
-  });
 }
 
 async function loadDotEnv() {

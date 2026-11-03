@@ -49,7 +49,9 @@ final class ActivityService {
         if hadNetworkError && fetched.isEmpty {
             // Network failed and no cache available — keep whatever events are already shown
             // (populated by loadFromCache before this refresh ran) and surface the error.
-            errorMessage = String(localized: "网络开小差了，婉婉先给你看缓存数据", bundle: .appLanguage)
+            errorMessage = events.isEmpty
+                ? String(localized: "网络开小差了，暂时拿不到活动数据，下拉刷新再试一次", bundle: .appLanguage)
+                : String(localized: "网络开小差了，婉婉先给你看缓存数据", bundle: .appLanguage)
         } else {
             // Success or partial cache fallback — update events list.
             events = sorted(fetched)

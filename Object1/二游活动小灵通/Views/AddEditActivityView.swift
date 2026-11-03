@@ -171,7 +171,7 @@ private struct SettingsFormView: View {
                     Text("隐私与合规中心")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(Color.hoyoNavy)
-                    Text("政策、AI 公示、备案信息与数据管理")
+                    Text("隐私政策、条款与数据管理")
                         .font(.caption)
                         .foregroundStyle(Color.hoyoNavy.opacity(0.45))
                 }

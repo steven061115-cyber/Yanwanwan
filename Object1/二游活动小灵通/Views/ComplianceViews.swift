@@ -3,13 +3,11 @@ import SwiftData
 import UserNotifications
 
 enum ComplianceConfig {
-    static let privacyVersion = "2026-07-23-v2"
-    static let operatorName = "二游活动小灵通开发者（正式发布前填写真实主体）"
-    static let supportEmail = "请在正式发布前配置联系邮箱"
-    static let appFilingNumber = "备案完成后配置"
-    static let aiProvider = "杭州深度求索人工智能基础技术研究有限公司"
+    static let privacyVersion = "2026-11-03-v3"
+    static let supportEmail = "steven061115@gmail.com"
     static let aiModelName = "DeepSeek"
-    static let aiFilingNumber = "请按实际调用模型配置备案号"
+
+    static var supportEmailURL: URL? { URL(string: "mailto:\(supportEmail)") }
 }
 
 enum PrivacyConsent {
@@ -201,34 +199,39 @@ struct LegalDocumentView: View {
 
     private var privacyContent: some View {
         Group {
-            legalSection("一、运营者与联系", "\(ComplianceConfig.operatorName)负责本 App 的个人信息处理。联系邮箱：\(ComplianceConfig.supportEmail)。你可以通过该渠道提出查阅、更正、删除、撤回同意或投诉请求。")
-            legalSection("二、处理的信息", "为提供活动提醒和 AI 整理功能，我们可能处理：随机安装标识、你主动提交的游戏名、公告链接与正文、App Store 交易凭证，以及设备本地保存的游戏、活动和通知设置。我们不进行跨 App 或跨网站追踪。")
-            legalSection("三、处理目的与方式", "随机安装标识仅用于每日 AI 额度和基础限流；公告内容仅在你主动发起 AI 整理时发送；交易凭证仅用于核验会员权益。本地活动数据默认保存在设备，启用 iCloud 时可能由 Apple 同步。")
-            legalSection("四、第三方服务", "活动数据接口用于获取公开活动时间；DeepSeek 用于整理你主动提交的公告；Apple 提供内购、iCloud 和通知系统。具体接收信息及用途见“第三方信息共享清单”。")
-            legalSection("五、保存期限", "安装标识对应的每日额度记录按提供服务和安全审计所需的最短期限保存。AI 共享结果缓存不保存用户身份映射，也不保存原始公告正文；本地数据保留至你删除 App 数据。正式发布前，运营者应在此补充精确保存期限。")
-            legalSection("六、数据存储与跨境", "当前测试环境可能使用境外云服务。面向中国大陆正式运营前，应迁移至备案并经评估的数据基础设施，或依法完成跨境数据处理要求。")
-            legalSection("七、你的权利", "你可以在“设置－隐私与合规－管理我的数据”中清除本地数据、删除服务器额度记录、重置安装标识或撤回同意。撤回同意后 App 将返回隐私确认页，不再启动联网服务。")
-            legalSection("八、未成年人保护", "本 App 不以未成年人为主要服务对象，也不要求提供真实身份信息。未成年人应在监护人指导下使用 AI 功能和购买服务。监护人可通过联系邮箱提出处理请求。")
-            legalSection("九、安全与更新", "我们采用 HTTPS、访问限制和最小化存储保护数据。政策发生实质变化时，App 会通过新的政策版本再次征求同意。")
+            legalSection(localized("一、运营者与联系"), localized("本 App 的开发者（即 App Store 页面显示的开发者）负责本 App 的个人信息处理。联系邮箱：\(ComplianceConfig.supportEmail)。你可以通过该渠道提出查阅、更正、删除、撤回同意或投诉请求。"))
+            legalSection(localized("二、处理的信息"), localized("为提供活动提醒和 AI 整理功能，我们可能处理：随机安装标识、IP 地址、你主动提交的游戏名、公告链接与正文、App Store 交易凭证，以及设备本地保存的游戏、活动和通知设置。我们不进行跨 App 或跨网站追踪。"))
+            legalSection(localized("三、处理目的与方式"), localized("随机安装标识和 IP 地址仅用于每日 AI 额度和基础限流，IP 地址只在服务器内存中临时使用、不写入数据库；公告内容仅在你主动发起 AI 整理时发送；交易凭证仅用于核验会员权益。本地活动数据默认保存在设备，启用 iCloud 时可能由 Apple 同步。"))
+            legalSection(localized("四、第三方服务"), localized("活动数据接口用于获取公开活动时间；DeepSeek 用于整理你主动提交的公告；Apple 提供内购、iCloud 和通知系统。具体接收信息及用途见“第三方信息共享清单”。"))
+            legalSection(localized("五、保存期限"), localized("安装标识对应的每日额度记录按提供服务和安全审计所需的最短期限保存。AI 共享结果缓存不保存用户身份映射，也不保存原始公告正文；本地数据保留至你删除 App 数据。"))
+            legalSection(localized("六、数据存储"), localized("后端服务托管在 Railway 云平台，AI 整理请求会转发给 DeepSeek 处理。你的数据可能在你所在国家或地区以外的服务器上处理，我们会采取合理措施保护传输与存储安全。"))
+            legalSection(localized("七、你的权利"), localized("你可以在“设置－隐私与合规－管理我的数据”中清除本地数据、删除服务器额度记录、重置安装标识或撤回同意。撤回同意后 App 将返回隐私确认页，不再启动联网服务。"))
+            legalSection(localized("八、未成年人保护"), localized("本 App 不以未成年人为主要服务对象，也不要求提供真实身份信息。未成年人应在监护人指导下使用 AI 功能和购买服务。监护人可通过联系邮箱提出处理请求。"))
+            legalSection(localized("九、安全与更新"), localized("我们采用 HTTPS、访问限制和最小化存储保护数据。政策发生实质变化时，App 会通过新的政策版本再次征求同意。"))
         }
     }
 
     private var termsContent: some View {
         Group {
-            legalSection("服务说明", "本 App 用于个人整理游戏活动与提醒。活动数据和 AI 结果可能存在延迟或错误，请以游戏官方公告为准。")
-            legalSection("会员与购买", "数字权益由 Apple App Store 处理。订阅价格、周期、自动续订、取消及退款规则以购买页面和 Apple 规则为准。")
-            legalSection("使用规范", "请勿批量滥用接口、绕过额度限制、提交违法或侵害他人权益的内容。")
-            legalSection("知识产权与非官方声明", "本 App 为非官方工具，与游戏厂商不存在隶属或授权关系。第三方名称和信息仅用于说明兼容对象，相关权利归原权利人所有。")
+            legalSection(localized("服务说明"), localized("本 App 用于个人整理游戏活动与提醒。活动数据和 AI 结果可能存在延迟或错误，请以游戏官方公告为准。"))
+            legalSection(localized("会员与购买"), localized("数字权益由 Apple App Store 处理。订阅价格、周期、自动续订、取消及退款规则以购买页面和 Apple 规则为准。App 内购买同时受 Apple 标准许可协议（EULA）约束。"))
+            legalSection(localized("使用规范"), localized("请勿批量滥用接口、绕过额度限制、提交违法或侵害他人权益的内容。"))
+            legalSection(localized("知识产权与非官方声明"), localized("本 App 为非官方工具，与游戏厂商不存在隶属或授权关系。第三方名称和信息仅用于说明兼容对象，相关权利归原权利人所有。"))
         }
     }
 
+    // Service names stay untranslated; only the descriptions follow the app language.
     private var thirdPartyContent: some View {
         Group {
-            legalSection("DeepSeek", "接收：你主动提交的游戏名和公告正文。目的：从公告中整理活动名称和时间。提供者：\(ComplianceConfig.aiProvider)。模型：\(ComplianceConfig.aiModelName)。备案信息：\(ComplianceConfig.aiFilingNumber)。")
-            legalSection("Apple", "接收：由 Apple 处理的购买、订阅、iCloud 与通知相关信息。目的：内购、权益恢复、系统同步和本地通知。")
-            legalSection("活动数据接口", "接收：所选游戏标识和语言参数。目的：获取公开游戏活动时间。当前接口为 api.ennead.cc，正式发布前应确认商业使用授权并更新提供者信息。")
-            legalSection("云服务", "接收：安装标识、AI 请求和交易核验凭证。目的：额度控制、AI 整理和会员核验。当前测试环境为 Railway，正式面向中国大陆运营前应更新为实际备案接入商。")
+            legalSection("DeepSeek", localized("接收：你主动提交的游戏名和公告正文。目的：从公告中整理活动名称和时间。"))
+            legalSection("Apple", localized("接收：由 Apple 处理的购买、订阅、iCloud 与通知相关信息。目的：内购、权益恢复、系统同步和本地通知。"))
+            legalSection(localized("活动数据接口"), localized("接收：所选游戏标识和语言参数，经由我们的后端转发。目的：获取公开游戏活动时间。"))
+            legalSection("Railway", localized("接收：安装标识、IP 地址、AI 请求和交易核验凭证。目的：托管后端，用于额度控制、AI 整理和会员核验。"))
         }
+    }
+
+    private func localized(_ value: String.LocalizationValue) -> String {
+        String(localized: value, bundle: .appLanguage)
     }
 
     private func legalSection(_ title: String, _ text: String) -> some View {
@@ -271,9 +274,7 @@ struct AIProcessingDisclosureView: View {
             if showDetails {
                 VStack(alignment: .leading, spacing: 10) {
                     detailRow(String(localized: "同时发送", bundle: .appLanguage), String(localized: "随机安装标识与会员核验凭证，用于额度控制；不会上传你在 App 中创建的其他游戏或活动", bundle: .appLanguage))
-                    detailRow(String(localized: "服务提供者", bundle: .appLanguage), ComplianceConfig.aiProvider)
                     detailRow(String(localized: "模型", bundle: .appLanguage), ComplianceConfig.aiModelName)
-                    detailRow(String(localized: "模型备案信息", bundle: .appLanguage), ComplianceConfig.aiFilingNumber)
                 }
                 .padding(14)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -337,21 +338,15 @@ struct ComplianceCenterView: View {
                 NavigationLink("第三方信息共享清单") { LegalDocumentView(document: .thirdParties) }
             }
 
-            Section("AI 服务公示") {
-                LabeledContent("服务提供者", value: ComplianceConfig.aiProvider)
-                LabeledContent("模型", value: ComplianceConfig.aiModelName)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("备案信息").font(.caption).foregroundStyle(.secondary)
-                    Text(ComplianceConfig.aiFilingNumber)
-                }
-            }
-
-            Section("备案与运营者") {
-                LabeledContent("运营者", value: ComplianceConfig.operatorName)
-                LabeledContent("APP 备案号", value: ComplianceConfig.appFilingNumber)
+            Section("联系开发者") {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("联系邮箱").font(.caption).foregroundStyle(.secondary)
-                    Text(ComplianceConfig.supportEmail)
+                    if let url = ComplianceConfig.supportEmailURL {
+                        Link(ComplianceConfig.supportEmail, destination: url)
+                            .foregroundStyle(Color.hoyoPink)
+                    } else {
+                        Text(ComplianceConfig.supportEmail)
+                    }
                 }
             }
 

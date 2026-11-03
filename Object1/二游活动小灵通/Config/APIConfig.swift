@@ -20,12 +20,13 @@ enum APIConfig {
         URL(string: "\(trimmedAIBackendBaseURL)/api/calendar/\(game)?lang=\(lang)")
     }
 
+    // The web pages come in every app language; pass the in-app choice so they match the UI.
     static var privacyPolicyURL: URL? {
-        URL(string: "\(trimmedAIBackendBaseURL)/privacy")
+        URL(string: "\(trimmedAIBackendBaseURL)/privacy?lang=\(AppLanguage.current.rawValue)")
     }
 
     static var termsOfServiceURL: URL? {
-        URL(string: "\(trimmedAIBackendBaseURL)/terms")
+        URL(string: "\(trimmedAIBackendBaseURL)/terms?lang=\(AppLanguage.current.rawValue)")
     }
 
     static var dataDeletionURL: URL? {

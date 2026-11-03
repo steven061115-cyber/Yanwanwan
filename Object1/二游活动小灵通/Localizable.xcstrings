@@ -1453,74 +1453,6 @@
         }
       }
     },
-    "AI 服务公示" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI Disclosure"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AIに関する開示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 고지"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 服务公示"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 服務公示"
-          }
-        }
-      }
-    },
-    "APP 备案号" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App registration no."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリ登録番号"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "앱 등록 번호"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "APP 备案号"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "APP 備案號"
-          }
-        }
-      }
-    },
     "b23.tv/ESpbRoA" : {
       "shouldTranslate" : false
     },
@@ -5353,74 +5285,6 @@
         }
       }
     },
-    "备案与运营者" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registration and Operator"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "登録情報と運営者"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "등록 정보와 운영자"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "备案与运营者"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "備案與營運者"
-          }
-        }
-      }
-    },
-    "备案信息" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registration"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "登録情報"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "등록 정보"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "备案信息"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "備案資訊"
-          }
-        }
-      }
-    },
     "复制 B站公告链接，用内置浏览器提取活动草稿。" : {
       "localizations" : {
         "en" : {
@@ -8447,36 +8311,36 @@
         }
       }
     },
-    "政策、AI 公示、备案信息与数据管理" : {
+    "隐私政策、条款与数据管理" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Policies, AI disclosure and your data"
+            "value" : "Privacy policy, terms and your data"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ポリシー、AIの開示、データ管理"
+            "value" : "プライバシーポリシー、利用規約、データ管理"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "정책, AI 고지, 데이터 관리"
+            "value" : "개인정보 처리방침, 약관, 데이터 관리"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "政策、AI 公示、备案信息与数据管理"
+            "value" : "隐私政策、条款与数据管理"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "政策、AI 公示、備案資訊與資料管理"
+            "value" : "隱私政策、條款與資料管理"
           }
         }
       }
@@ -9297,40 +9161,6 @@
         }
       }
     },
-    "服务提供者" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Provider"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "提供元"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제공자"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "服务提供者"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "服務提供者"
-          }
-        }
-      }
-    },
     "服务条款" : {
       "localizations" : {
         "en" : {
@@ -9803,40 +9633,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "模型"
-          }
-        }
-      }
-    },
-    "模型备案信息" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Model registration"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "モデルの登録情報"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모델 등록 정보"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型备案信息"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "模型備案資訊"
           }
         }
       }
@@ -12833,6 +12629,40 @@
         }
       }
     },
+    "联系开发者" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact the Developer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開発者へのお問い合わせ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개발자에게 문의"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "联系开发者"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聯繫開發者"
+          }
+        }
+      }
+    },
     "联系邮箱" : {
       "localizations" : {
         "en" : {
@@ -13917,40 +13747,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "輕量使用"
-          }
-        }
-      }
-    },
-    "运营者" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Operator"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "運営者"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "운영자"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "运营者"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "營運者"
           }
         }
       }
@@ -15301,6 +15097,1094 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "預設跟隨伺服器，也可以單獨選擇。"
+          }
+        }
+      }
+    },
+    "网络开小差了，暂时拿不到活动数据，下拉刷新再试一次" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The network's acting up and event data isn't available yet. Pull down to try again."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ネットワークの調子が悪く、イベント情報を取得できません。下に引っ張って再試行してください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 상태가 좋지 않아 이벤트 정보를 불러오지 못했어요. 아래로 당겨 다시 시도해 주세요"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络开小差了，暂时拿不到活动数据，下拉刷新再试一次"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "網路開小差了，暫時拿不到活動資料，下拉重新整理再試一次"
+          }
+        }
+      }
+    },
+    "一、运营者与联系" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Who We Are and How to Reach Us"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 運営者と連絡先"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 운영자 및 연락처"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一、运营者与联系"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一、營運者與聯絡方式"
+          }
+        }
+      }
+    },
+    "本 App 的开发者（即 App Store 页面显示的开发者）负责本 App 的个人信息处理。联系邮箱：%@。你可以通过该渠道提出查阅、更正、删除、撤回同意或投诉请求。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The developer of this app (the developer shown on its App Store page) is responsible for processing your personal information. Contact email: %@. You can use it to request access, correction or deletion, to withdraw consent, or to make a complaint."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本アプリの開発者（App Storeのページに表示される開発者）が個人情報の取り扱いに責任を負います。連絡先メール：%@。開示・訂正・削除のご依頼、同意の撤回、苦情はこちらまでご連絡ください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "본 앱의 개발자(App Store 페이지에 표시된 개발자)가 개인정보 처리에 대한 책임을 집니다. 문의 이메일: %@. 열람·정정·삭제 요청, 동의 철회 또는 불만 제기는 이 이메일로 보내 주세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 的开发者（即 App Store 页面显示的开发者）负责本 App 的个人信息处理。联系邮箱：%@。你可以通过该渠道提出查阅、更正、删除、撤回同意或投诉请求。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 的開發者（即 App Store 頁面顯示的開發者）負責本 App 的個人資訊處理。聯絡信箱：%@。你可以透過此管道提出查閱、更正、刪除、撤回同意或申訴請求。"
+          }
+        }
+      }
+    },
+    "二、处理的信息" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Information We Process"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 取り扱う情報"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 처리하는 정보"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "二、处理的信息"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "二、處理的資訊"
+          }
+        }
+      }
+    },
+    "为提供活动提醒和 AI 整理功能，我们可能处理：随机安装标识、IP 地址、你主动提交的游戏名、公告链接与正文、App Store 交易凭证，以及设备本地保存的游戏、活动和通知设置。我们不进行跨 App 或跨网站追踪。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To provide event reminders and AI organizing, we may process: a random install ID, your IP address, game names, announcement links and text that you choose to submit, App Store transactions, and the games, events and notification settings stored on your device. We do not track you across other apps or websites."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "イベントのリマインダーとAIによる整理を提供するため、ランダムなインストールID、IPアドレス、ご自身で送信したゲーム名・お知らせのリンクと本文、App Storeの取引情報、端末内に保存されたゲーム・イベント・通知設定を取り扱う場合があります。他のアプリやウェブサイトをまたいだトラッキングは行いません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이벤트 알림과 AI 정리 기능을 제공하기 위해 무작위 설치 ID, IP 주소, 사용자가 직접 제출한 게임 이름·공지 링크와 본문, App Store 거래 정보, 기기에 저장된 게임·이벤트·알림 설정을 처리할 수 있습니다. 다른 앱이나 웹사이트에 걸친 추적은 하지 않습니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为提供活动提醒和 AI 整理功能，我们可能处理：随机安装标识、IP 地址、你主动提交的游戏名、公告链接与正文、App Store 交易凭证，以及设备本地保存的游戏、活动和通知设置。我们不进行跨 App 或跨网站追踪。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為提供活動提醒與 AI 整理功能，我們可能處理：隨機安裝識別碼、IP 位址、你主動提交的遊戲名稱、公告連結與內文、App Store 交易憑證，以及裝置本機保存的遊戲、活動與通知設定。我們不進行跨 App 或跨網站追蹤。"
+          }
+        }
+      }
+    },
+    "三、处理目的与方式" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Why and How We Use It"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 利用目的と方法"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 처리 목적 및 방법"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "三、处理目的与方式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "三、處理目的與方式"
+          }
+        }
+      }
+    },
+    "随机安装标识和 IP 地址仅用于每日 AI 额度和基础限流，IP 地址只在服务器内存中临时使用、不写入数据库；公告内容仅在你主动发起 AI 整理时发送；交易凭证仅用于核验会员权益。本地活动数据默认保存在设备，启用 iCloud 时可能由 Apple 同步。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The install ID and IP address are used only for the daily AI quota and basic rate limiting; the IP address is held briefly in server memory and never written to our database. Announcement content is sent only when you start AI organizing yourself. Transactions are used only to verify Premium. Local event data stays on your device by default and may be synced by Apple when iCloud is enabled."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インストールIDとIPアドレスは、1日のAI利用枠と基本的なレート制限にのみ使用します。IPアドレスはサーバーのメモリ上で一時的に使うだけで、データベースには保存しません。お知らせの内容は、ご自身でAI整理を実行したときにのみ送信されます。取引情報はプレミアムの確認にのみ使用します。端末内のイベントデータは初期設定では端末に保存され、iCloudが有効な場合はAppleによって同期されることがあります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치 ID와 IP 주소는 일일 AI 이용 한도와 기본 요청 제한에만 사용되며, IP 주소는 서버 메모리에서 일시적으로만 사용되고 데이터베이스에 저장되지 않습니다. 공지 내용은 사용자가 직접 AI 정리를 실행할 때에만 전송됩니다. 거래 정보는 프리미엄 확인에만 사용됩니다. 기기 내 이벤트 데이터는 기본적으로 기기에 저장되며, iCloud가 켜져 있으면 Apple이 동기화할 수 있습니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "随机安装标识和 IP 地址仅用于每日 AI 额度和基础限流，IP 地址只在服务器内存中临时使用、不写入数据库；公告内容仅在你主动发起 AI 整理时发送；交易凭证仅用于核验会员权益。本地活动数据默认保存在设备，启用 iCloud 时可能由 Apple 同步。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隨機安裝識別碼與 IP 位址僅用於每日 AI 額度與基礎限流，IP 位址只在伺服器記憶體中暫時使用、不寫入資料庫；公告內容僅在你主動發起 AI 整理時傳送；交易憑證僅用於驗證會員權益。本機活動資料預設保存在裝置上，啟用 iCloud 時可能由 Apple 同步。"
+          }
+        }
+      }
+    },
+    "四、第三方服务" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Third-Party Services"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. 第三者のサービス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. 제3자 서비스"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "四、第三方服务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "四、第三方服務"
+          }
+        }
+      }
+    },
+    "活动数据接口用于获取公开活动时间；DeepSeek 用于整理你主动提交的公告；Apple 提供内购、iCloud 和通知系统。具体接收信息及用途见“第三方信息共享清单”。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An event data API provides public event schedules; DeepSeek organizes the announcements you submit; Apple provides in-app purchases, iCloud and notifications. See “Third-Party Data Sharing” for exactly what each one receives and why."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "イベントデータAPIは公開されているイベント日程の取得に、DeepSeekはご自身で送信したお知らせの整理に使用します。Appleはアプリ内課金、iCloud、通知機能を提供します。各サービスが受け取る情報と目的は「第三者へのデータ共有」をご覧ください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이벤트 데이터 API는 공개된 이벤트 일정을 가져오는 데, DeepSeek는 사용자가 제출한 공지를 정리하는 데 사용됩니다. Apple은 앱 내 구입, iCloud, 알림 기능을 제공합니다. 각 서비스가 받는 정보와 목적은 ‘제3자 데이터 공유’에서 확인하세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "活动数据接口用于获取公开活动时间；DeepSeek 用于整理你主动提交的公告；Apple 提供内购、iCloud 和通知系统。具体接收信息及用途见“第三方信息共享清单”。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "活動資料介面用於取得公開的活動時間；DeepSeek 用於整理你主動提交的公告；Apple 提供內購、iCloud 與通知系統。具體接收的資訊及用途請見「第三方資訊共享清單」。"
+          }
+        }
+      }
+    },
+    "五、保存期限" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. How Long We Keep Data"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. 保存期間"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. 보관 기간"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "五、保存期限"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "五、保存期限"
+          }
+        }
+      }
+    },
+    "安装标识对应的每日额度记录按提供服务和安全审计所需的最短期限保存。AI 共享结果缓存不保存用户身份映射，也不保存原始公告正文；本地数据保留至你删除 App 数据。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daily quota records tied to an install ID are kept only as long as needed to provide the service and for security auditing. The shared AI result cache does not link results to users and does not store the original announcement text. Local data stays until you delete it."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インストールIDに紐づく1日の利用枠の記録は、サービス提供とセキュリティ監査に必要な最短期間のみ保存します。AIの共有結果キャッシュは利用者と結果を紐づけず、お知らせの本文も保存しません。端末内のデータは、削除するまで保持されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치 ID에 연결된 일일 이용 한도 기록은 서비스 제공과 보안 감사에 필요한 최소 기간 동안만 보관합니다. AI 공유 결과 캐시는 사용자와 결과를 연결하지 않으며 공지 원문도 저장하지 않습니다. 기기 내 데이터는 사용자가 삭제할 때까지 보관됩니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安装标识对应的每日额度记录按提供服务和安全审计所需的最短期限保存。AI 共享结果缓存不保存用户身份映射，也不保存原始公告正文；本地数据保留至你删除 App 数据。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安裝識別碼對應的每日額度紀錄，依提供服務與安全稽核所需的最短期限保存。AI 共享結果快取不保存使用者身分對應，也不保存公告原文；本機資料保留至你刪除 App 資料為止。"
+          }
+        }
+      }
+    },
+    "六、数据存储" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6. Where Data Is Stored"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6. データの保管場所"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6. 데이터 저장 위치"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "六、数据存储"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "六、資料儲存"
+          }
+        }
+      }
+    },
+    "后端服务托管在 Railway 云平台，AI 整理请求会转发给 DeepSeek 处理。你的数据可能在你所在国家或地区以外的服务器上处理，我们会采取合理措施保护传输与存储安全。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Our server is hosted on Railway, and AI organizing requests are forwarded to DeepSeek. Your data may be processed on servers outside your country or region; we take reasonable measures to protect it in transit and at rest."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバーはRailwayでホストしており、AI整理のリクエストはDeepSeekに転送されて処理されます。お客様のデータは、お住まいの国や地域以外のサーバーで処理される場合があります。通信と保存の安全を守るため、合理的な措置を講じています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서버는 Railway에서 호스팅되며, AI 정리 요청은 DeepSeek로 전달되어 처리됩니다. 사용자의 데이터는 거주 국가나 지역 밖의 서버에서 처리될 수 있으며, 당사는 전송 및 저장 시 데이터를 보호하기 위한 합리적인 조치를 취합니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "后端服务托管在 Railway 云平台，AI 整理请求会转发给 DeepSeek 处理。你的数据可能在你所在国家或地区以外的服务器上处理，我们会采取合理措施保护传输与存储安全。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "後端服務託管於 Railway 雲端平台，AI 整理請求會轉送給 DeepSeek 處理。你的資料可能在你所在國家或地區以外的伺服器上處理，我們會採取合理措施保護傳輸與儲存安全。"
+          }
+        }
+      }
+    },
+    "七、你的权利" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7. Your Rights"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7. お客様の権利"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7. 사용자의 권리"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "七、你的权利"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "七、你的權利"
+          }
+        }
+      }
+    },
+    "你可以在“设置－隐私与合规－管理我的数据”中清除本地数据、删除服务器额度记录、重置安装标识或撤回同意。撤回同意后 App 将返回隐私确认页，不再启动联网服务。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under Settings › Privacy › Manage My Data you can clear local data, delete server quota records, reset your install ID, or withdraw consent. After you withdraw consent, the app returns to the privacy screen and no longer starts network services."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「設定 › プライバシー › データの管理」から、端末内データの消去、サーバー上の利用枠記録の削除、インストールIDのリセット、同意の撤回ができます。同意を撤回すると、アプリはプライバシーの確認画面に戻り、ネットワークサービスを開始しなくなります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‘설정 › 개인정보 › 내 데이터 관리’에서 기기 내 데이터 삭제, 서버 이용 한도 기록 삭제, 설치 ID 재설정, 동의 철회를 할 수 있습니다. 동의를 철회하면 앱이 개인정보 확인 화면으로 돌아가며 네트워크 서비스를 시작하지 않습니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你可以在“设置－隐私与合规－管理我的数据”中清除本地数据、删除服务器额度记录、重置安装标识或撤回同意。撤回同意后 App 将返回隐私确认页，不再启动联网服务。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你可以在「設定－隱私與合規－管理我的資料」中清除本機資料、刪除伺服器額度紀錄、重設安裝識別碼或撤回同意。撤回同意後 App 將返回隱私確認頁，不再啟動連網服務。"
+          }
+        }
+      }
+    },
+    "八、未成年人保护" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8. Children"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8. 未成年の方へ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8. 미성년자 보호"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "八、未成年人保护"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "八、未成年人保護"
+          }
+        }
+      }
+    },
+    "本 App 不以未成年人为主要服务对象，也不要求提供真实身份信息。未成年人应在监护人指导下使用 AI 功能和购买服务。监护人可通过联系邮箱提出处理请求。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app is not directed at children and never asks for your real identity. Minors should use the AI features and make purchases under the guidance of a parent or guardian. Parents and guardians can make requests through the contact email."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本アプリは未成年の方を主な対象としておらず、本人確認情報の提供も求めません。未成年の方は保護者の指導のもとでAI機能の利用や購入を行ってください。保護者の方は連絡先メールからご依頼いただけます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "본 앱은 미성년자를 주요 대상으로 하지 않으며 실명 정보를 요구하지 않습니다. 미성년자는 보호자의 지도 아래 AI 기능을 사용하고 구매해야 합니다. 보호자는 문의 이메일로 요청할 수 있습니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 不以未成年人为主要服务对象，也不要求提供真实身份信息。未成年人应在监护人指导下使用 AI 功能和购买服务。监护人可通过联系邮箱提出处理请求。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 不以未成年人為主要服務對象，也不要求提供真實身分資訊。未成年人應在監護人指導下使用 AI 功能與購買服務。監護人可透過聯絡信箱提出處理請求。"
+          }
+        }
+      }
+    },
+    "九、安全与更新" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9. Security and Updates"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9. セキュリティと改定"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9. 보안 및 변경"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "九、安全与更新"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "九、安全與更新"
+          }
+        }
+      }
+    },
+    "我们采用 HTTPS、访问限制和最小化存储保护数据。政策发生实质变化时，App 会通过新的政策版本再次征求同意。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We protect data with HTTPS, access controls and minimal storage. If this policy changes materially, the app will ask for your consent again with the new version."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPS、アクセス制限、保存データの最小化によってデータを保護しています。本ポリシーに重要な変更がある場合は、新しいバージョンとしてアプリ内で改めて同意をお願いします。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPS, 접근 제한, 최소한의 저장으로 데이터를 보호합니다. 본 방침이 중대하게 변경되면 앱에서 새 버전에 대한 동의를 다시 요청합니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我们采用 HTTPS、访问限制和最小化存储保护数据。政策发生实质变化时，App 会通过新的政策版本再次征求同意。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我們採用 HTTPS、存取限制與最小化儲存來保護資料。政策發生實質變更時，App 會透過新的政策版本再次徵求同意。"
+          }
+        }
+      }
+    },
+    "服务说明" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About the Service"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サービスについて"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스 안내"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务说明"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服務說明"
+          }
+        }
+      }
+    },
+    "本 App 用于个人整理游戏活动与提醒。活动数据和 AI 结果可能存在延迟或错误，请以游戏官方公告为准。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This app is for personally organizing game events and reminders. Event data and AI results may be delayed or contain errors; always rely on the official game announcements."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本アプリは、個人でゲームのイベントとリマインダーを整理するためのものです。イベントデータやAIの結果には遅れや誤りがある場合があるため、必ずゲームの公式のお知らせをご確認ください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 앱은 개인이 게임 이벤트와 알림을 정리하기 위한 것입니다. 이벤트 데이터와 AI 결과는 지연되거나 오류가 있을 수 있으니 반드시 게임 공식 공지를 기준으로 확인해 주세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 用于个人整理游戏活动与提醒。活动数据和 AI 结果可能存在延迟或错误，请以游戏官方公告为准。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 用於個人整理遊戲活動與提醒。活動資料與 AI 結果可能有延遲或錯誤，請以遊戲官方公告為準。"
+          }
+        }
+      }
+    },
+    "会员与购买" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium and Purchases"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレミアムと購入"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "프리미엄 및 구매"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会员与购买"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "會員與購買"
+          }
+        }
+      }
+    },
+    "数字权益由 Apple App Store 处理。订阅价格、周期、自动续订、取消及退款规则以购买页面和 Apple 规则为准。App 内购买同时受 Apple 标准许可协议（EULA）约束。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digital purchases are handled by the Apple App Store. Subscription price, period, auto-renewal, cancellation and refunds follow the purchase screen and Apple’s rules. In-app purchases are also subject to Apple’s Standard License Agreement (EULA)."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デジタル特典の購入はApple App Storeが取り扱います。サブスクリプションの価格、期間、自動更新、解約、返金は購入画面とAppleの規定に従います。アプリ内課金にはAppleの標準使用許諾契約（EULA）も適用されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "디지털 상품 구매는 Apple App Store가 처리합니다. 구독 가격, 기간, 자동 갱신, 취소 및 환불은 구매 화면과 Apple의 규정을 따릅니다. 앱 내 구입에는 Apple 표준 라이선스 계약(EULA)도 적용됩니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数字权益由 Apple App Store 处理。订阅价格、周期、自动续订、取消及退款规则以购买页面和 Apple 规则为准。App 内购买同时受 Apple 标准许可协议（EULA）约束。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "數位權益由 Apple App Store 處理。訂閱價格、週期、自動續訂、取消及退款規則以購買頁面與 Apple 規則為準。App 內購買亦受 Apple 標準授權協議（EULA）約束。"
+          }
+        }
+      }
+    },
+    "使用规范" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptable Use"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "禁止事項"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이용 규칙"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用规范"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用規範"
+          }
+        }
+      }
+    },
+    "请勿批量滥用接口、绕过额度限制、提交违法或侵害他人权益的内容。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do not abuse the API in bulk, bypass quota limits, or submit content that is unlawful or infringes the rights of others."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "APIの大量利用による濫用、利用枠制限の回避、違法なコンテンツや他者の権利を侵害するコンテンツの送信はおやめください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API를 대량으로 남용하거나, 이용 한도를 우회하거나, 불법적이거나 타인의 권리를 침해하는 콘텐츠를 제출하지 마세요."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请勿批量滥用接口、绕过额度限制、提交违法或侵害他人权益的内容。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請勿大量濫用介面、規避額度限制，或提交違法、侵害他人權益的內容。"
+          }
+        }
+      }
+    },
+    "知识产权与非官方声明" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intellectual Property and Unofficial Status"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "知的財産と非公式アプリについて"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지식재산권 및 비공식 앱 안내"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "知识产权与非官方声明"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "智慧財產權與非官方聲明"
+          }
+        }
+      }
+    },
+    "本 App 为非官方工具，与游戏厂商不存在隶属或授权关系。第三方名称和信息仅用于说明兼容对象，相关权利归原权利人所有。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is an unofficial tool and is not affiliated with or endorsed by any game publisher. Third-party names and information are used only to identify compatible games; all rights belong to their respective owners."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本アプリは非公式のツールであり、ゲームの開発・運営会社とは提携・承認の関係にありません。第三者の名称や情報は対応タイトルを示すためにのみ使用しており、関連する権利はそれぞれの権利者に帰属します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "본 앱은 비공식 도구이며 게임 개발사·운영사와 제휴하거나 승인을 받은 관계가 아닙니다. 제3자의 명칭과 정보는 지원 대상 게임을 표시하기 위해서만 사용되며, 관련 권리는 각 권리자에게 있습니다."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 为非官方工具，与游戏厂商不存在隶属或授权关系。第三方名称和信息仅用于说明兼容对象，相关权利归原权利人所有。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本 App 為非官方工具，與遊戲廠商不存在隸屬或授權關係。第三方名稱與資訊僅用於說明相容對象，相關權利歸原權利人所有。"
+          }
+        }
+      }
+    },
+    "接收：你主动提交的游戏名和公告正文。目的：从公告中整理活动名称和时间。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receives: game names and announcement text that you choose to submit. Purpose: organizing event names and dates from announcements."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受け取る情報：ご自身で送信したゲーム名とお知らせの本文。目的：お知らせからイベント名と日時を整理するため。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는 정보: 사용자가 직접 제출한 게임 이름과 공지 본문. 목적: 공지에서 이벤트 이름과 일정을 정리하기 위함."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：你主动提交的游戏名和公告正文。目的：从公告中整理活动名称和时间。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：你主動提交的遊戲名稱與公告內文。目的：從公告中整理活動名稱與時間。"
+          }
+        }
+      }
+    },
+    "接收：由 Apple 处理的购买、订阅、iCloud 与通知相关信息。目的：内购、权益恢复、系统同步和本地通知。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receives: purchase, subscription, iCloud and notification information handled by Apple. Purpose: in-app purchases, restoring purchases, system sync and local notifications."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受け取る情報：Appleが取り扱う購入、サブスクリプション、iCloud、通知に関する情報。目的：アプリ内課金、購入の復元、システムの同期、ローカル通知のため。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는 정보: Apple이 처리하는 구매, 구독, iCloud 및 알림 관련 정보. 목적: 앱 내 구입, 구매 복원, 시스템 동기화 및 로컬 알림."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：由 Apple 处理的购买、订阅、iCloud 与通知相关信息。目的：内购、权益恢复、系统同步和本地通知。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：由 Apple 處理的購買、訂閱、iCloud 與通知相關資訊。目的：內購、權益恢復、系統同步與本機通知。"
+          }
+        }
+      }
+    },
+    "活动数据接口" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event Data API"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "イベントデータAPI"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이벤트 데이터 API"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "活动数据接口"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "活動資料介面"
+          }
+        }
+      }
+    },
+    "接收：所选游戏标识和语言参数，经由我们的后端转发。目的：获取公开游戏活动时间。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receives: the selected game and language, forwarded through our server. Purpose: fetching public game event schedules."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受け取る情報：選択したゲームと言語の情報（当社のサーバー経由で転送）。目的：公開されているゲームのイベント日程を取得するため。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는 정보: 선택한 게임과 언어 정보(당사 서버를 거쳐 전달). 목적: 공개된 게임 이벤트 일정을 가져오기 위함."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：所选游戏标识和语言参数，经由我们的后端转发。目的：获取公开游戏活动时间。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：所選遊戲識別與語言參數，經由我們的後端轉送。目的：取得公開的遊戲活動時間。"
+          }
+        }
+      }
+    },
+    "接收：安装标识、IP 地址、AI 请求和交易核验凭证。目的：托管后端，用于额度控制、AI 整理和会员核验。" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receives: install ID, IP address, AI requests and purchase verification data. Purpose: hosting our server for quota control, AI organizing and Premium verification."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受け取る情報：インストールID、IPアドレス、AIへのリクエスト、購入確認用の情報。目的：利用枠の管理、AI整理、プレミアムの確認を行うサーバーをホストするため。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는 정보: 설치 ID, IP 주소, AI 요청 및 구매 확인 정보. 목적: 이용 한도 관리, AI 정리, 프리미엄 확인을 위한 서버 호스팅."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：安装标识、IP 地址、AI 请求和交易核验凭证。目的：托管后端，用于额度控制、AI 整理和会员核验。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接收：安裝識別碼、IP 位址、AI 請求與交易驗證憑證。目的：託管後端，用於額度控制、AI 整理與會員驗證。"
           }
         }
       }
