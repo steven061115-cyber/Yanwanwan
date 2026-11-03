@@ -4,7 +4,7 @@ import UserNotifications
 
 enum ComplianceConfig {
     static let privacyVersion = "2026-11-03-v3"
-    static let supportEmail = "steven061115@gmail.com"
+    static let supportEmail = "ztyysls@gmail.com"
     static let aiModelName = "DeepSeek"
 
     static var supportEmailURL: URL? { URL(string: "mailto:\(supportEmail)") }

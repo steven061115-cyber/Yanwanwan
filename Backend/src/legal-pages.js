@@ -1,7 +1,7 @@
 // Privacy policy and terms pages, served in each language the app supports.
 // The app links here with ?lang=<AppLanguage>; App Store Connect links can use the same parameter.
 
-export const SUPPORT_EMAIL = 'steven061115@gmail.com';
+export const SUPPORT_EMAIL = 'ztyysls@gmail.com';
 export const LEGAL_LANGS = ['zh-Hans', 'zh-Hant', 'en', 'ja', 'ko'];
 const DEFAULT_LANG = 'en';
 const UPDATED_AT = '2026-11-03';
