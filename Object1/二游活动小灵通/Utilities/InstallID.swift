@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 enum InstallID {
-    private static let service = "ailesson.path.Object1.install-id"
+    private static let service = "com.steven.gamereminder.install-id"
     private static let account = "primary"
 
     static var current: String {

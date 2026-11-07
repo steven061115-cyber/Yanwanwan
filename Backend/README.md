@@ -23,7 +23,7 @@ cp .env.example .env
 会员额度由后端校验 App Store 交易 JWS 后决定。正式环境需要配置 Apple 根证书：
 
 ```env
-APP_BUNDLE_ID=ailesson.path.Object1
+APP_BUNDLE_ID=com.steven.gamereminder
 APP_STORE_ROOT_CERT_PATH=./certs/AppleRootCA-G3.pem
 ```
 
@@ -74,7 +74,7 @@ DEEPSEEK_TIMEOUT_MS=90000
 QUOTA_RATE_LIMIT_PER_MINUTE=120
 EXTRACT_RATE_LIMIT_PER_HOUR=30
 TRUST_PROXY_HEADERS=true
-APP_BUNDLE_ID=ailesson.path.Object1
+APP_BUNDLE_ID=com.steven.gamereminder
 APP_STORE_ROOT_CERT_PATH=./certs/AppleRootCA-G3.pem
 ALLOW_UNVERIFIED_STOREKIT_JWS=false
 CALENDAR_UPSTREAM_BASE_URL=https://api.ennead.cc

@@ -25,7 +25,7 @@
           "locale" : "zh_Hans"
         }
       ],
-      "productID" : "ailesson.path.Object1.premium.lifetime",
+      "productID" : "com.steven.gamereminder.premium.lifetime",
       "referenceName" : "一休尼会员",
       "type" : "NonConsumable"
     }
@@ -85,7 +85,7 @@
               "locale" : "zh_Hans"
             }
           ],
-          "productID" : "ailesson.path.Object1.premium.monthly",
+          "productID" : "com.steven.gamereminder.premium.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "月度会员",
           "subscriptionGroupID" : "C16F198D",

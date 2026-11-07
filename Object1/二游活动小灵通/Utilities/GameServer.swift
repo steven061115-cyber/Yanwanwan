@@ -59,7 +59,7 @@ nonisolated enum HoYoServer: String, CaseIterable, Identifiable {
     // MARK: Storage
 
     static let storageKey = "gameServer"
-    nonisolated(unsafe) static let store = UserDefaults(suiteName: "group.com.object1.eventreminder") ?? .standard
+    nonisolated(unsafe) static let store = UserDefaults(suiteName: "group.com.steven.gamereminder") ?? .standard
     // 调试用：在 Xcode Scheme 的启动参数里加 `-GameServerOverride asia` 可临时切换。
     private static let overrideKey = "GameServerOverride"
 

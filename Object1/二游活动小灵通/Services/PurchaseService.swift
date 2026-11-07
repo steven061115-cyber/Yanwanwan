@@ -5,8 +5,8 @@ import StoreKit
 @MainActor
 @Observable
 final class PurchaseService {
-    static let premiumProductID = "ailesson.path.Object1.premium.monthly"
-    static let lifetimeProductID = "ailesson.path.Object1.premium.lifetime"
+    static let premiumProductID = "com.steven.gamereminder.premium.monthly"
+    static let lifetimeProductID = "com.steven.gamereminder.premium.lifetime"
     private static let premiumProductIDs = [premiumProductID, lifetimeProductID]
 
     var tier: EntitlementTier = .free

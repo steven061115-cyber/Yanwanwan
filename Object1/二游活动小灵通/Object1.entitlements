@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.object1.eventreminder</string>
+		<string>group.com.steven.gamereminder</string>
 	</array>
 </dict>
 </plist>

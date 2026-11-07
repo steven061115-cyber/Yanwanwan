@@ -3,7 +3,7 @@ import SwiftUI
 
 // MARK: - Shared data model (mirrors SharedWidgetData.swift in main app)
 
-private let sharedAppGroupID = "group.com.object1.eventreminder"
+private let sharedAppGroupID = "group.com.steven.gamereminder"
 
 struct WidgetEvent: Codable {
     let id: String

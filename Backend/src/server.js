@@ -33,12 +33,12 @@ const host = process.env.HOST ?? '0.0.0.0';
 const deepSeekApiKey = process.env.DEEPSEEK_API_KEY ?? '';
 const maxTextChars = Number(process.env.MAX_TEXT_CHARS ?? 50000);
 const deepSeekTimeoutMs = Number(process.env.DEEPSEEK_TIMEOUT_MS ?? 90000);
-const appBundleId = process.env.APP_BUNDLE_ID ?? 'ailesson.path.Object1';
+const appBundleId = process.env.APP_BUNDLE_ID ?? 'com.steven.gamereminder';
 const allowUnverifiedStoreKitJWS = process.env.ALLOW_UNVERIFIED_STOREKIT_JWS === 'true';
 const appStoreRootCertificate = await loadAppStoreRootCertificate();
 const premiumProductIDs = new Set([
-  'ailesson.path.Object1.premium.monthly',
-  'ailesson.path.Object1.premium.lifetime'
+  'com.steven.gamereminder.premium.monthly',
+  'com.steven.gamereminder.premium.lifetime'
 ]);
 const database = createDatabase({
   connectionString: process.env.DATABASE_URL,

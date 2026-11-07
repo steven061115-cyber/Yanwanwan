@@ -3,7 +3,7 @@ import WidgetKit
 
 // App Group identifier — must match in both main app and widget extension entitlements.
 // Change this to match your actual bundle ID prefix.
-let sharedAppGroupID = "group.com.object1.eventreminder"
+let sharedAppGroupID = "group.com.steven.gamereminder"
 
 // Lightweight snapshot written by the main app and read by the widget extension.
 struct WidgetEvent: Codable {
