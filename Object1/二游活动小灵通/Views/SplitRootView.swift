@@ -255,7 +255,7 @@ struct SplitSidebar: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text("二游活动小灵通")
+            Text("GG Tracker")
                 .font(.system(size: 19, weight: .black))
             Text("小灵通婉婉为你的活动保驾护航")
                 .font(.system(size: 11, weight: .bold))

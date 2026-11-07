@@ -58,8 +58,8 @@ const PRIVACY = {
   'zh-Hans': {
     title: '隐私政策',
     sections: [
-      { p: '二游活动小灵通用于整理游戏活动和提醒。我们遵循最小必要原则，不出售用户数据，也不进行跨 App 或跨网站追踪。' },
-      { h: '运营者与联系', p: `本服务由二游活动小灵通的开发者（即 App Store 产品页显示的开发者）运营。你可以发送邮件至 ${mail}，提出查阅、更正、删除、撤回同意或投诉请求。` },
+      { p: 'GG Tracker 用于整理游戏活动和提醒。我们遵循最小必要原则，不出售用户数据，也不进行跨 App 或跨网站追踪。' },
+      { h: '运营者与联系', p: `本服务由 GG Tracker 的开发者（即 App Store 产品页显示的开发者）运营。你可以发送邮件至 ${mail}，提出查阅、更正、删除、撤回同意或投诉请求。` },
       { h: '我们会处理的数据', ul: [
         '安装标识：App 会生成一个随机安装标识，用于后端计算每日 AI 提取额度和基础限流。',
         'IP 地址：后端会临时使用请求的 IP 地址做基础限流和防滥用，只保存在内存中，不写入数据库。',
@@ -78,8 +78,8 @@ const PRIVACY = {
   'zh-Hant': {
     title: '隱私政策',
     sections: [
-      { p: '二遊活動小靈通用於整理遊戲活動與提醒。我們遵循最小必要原則，不出售使用者資料，也不進行跨 App 或跨網站追蹤。' },
-      { h: '營運者與聯絡方式', p: `本服務由二遊活動小靈通的開發者（即 App Store 產品頁顯示的開發者）營運。你可以寄送電子郵件至 ${mail}，提出查閱、更正、刪除、撤回同意或申訴請求。` },
+      { p: 'GG Tracker 用於整理遊戲活動與提醒。我們遵循最小必要原則，不出售使用者資料，也不進行跨 App 或跨網站追蹤。' },
+      { h: '營運者與聯絡方式', p: `本服務由 GG Tracker 的開發者（即 App Store 產品頁顯示的開發者）營運。你可以寄送電子郵件至 ${mail}，提出查閱、更正、刪除、撤回同意或申訴請求。` },
       { h: '我們會處理的資料', ul: [
         '安裝識別碼：App 會產生一組隨機安裝識別碼，供後端計算每日 AI 擷取額度與基礎限流。',
         'IP 位址：後端會暫時使用請求的 IP 位址進行基礎限流與防濫用，僅保存在記憶體中，不寫入資料庫。',
@@ -98,8 +98,8 @@ const PRIVACY = {
   en: {
     title: 'Privacy Policy',
     sections: [
-      { p: 'Gacha Event Tracker helps you keep track of game events and reminders. We collect only what we need, we never sell user data, and we do not track you across other apps or websites.' },
-      { h: 'Who we are and how to reach us', p: `This service is operated by the developer of Gacha Event Tracker (the developer shown on the App Store product page). Email ${mail} to request access to, correction or deletion of your data, to withdraw consent, or to make a complaint.` },
+      { p: 'GG Tracker helps you keep track of game events and reminders. We collect only what we need, we never sell user data, and we do not track you across other apps or websites.' },
+      { h: 'Who we are and how to reach us', p: `This service is operated by the developer of GG Tracker (the developer shown on the App Store product page). Email ${mail} to request access to, correction or deletion of your data, to withdraw consent, or to make a complaint.` },
       { h: 'Data we process', ul: [
         'Install ID: The app generates a random install ID that our server uses to count your daily AI extractions and apply basic rate limits.',
         'IP address: Our server briefly uses the IP address of each request for basic rate limiting and abuse prevention. It is kept in memory only and is never written to our database.',
@@ -118,8 +118,8 @@ const PRIVACY = {
   ja: {
     title: 'プライバシーポリシー',
     sections: [
-      { p: 'Gacha Event Trackerは、ゲームのイベントとリマインダーを整理するためのアプリです。必要最小限の情報のみを扱い、ユーザーデータを販売することはなく、他のアプリやウェブサイトをまたいだトラッキングも行いません。' },
-      { h: '運営者と連絡先', p: `本サービスはGacha Event Trackerの開発者（App Storeの製品ページに表示される開発者）が運営しています。データの開示・訂正・削除、同意の撤回、苦情については ${mail} までメールでご連絡ください。` },
+      { p: 'GG Trackerは、ゲームのイベントとリマインダーを整理するためのアプリです。必要最小限の情報のみを扱い、ユーザーデータを販売することはなく、他のアプリやウェブサイトをまたいだトラッキングも行いません。' },
+      { h: '運営者と連絡先', p: `本サービスはGG Trackerの開発者（App Storeの製品ページに表示される開発者）が運営しています。データの開示・訂正・削除、同意の撤回、苦情については ${mail} までメールでご連絡ください。` },
       { h: '取り扱うデータ', ul: [
         'インストールID：アプリはランダムなインストールIDを生成し、サーバーで1日のAI抽出回数の計算と基本的なレート制限に使用します。',
         'IPアドレス：サーバーは基本的なレート制限と不正利用防止のため、リクエストのIPアドレスを一時的に使用します。メモリ上でのみ扱い、データベースには保存しません。',
@@ -138,8 +138,8 @@ const PRIVACY = {
   ko: {
     title: '개인정보 처리방침',
     sections: [
-      { p: 'Gacha Event Tracker는 게임 이벤트와 알림을 정리하는 앱입니다. 꼭 필요한 정보만 처리하며, 사용자 데이터를 판매하지 않고, 다른 앱이나 웹사이트에 걸친 추적을 하지 않습니다.' },
-      { h: '운영자 및 연락처', p: `본 서비스는 Gacha Event Tracker 개발자(App Store 제품 페이지에 표시된 개발자)가 운영합니다. 데이터 열람·정정·삭제, 동의 철회 또는 불만 제기는 ${mail}로 이메일을 보내 주세요.` },
+      { p: 'GG Tracker는 게임 이벤트와 알림을 정리하는 앱입니다. 꼭 필요한 정보만 처리하며, 사용자 데이터를 판매하지 않고, 다른 앱이나 웹사이트에 걸친 추적을 하지 않습니다.' },
+      { h: '운영자 및 연락처', p: `본 서비스는 GG Tracker 개발자(App Store 제품 페이지에 표시된 개발자)가 운영합니다. 데이터 열람·정정·삭제, 동의 철회 또는 불만 제기는 ${mail}로 이메일을 보내 주세요.` },
       { h: '처리하는 데이터', ul: [
         '설치 ID: 앱은 무작위 설치 ID를 생성하며, 서버는 이를 일일 AI 추출 횟수 계산과 기본 요청 제한에 사용합니다.',
         'IP 주소: 서버는 기본 요청 제한과 남용 방지를 위해 요청의 IP 주소를 일시적으로 사용합니다. 메모리에서만 사용하며 데이터베이스에 저장하지 않습니다.',
@@ -163,12 +163,11 @@ const TERMS = {
   'zh-Hans': {
     title: '服务条款',
     sections: [
-      { p: '使用二游活动小灵通，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。' },
+      { p: '使用 GG Tracker，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。' },
       { h: '会员与购买', ul: [
-        '月度会员为自动续订订阅，价格以 App Store 购买页显示为准。',
-        '一休尼会员为一次性购买项目，购买后可长期使用当前会员权益。',
-        '购买、续订、取消和退款由 Apple App Store 处理。你可以在系统账户的订阅管理中取消月度会员。',
-        '月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。'
+        '会员提供月度和年度两种自动续订订阅，价格以 App Store 购买页显示为准。',
+        '购买、续订、取消和退款由 Apple App Store 处理。你可以在系统账户的订阅管理中取消会员订阅。',
+        '会员订阅会自动续订，除非在当前周期结束前至少 24 小时取消。'
       ] },
       { h: '会员权益', p: '会员当前包含更高的自定义游戏数量上限和每日 AI 提取额度。具体额度以 App 内展示为准。为了保证服务稳定，我们仍可能对异常高频请求进行限制。' },
       { h: '使用限制', p: '请勿批量滥用接口、绕过额度限制、提交违法内容，或将本服务用于侵犯他人权益的用途。' },
@@ -180,12 +179,11 @@ const TERMS = {
   'zh-Hant': {
     title: '服務條款',
     sections: [
-      { p: '使用二遊活動小靈通，即表示你同意本條款。App 用於個人整理遊戲活動資訊，擷取結果可能受公告內容品質與 AI 服務狀態影響，請以遊戲官方公告為準。' },
+      { p: '使用 GG Tracker，即表示你同意本條款。App 用於個人整理遊戲活動資訊，擷取結果可能受公告內容品質與 AI 服務狀態影響，請以遊戲官方公告為準。' },
       { h: '會員與購買', ul: [
-        '月度會員為自動續訂訂閱，價格以 App Store 購買頁面顯示為準。',
-        '一休尼會員為一次性購買項目，購買後可長期使用目前的會員權益。',
-        '購買、續訂、取消與退款由 Apple App Store 處理。你可以在系統帳號的訂閱管理中取消月度會員。',
-        '月度會員會自動續訂，除非在目前週期結束前至少 24 小時取消。'
+        '會員提供月度與年度兩種自動續訂訂閱，價格以 App Store 購買頁面顯示為準。',
+        '購買、續訂、取消與退款由 Apple App Store 處理。你可以在系統帳號的訂閱管理中取消會員訂閱。',
+        '會員訂閱會自動續訂，除非在目前週期結束前至少 24 小時取消。'
       ] },
       { h: '會員權益', p: '會員目前包含更高的自訂遊戲數量上限與每日 AI 擷取額度。具體額度以 App 內顯示為準。為確保服務穩定，我們仍可能限制異常高頻率的請求。' },
       { h: '使用限制', p: '請勿大量濫用介面、規避額度限制、提交違法內容，或將本服務用於侵害他人權益的用途。' },
@@ -197,12 +195,11 @@ const TERMS = {
   en: {
     title: 'Terms of Service',
     sections: [
-      { p: 'By using Gacha Event Tracker, you agree to these terms. The app is for personally organizing game event information. Extraction results depend on the quality of the announcement and the availability of the AI service, so always rely on the official game announcements.' },
+      { p: 'By using GG Tracker, you agree to these terms. The app is for personally organizing game event information. Extraction results depend on the quality of the announcement and the availability of the AI service, so always rely on the official game announcements.' },
       { h: 'Premium and purchases', ul: [
-        'Monthly Premium is an auto-renewing subscription. The price is as shown on the App Store purchase sheet.',
-        'Lifetime Premium is a one-time purchase that unlocks the current Premium benefits for the long term.',
-        'Purchases, renewals, cancellations and refunds are handled by the Apple App Store. You can cancel Monthly Premium in your Apple account’s subscription settings.',
-        'Monthly Premium renews automatically unless canceled at least 24 hours before the end of the current period.'
+        'Premium is offered as monthly and annual auto-renewing subscriptions. Prices are as shown on the App Store purchase sheet.',
+        'Purchases, renewals, cancellations and refunds are handled by the Apple App Store. You can cancel your Premium subscription in your Apple account’s subscription settings.',
+        'Premium subscriptions renew automatically unless canceled at least 24 hours before the end of the current period.'
       ] },
       { h: 'Premium benefits', p: 'Premium currently includes a higher limit on custom games and a higher daily AI extraction quota. The exact limits are shown in the app. To keep the service stable, we may still limit unusually frequent requests.' },
       { h: 'Acceptable use', p: 'Do not abuse the API in bulk, bypass quota limits, submit unlawful content, or use the service to infringe the rights of others.' },
@@ -214,12 +211,11 @@ const TERMS = {
   ja: {
     title: '利用規約',
     sections: [
-      { p: 'Gacha Event Trackerを利用することで、本規約に同意したものとみなされます。本アプリは個人でゲームのイベント情報を整理するためのものです。抽出結果はお知らせの内容やAIサービスの状況によって左右されるため、必ずゲームの公式のお知らせをご確認ください。' },
+      { p: 'GG Trackerを利用することで、本規約に同意したものとみなされます。本アプリは個人でゲームのイベント情報を整理するためのものです。抽出結果はお知らせの内容やAIサービスの状況によって左右されるため、必ずゲームの公式のお知らせをご確認ください。' },
       { h: 'プレミアムと購入', ul: [
-        '月額プレミアムは自動更新サブスクリプションです。価格はApp Storeの購入画面に表示されるとおりです。',
-        '買い切りプレミアムは1回限りの購入で、購入後は現在のプレミアム特典を長期間ご利用いただけます。',
-        '購入、更新、解約、返金はApple App Storeが取り扱います。月額プレミアムはAppleアカウントのサブスクリプション設定から解約できます。',
-        '月額プレミアムは、現在の期間が終了する24時間前までに解約しない限り自動的に更新されます。'
+        'プレミアムは月額と年額の自動更新サブスクリプションで提供されます。価格はApp Storeの購入画面に表示されるとおりです。',
+        '購入、更新、解約、返金はApple App Storeが取り扱います。プレミアムのサブスクリプションはAppleアカウントのサブスクリプション設定から解約できます。',
+        'プレミアムのサブスクリプションは、現在の期間が終了する24時間前までに解約しない限り自動的に更新されます。'
       ] },
       { h: 'プレミアム特典', p: 'プレミアムには現在、カスタムゲームの登録上限の拡大と、1日のAI抽出回数の拡大が含まれます。具体的な上限はアプリ内の表示をご確認ください。サービスを安定して提供するため、異常に頻繁なリクエストは制限する場合があります。' },
       { h: '禁止事項', p: 'APIの大量利用による濫用、利用枠制限の回避、違法なコンテンツの送信、他者の権利を侵害する目的での利用はおやめください。' },
@@ -231,12 +227,11 @@ const TERMS = {
   ko: {
     title: '서비스 약관',
     sections: [
-      { p: 'Gacha Event Tracker를 사용하면 본 약관에 동의한 것으로 간주됩니다. 이 앱은 개인이 게임 이벤트 정보를 정리하기 위한 것입니다. 추출 결과는 공지 내용의 품질과 AI 서비스 상태에 따라 달라질 수 있으므로 반드시 게임 공식 공지를 기준으로 확인해 주세요.' },
+      { p: 'GG Tracker를 사용하면 본 약관에 동의한 것으로 간주됩니다. 이 앱은 개인이 게임 이벤트 정보를 정리하기 위한 것입니다. 추출 결과는 공지 내용의 품질과 AI 서비스 상태에 따라 달라질 수 있으므로 반드시 게임 공식 공지를 기준으로 확인해 주세요.' },
       { h: '프리미엄 및 구매', ul: [
-        '월간 프리미엄은 자동 갱신 구독이며, 가격은 App Store 구매 화면에 표시된 금액을 따릅니다.',
-        '평생 프리미엄은 1회 구매 상품으로, 구매 후 현재의 프리미엄 혜택을 장기간 이용할 수 있습니다.',
-        '구매, 갱신, 취소 및 환불은 Apple App Store가 처리합니다. 월간 프리미엄은 Apple 계정의 구독 관리에서 취소할 수 있습니다.',
-        '월간 프리미엄은 현재 기간이 끝나기 최소 24시간 전에 취소하지 않으면 자동으로 갱신됩니다.'
+        '프리미엄은 월간 및 연간 자동 갱신 구독으로 제공되며, 가격은 App Store 구매 화면에 표시된 금액을 따릅니다.',
+        '구매, 갱신, 취소 및 환불은 Apple App Store가 처리합니다. 프리미엄 구독은 Apple 계정의 구독 관리에서 취소할 수 있습니다.',
+        '프리미엄 구독은 현재 기간이 끝나기 최소 24시간 전에 취소하지 않으면 자동으로 갱신됩니다.'
       ] },
       { h: '프리미엄 혜택', p: '프리미엄에는 현재 더 높은 커스텀 게임 추가 한도와 일일 AI 추출 한도가 포함됩니다. 정확한 한도는 앱 내 표시를 따릅니다. 안정적인 서비스를 위해 비정상적으로 잦은 요청은 제한될 수 있습니다.' },
       { h: '이용 제한', p: 'API를 대량으로 남용하거나, 이용 한도를 우회하거나, 불법 콘텐츠를 제출하거나, 타인의 권리를 침해하는 용도로 서비스를 이용하지 마세요.' },
@@ -248,11 +243,11 @@ const TERMS = {
 };
 
 const PAGE_TEXT = {
-  'zh-Hans': { app: '二游活动小灵通', updated: '更新日期：' },
-  'zh-Hant': { app: '二遊活動小靈通', updated: '更新日期：' },
-  en: { app: 'Gacha Event Tracker', updated: 'Last updated: ' },
-  ja: { app: 'Gacha Event Tracker', updated: '最終更新日：' },
-  ko: { app: 'Gacha Event Tracker', updated: '최종 업데이트: ' }
+  'zh-Hans': { app: 'GG Tracker', updated: '更新日期：' },
+  'zh-Hant': { app: 'GG Tracker', updated: '更新日期：' },
+  en: { app: 'GG Tracker', updated: 'Last updated: ' },
+  ja: { app: 'GG Tracker', updated: '最終更新日：' },
+  ko: { app: 'GG Tracker', updated: '최종 업데이트: ' }
 };
 
 function renderSections(sections) {

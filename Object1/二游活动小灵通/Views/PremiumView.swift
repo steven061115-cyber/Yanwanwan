@@ -96,7 +96,7 @@ struct PremiumView: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(purchaseService.isPremium ? "更多活动已经交给二游活动小灵通盯着" : "把更多游戏交给二游活动小灵通盯着")
+                Text(purchaseService.isPremium ? "更多活动已经交给 GG Tracker 盯着" : "把更多游戏交给 GG Tracker 盯着")
                     .font(.system(size: 28, weight: .black, design: .rounded))
                     .foregroundStyle(.white)
                     .lineLimit(2)
@@ -333,7 +333,7 @@ struct PremiumView: View {
                 premiumStatus
             } else if purchaseService.isLoadingProducts && purchaseService.products.isEmpty {
                 loadingProductStatus
-            } else if purchaseService.premiumProduct != nil || purchaseService.lifetimeProduct != nil {
+            } else if purchaseService.premiumProduct != nil || purchaseService.yearlyProduct != nil {
                 purchaseOptions
             } else {
                 unavailableProductStatus
@@ -375,7 +375,7 @@ struct PremiumView: View {
 
     private var purchaseTermsNotice: some View {
         VStack(spacing: 7) {
-            Text("购买由 App Store 处理，可在系统账户中管理或取消。月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。")
+            Text("购买由 App Store 处理，可在系统账户中管理或取消。会员订阅会自动续订，除非在当前周期结束前至少 24 小时取消。")
                 .multilineTextAlignment(.center)
 
             if let privacyURL = APIConfig.privacyPolicyURL,
@@ -409,12 +409,12 @@ struct PremiumView: View {
                 )
             }
 
-            if let product = purchaseService.lifetimeProduct {
+            if let product = purchaseService.yearlyProduct {
                 purchaseOptionButton(
                     product: product,
-                    title: String(localized: "一休尼会员", bundle: .appLanguage),
-                    subtitle: String(localized: "\(product.displayPrice) · 一次买断长期使用", bundle: .appLanguage),
-                    icon: "infinity",
+                    title: String(localized: "年度会员", bundle: .appLanguage),
+                    subtitle: String(localized: "\(product.displayPrice)/年 · 更划算", bundle: .appLanguage),
+                    icon: "star.circle.fill",
                     tint: Color.hoyoNavy,
                     isPrimary: false
                 )
@@ -742,7 +742,7 @@ private struct PurchaseCelebrationView: View {
             Text("会员已启用")
                 .font(.system(size: 22, weight: .black, design: .rounded))
                 .foregroundStyle(Color.hoyoNavy)
-            Text("更多活动已经交给二游活动小灵通盯着")
+            Text("更多活动已经交给 GG Tracker 盯着")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.hoyoNavy.opacity(0.52))
         }

@@ -7,31 +7,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二游活动小灵通"
+            "value" : "GG Tracker"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二遊活動小靈通"
+            "value" : "GG Tracker"
           }
         }
       }

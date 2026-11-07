@@ -14,21 +14,7 @@
 
   ],
   "products" : [
-    {
-      "displayPrice" : "28",
-      "familyShareable" : false,
-      "internalID" : "59FCCF61",
-      "localizations" : [
-        {
-          "description" : "解锁 10 个自定义游戏和每日 30 次 AI 公告提取额度。",
-          "displayName" : "一休尼会员",
-          "locale" : "zh_Hans"
-        }
-      ],
-      "productID" : "com.steven.gamereminder.premium.lifetime",
-      "referenceName" : "一休尼会员",
-      "type" : "NonConsumable"
-    }
+
   ],
   "settings" : {
     "_askToBuyEnabled" : false,
@@ -38,7 +24,7 @@
     "_failTransactionsEnabled" : false,
     "_locale" : "zh_Hans",
     "_renewalBillingIssuesEnabled" : false,
-    "_storefront" : "CHN",
+    "_storefront" : "USA",
     "_storeKitErrors" : [
 
     ],
@@ -62,8 +48,8 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "3",
-              "displayPrice" : "3",
+              "commitmentDisplayPrice" : "0.99",
+              "displayPrice" : "0.99",
               "internalID" : "02DAB810",
               "isEnabled" : true
             }
@@ -71,7 +57,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "3",
+          "displayPrice" : "0.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "2312F34C",
@@ -88,6 +74,45 @@
           "productID" : "com.steven.gamereminder.premium.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "月度会员",
+          "subscriptionGroupID" : "C16F198D",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "7.99",
+              "displayPrice" : "7.99",
+              "internalID" : "3A7C5E21",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "7.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "59FCCF61",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "解锁 10 个自定义游戏和每日 30 次 AI 公告提取额度。",
+              "displayName" : "年度会员",
+              "locale" : "zh_Hans"
+            }
+          ],
+          "productID" : "com.steven.gamereminder.premium.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "年度会员",
           "subscriptionGroupID" : "C16F198D",
           "type" : "RecurringSubscription",
           "winbackOffers" : [

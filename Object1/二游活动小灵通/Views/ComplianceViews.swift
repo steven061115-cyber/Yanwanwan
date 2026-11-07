@@ -94,7 +94,7 @@ struct PrivacyConsentView: View {
 
     private var title: String {
         switch step {
-        case .ask: String(localized: "欢迎使用二游活动小灵通", bundle: .appLanguage)
+        case .ask: String(localized: "欢迎使用 GG Tracker", bundle: .appLanguage)
         case .explain: String(localized: "需要你的同意", bundle: .appLanguage)
         case .declined: String(localized: "你未同意隐私政策", bundle: .appLanguage)
         }

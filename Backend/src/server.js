@@ -38,7 +38,7 @@ const allowUnverifiedStoreKitJWS = process.env.ALLOW_UNVERIFIED_STOREKIT_JWS ===
 const appStoreRootCertificate = await loadAppStoreRootCertificate();
 const premiumProductIDs = new Set([
   'com.steven.gamereminder.premium.monthly',
-  'com.steven.gamereminder.premium.lifetime'
+  'com.steven.gamereminder.premium.yearly'
 ]);
 const database = createDatabase({
   connectionString: process.env.DATABASE_URL,

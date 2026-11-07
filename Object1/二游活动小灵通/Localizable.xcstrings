@@ -316,36 +316,36 @@
         }
       }
     },
-    "%@ · 一次买断长期使用" : {
+    "%@/年 · 更划算" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ · One-time purchase, yours forever"
+            "value" : "%@/year · Best value"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ · 一度の購入でずっと使えます"
+            "value" : "%@/年 · お得"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ · 한 번 구매로 계속 사용"
+            "value" : "%@/년 · 더 알뜰하게"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ · 一次买断长期使用"
+            "value" : "%@/年 · 更划算"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ · 一次買斷長期使用"
+            "value" : "%@/年 · 更劃算"
           }
         }
       }
@@ -1635,70 +1635,36 @@
         }
       }
     },
-    "一休尼会员" : {
+    "年度会员" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lifetime Premium"
+            "value" : "Annual Premium"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "買い切りプレミアム"
+            "value" : "年額プレミアム"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "평생 프리미엄"
+            "value" : "연간 프리미엄"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "一休尼会员"
+            "value" : "年度会员"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "一休尼會員"
-          }
-        }
-      }
-    },
-    "一休尼会员商品暂不可用，请稍后再试" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lifetime Premium is unavailable right now. Please try again later."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "買い切りプレミアムは現在利用できません。しばらくしてからお試しください"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "평생 프리미엄을 지금 사용할 수 없습니다. 잠시 후 다시 시도해 주세요"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一休尼会员商品暂不可用，请稍后再试"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一休尼會員商品暫不可用，請稍後再試"
+            "value" : "年度會員"
           }
         }
       }
@@ -2043,70 +2009,70 @@
         }
       }
     },
-    "二游活动小灵通" : {
+    "GG Tracker" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker"
+            "value" : "GG Tracker"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二游活动小灵通"
+            "value" : "GG Tracker"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二遊活動小靈通"
+            "value" : "GG Tracker"
           }
         }
       }
     },
-    "二游活动小灵通倒计时" : {
+    "GG Tracker 倒计时" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Countdown"
+            "value" : "GG Tracker Countdown"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ガチャイベント カウントダウン"
+            "value" : "GG Tracker カウントダウン"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "가챠 이벤트 카운트다운"
+            "value" : "GG Tracker 카운트다운"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二游活动小灵通倒计时"
+            "value" : "GG Tracker 倒计时"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "二遊活動小靈通倒計時"
+            "value" : "GG Tracker 倒計時"
           }
         }
       }
@@ -7597,36 +7563,36 @@
         }
       }
     },
-    "把更多游戏交给二游活动小灵通盯着" : {
+    "把更多游戏交给 GG Tracker 盯着" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let Gacha Event Tracker watch more of your games"
+            "value" : "Let GG Tracker watch more of your games"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "もっと多くのゲームをGacha Event Trackerにおまかせ"
+            "value" : "もっと多くのゲームをGG Trackerにおまかせ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "더 많은 게임을 Gacha Event Tracker에 맡겨 보세요"
+            "value" : "더 많은 게임을 GG Tracker에 맡겨 보세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "把更多游戏交给二游活动小灵通盯着"
+            "value" : "把更多游戏交给 GG Tracker 盯着"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "把更多遊戲交給二遊活動小靈通盯著"
+            "value" : "把更多遊戲交給 GG Tracker 盯著"
           }
         }
       }
@@ -8991,36 +8957,36 @@
         }
       }
     },
-    "更多活动已经交给二游活动小灵通盯着" : {
+    "更多活动已经交给 GG Tracker 盯着" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker is watching even more events for you"
+            "value" : "GG Tracker is watching even more events for you"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Trackerがさらに多くのイベントを見守っています"
+            "value" : "GG Trackerがさらに多くのイベントを見守っています"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker가 더 많은 이벤트를 지켜보고 있어요"
+            "value" : "GG Tracker가 더 많은 이벤트를 지켜보고 있어요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更多活动已经交给二游活动小灵通盯着"
+            "value" : "更多活动已经交给 GG Tracker 盯着"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更多活動已經交給二遊活動小靈通盯著"
+            "value" : "更多活動已經交給 GG Tracker 盯著"
           }
         }
       }
@@ -9637,36 +9603,36 @@
         }
       }
     },
-    "欢迎使用二游活动小灵通" : {
+    "欢迎使用 GG Tracker" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to Gacha Event Tracker"
+            "value" : "Welcome to GG Tracker"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Trackerへようこそ"
+            "value" : "GG Trackerへようこそ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gacha Event Tracker에 오신 것을 환영합니다"
+            "value" : "GG Tracker에 오신 것을 환영합니다"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "欢迎使用二游活动小灵通"
+            "value" : "欢迎使用 GG Tracker"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "歡迎使用二遊活動小靈通"
+            "value" : "歡迎使用 GG Tracker"
           }
         }
       }
@@ -13479,36 +13445,36 @@
         }
       }
     },
-    "购买由 App Store 处理，可在系统账户中管理或取消。月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。" : {
+    "购买由 App Store 处理，可在系统账户中管理或取消。会员订阅会自动续订，除非在当前周期结束前至少 24 小时取消。" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Purchases are handled by the App Store and can be managed or cancelled in your account settings. The monthly plan renews automatically unless cancelled at least 24 hours before the current period ends."
+            "value" : "Purchases are handled by the App Store and can be managed or cancelled in your account settings. Subscriptions renew automatically unless cancelled at least 24 hours before the current period ends."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "購入はApp Storeで処理され、アカウント設定で管理・解約できます。月額プランは、現在の期間が終わる24時間前までに解約しない限り自動更新されます。"
+            "value" : "購入はApp Storeで処理され、アカウント設定で管理・解約できます。サブスクリプションは、現在の期間が終わる24時間前までに解約しない限り自動更新されます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "구매는 App Store에서 처리되며 계정 설정에서 관리하거나 취소할 수 있습니다. 월간 요금제는 현재 기간이 끝나기 최소 24시간 전에 취소하지 않으면 자동으로 갱신됩니다."
+            "value" : "구매는 App Store에서 처리되며 계정 설정에서 관리하거나 취소할 수 있습니다. 구독은 현재 기간이 끝나기 최소 24시간 전에 취소하지 않으면 자동으로 갱신됩니다."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "购买由 App Store 处理，可在系统账户中管理或取消。月度会员会自动续订，除非在当前周期结束前至少 24 小时取消。"
+            "value" : "购买由 App Store 处理，可在系统账户中管理或取消。会员订阅会自动续订，除非在当前周期结束前至少 24 小时取消。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "購買由 App Store 處理，可在系統帳戶中管理或取消。月度會員會自動續訂，除非在當前週期結束前至少 24 小時取消。"
+            "value" : "購買由 App Store 處理，可在系統帳戶中管理或取消。會員訂閱會自動續訂，除非在當前週期結束前至少 24 小時取消。"
           }
         }
       }

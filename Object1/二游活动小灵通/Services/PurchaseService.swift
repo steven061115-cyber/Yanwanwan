@@ -6,8 +6,8 @@ import StoreKit
 @Observable
 final class PurchaseService {
     static let premiumProductID = "com.steven.gamereminder.premium.monthly"
-    static let lifetimeProductID = "com.steven.gamereminder.premium.lifetime"
-    private static let premiumProductIDs = [premiumProductID, lifetimeProductID]
+    static let yearlyProductID = "com.steven.gamereminder.premium.yearly"
+    private static let premiumProductIDs = [premiumProductID, yearlyProductID]
 
     var tier: EntitlementTier = .free
     var products: [Product] = []
@@ -22,8 +22,8 @@ final class PurchaseService {
         products.first { $0.id == Self.premiumProductID }
     }
 
-    var lifetimeProduct: Product? {
-        products.first { $0.id == Self.lifetimeProductID }
+    var yearlyProduct: Product? {
+        products.first { $0.id == Self.yearlyProductID }
     }
 
     var isPremium: Bool { tier == .premium }
@@ -73,20 +73,6 @@ final class PurchaseService {
 
         guard let product = premiumProduct else {
             errorMessage = String(localized: "会员商品暂不可用，请稍后再试", bundle: .appLanguage)
-            return false
-        }
-
-        return await purchase(product)
-    }
-
-    @discardableResult
-    func purchaseLifetime() async -> Bool {
-        if lifetimeProduct == nil {
-            await loadProducts()
-        }
-
-        guard let product = lifetimeProduct else {
-            errorMessage = String(localized: "一休尼会员商品暂不可用，请稍后再试", bundle: .appLanguage)
             return false
         }
 
