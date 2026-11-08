@@ -228,7 +228,7 @@ struct EventCountdownWidget: Widget {
                     )
                 }
         }
-        .configurationDisplayName("GG Tracker 倒计时")
+        .configurationDisplayName("Gacha Pal 倒计时")
         .description("显示最近即将结束的米哈游游戏活动。")
         .supportedFamilies([.systemSmall, .systemMedium])
     }

@@ -20,7 +20,7 @@ import {
   normalizeCalendarLang
 } from './calendar-proxy.js';
 import { FreeIPDailyLimiter } from './free-ip-limit.js';
-import { privacyPolicyHTML, resolveLegalLang, termsOfServiceHTML } from './legal-pages.js';
+import { privacyPolicyHTML, resolveLegalLang, supportPageHTML, termsOfServiceHTML } from './legal-pages.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -121,6 +121,11 @@ async function handleRequest(req, res) {
 
   if (req.method === 'GET' && pathname === '/privacy') {
     sendHTML(res, 200, privacyPolicyHTML(legalLangFor(req)));
+    return;
+  }
+
+  if (req.method === 'GET' && pathname === '/support') {
+    sendHTML(res, 200, supportPageHTML(legalLangFor(req)));
     return;
   }
 

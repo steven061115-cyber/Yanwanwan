@@ -2009,70 +2009,70 @@
         }
       }
     },
-    "GG Tracker" : {
+    "Gacha Pal" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker"
+            "value" : "Gacha Pal"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker"
+            "value" : "Gacha Pal"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker"
+            "value" : "Gacha Pal"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker"
+            "value" : "Gacha Pal"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker"
+            "value" : "Gacha Pal"
           }
         }
       }
     },
-    "GG Tracker 倒计时" : {
+    "Gacha Pal 倒计时" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker Countdown"
+            "value" : "Gacha Pal Countdown"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker カウントダウン"
+            "value" : "Gacha Pal カウントダウン"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker 카운트다운"
+            "value" : "Gacha Pal 카운트다운"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker 倒计时"
+            "value" : "Gacha Pal 倒计时"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker 倒計時"
+            "value" : "Gacha Pal 倒計時"
           }
         }
       }
@@ -7563,36 +7563,36 @@
         }
       }
     },
-    "把更多游戏交给 GG Tracker 盯着" : {
+    "把更多游戏交给 Gacha Pal 盯着" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let GG Tracker watch more of your games"
+            "value" : "Let Gacha Pal watch more of your games"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "もっと多くのゲームをGG Trackerにおまかせ"
+            "value" : "もっと多くのゲームをGacha Palにおまかせ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "더 많은 게임을 GG Tracker에 맡겨 보세요"
+            "value" : "더 많은 게임을 Gacha Pal에 맡겨 보세요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "把更多游戏交给 GG Tracker 盯着"
+            "value" : "把更多游戏交给 Gacha Pal 盯着"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "把更多遊戲交給 GG Tracker 盯著"
+            "value" : "把更多遊戲交給 Gacha Pal 盯著"
           }
         }
       }
@@ -8957,36 +8957,36 @@
         }
       }
     },
-    "更多活动已经交给 GG Tracker 盯着" : {
+    "更多活动已经交给 Gacha Pal 盯着" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker is watching even more events for you"
+            "value" : "Gacha Pal is watching even more events for you"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Trackerがさらに多くのイベントを見守っています"
+            "value" : "Gacha Palがさらに多くのイベントを見守っています"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker가 더 많은 이벤트를 지켜보고 있어요"
+            "value" : "Gacha Pal가 더 많은 이벤트를 지켜보고 있어요"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更多活动已经交给 GG Tracker 盯着"
+            "value" : "更多活动已经交给 Gacha Pal 盯着"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更多活動已經交給 GG Tracker 盯著"
+            "value" : "更多活動已經交給 Gacha Pal 盯著"
           }
         }
       }
@@ -9603,36 +9603,36 @@
         }
       }
     },
-    "欢迎使用 GG Tracker" : {
+    "欢迎使用 Gacha Pal" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to GG Tracker"
+            "value" : "Welcome to Gacha Pal"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Trackerへようこそ"
+            "value" : "Gacha Palへようこそ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "GG Tracker에 오신 것을 환영합니다"
+            "value" : "Gacha Pal에 오신 것을 환영합니다"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "欢迎使用 GG Tracker"
+            "value" : "欢迎使用 Gacha Pal"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "歡迎使用 GG Tracker"
+            "value" : "歡迎使用 Gacha Pal"
           }
         }
       }

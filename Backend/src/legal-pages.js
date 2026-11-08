@@ -58,8 +58,8 @@ const PRIVACY = {
   'zh-Hans': {
     title: '隐私政策',
     sections: [
-      { p: 'GG Tracker 用于整理游戏活动和提醒。我们遵循最小必要原则，不出售用户数据，也不进行跨 App 或跨网站追踪。' },
-      { h: '运营者与联系', p: `本服务由 GG Tracker 的开发者（即 App Store 产品页显示的开发者）运营。你可以发送邮件至 ${mail}，提出查阅、更正、删除、撤回同意或投诉请求。` },
+      { p: 'Gacha Pal 用于整理游戏活动和提醒。我们遵循最小必要原则，不出售用户数据，也不进行跨 App 或跨网站追踪。' },
+      { h: '运营者与联系', p: `本服务由 Gacha Pal 的开发者（即 App Store 产品页显示的开发者）运营。你可以发送邮件至 ${mail}，提出查阅、更正、删除、撤回同意或投诉请求。` },
       { h: '我们会处理的数据', ul: [
         '安装标识：App 会生成一个随机安装标识，用于后端计算每日 AI 提取额度和基础限流。',
         'IP 地址：后端会临时使用请求的 IP 地址做基础限流和防滥用，只保存在内存中，不写入数据库。',
@@ -78,8 +78,8 @@ const PRIVACY = {
   'zh-Hant': {
     title: '隱私政策',
     sections: [
-      { p: 'GG Tracker 用於整理遊戲活動與提醒。我們遵循最小必要原則，不出售使用者資料，也不進行跨 App 或跨網站追蹤。' },
-      { h: '營運者與聯絡方式', p: `本服務由 GG Tracker 的開發者（即 App Store 產品頁顯示的開發者）營運。你可以寄送電子郵件至 ${mail}，提出查閱、更正、刪除、撤回同意或申訴請求。` },
+      { p: 'Gacha Pal 用於整理遊戲活動與提醒。我們遵循最小必要原則，不出售使用者資料，也不進行跨 App 或跨網站追蹤。' },
+      { h: '營運者與聯絡方式', p: `本服務由 Gacha Pal 的開發者（即 App Store 產品頁顯示的開發者）營運。你可以寄送電子郵件至 ${mail}，提出查閱、更正、刪除、撤回同意或申訴請求。` },
       { h: '我們會處理的資料', ul: [
         '安裝識別碼：App 會產生一組隨機安裝識別碼，供後端計算每日 AI 擷取額度與基礎限流。',
         'IP 位址：後端會暫時使用請求的 IP 位址進行基礎限流與防濫用，僅保存在記憶體中，不寫入資料庫。',
@@ -98,8 +98,8 @@ const PRIVACY = {
   en: {
     title: 'Privacy Policy',
     sections: [
-      { p: 'GG Tracker helps you keep track of game events and reminders. We collect only what we need, we never sell user data, and we do not track you across other apps or websites.' },
-      { h: 'Who we are and how to reach us', p: `This service is operated by the developer of GG Tracker (the developer shown on the App Store product page). Email ${mail} to request access to, correction or deletion of your data, to withdraw consent, or to make a complaint.` },
+      { p: 'Gacha Pal helps you keep track of game events and reminders. We collect only what we need, we never sell user data, and we do not track you across other apps or websites.' },
+      { h: 'Who we are and how to reach us', p: `This service is operated by the developer of Gacha Pal (the developer shown on the App Store product page). Email ${mail} to request access to, correction or deletion of your data, to withdraw consent, or to make a complaint.` },
       { h: 'Data we process', ul: [
         'Install ID: The app generates a random install ID that our server uses to count your daily AI extractions and apply basic rate limits.',
         'IP address: Our server briefly uses the IP address of each request for basic rate limiting and abuse prevention. It is kept in memory only and is never written to our database.',
@@ -118,8 +118,8 @@ const PRIVACY = {
   ja: {
     title: 'プライバシーポリシー',
     sections: [
-      { p: 'GG Trackerは、ゲームのイベントとリマインダーを整理するためのアプリです。必要最小限の情報のみを扱い、ユーザーデータを販売することはなく、他のアプリやウェブサイトをまたいだトラッキングも行いません。' },
-      { h: '運営者と連絡先', p: `本サービスはGG Trackerの開発者（App Storeの製品ページに表示される開発者）が運営しています。データの開示・訂正・削除、同意の撤回、苦情については ${mail} までメールでご連絡ください。` },
+      { p: 'Gacha Palは、ゲームのイベントとリマインダーを整理するためのアプリです。必要最小限の情報のみを扱い、ユーザーデータを販売することはなく、他のアプリやウェブサイトをまたいだトラッキングも行いません。' },
+      { h: '運営者と連絡先', p: `本サービスはGacha Palの開発者（App Storeの製品ページに表示される開発者）が運営しています。データの開示・訂正・削除、同意の撤回、苦情については ${mail} までメールでご連絡ください。` },
       { h: '取り扱うデータ', ul: [
         'インストールID：アプリはランダムなインストールIDを生成し、サーバーで1日のAI抽出回数の計算と基本的なレート制限に使用します。',
         'IPアドレス：サーバーは基本的なレート制限と不正利用防止のため、リクエストのIPアドレスを一時的に使用します。メモリ上でのみ扱い、データベースには保存しません。',
@@ -138,8 +138,8 @@ const PRIVACY = {
   ko: {
     title: '개인정보 처리방침',
     sections: [
-      { p: 'GG Tracker는 게임 이벤트와 알림을 정리하는 앱입니다. 꼭 필요한 정보만 처리하며, 사용자 데이터를 판매하지 않고, 다른 앱이나 웹사이트에 걸친 추적을 하지 않습니다.' },
-      { h: '운영자 및 연락처', p: `본 서비스는 GG Tracker 개발자(App Store 제품 페이지에 표시된 개발자)가 운영합니다. 데이터 열람·정정·삭제, 동의 철회 또는 불만 제기는 ${mail}로 이메일을 보내 주세요.` },
+      { p: 'Gacha Pal는 게임 이벤트와 알림을 정리하는 앱입니다. 꼭 필요한 정보만 처리하며, 사용자 데이터를 판매하지 않고, 다른 앱이나 웹사이트에 걸친 추적을 하지 않습니다.' },
+      { h: '운영자 및 연락처', p: `본 서비스는 Gacha Pal 개발자(App Store 제품 페이지에 표시된 개발자)가 운영합니다. 데이터 열람·정정·삭제, 동의 철회 또는 불만 제기는 ${mail}로 이메일을 보내 주세요.` },
       { h: '처리하는 데이터', ul: [
         '설치 ID: 앱은 무작위 설치 ID를 생성하며, 서버는 이를 일일 AI 추출 횟수 계산과 기본 요청 제한에 사용합니다.',
         'IP 주소: 서버는 기본 요청 제한과 남용 방지를 위해 요청의 IP 주소를 일시적으로 사용합니다. 메모리에서만 사용하며 데이터베이스에 저장하지 않습니다.',
@@ -163,7 +163,7 @@ const TERMS = {
   'zh-Hans': {
     title: '服务条款',
     sections: [
-      { p: '使用 GG Tracker，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。' },
+      { p: '使用 Gacha Pal，即表示你同意本条款。App 用于个人整理游戏活动信息，提取结果可能受公告内容质量和 AI 服务状态影响，请以游戏官方公告为准。' },
       { h: '会员与购买', ul: [
         '会员提供月度和年度两种自动续订订阅，价格以 App Store 购买页显示为准。',
         '购买、续订、取消和退款由 Apple App Store 处理。你可以在系统账户的订阅管理中取消会员订阅。',
@@ -179,7 +179,7 @@ const TERMS = {
   'zh-Hant': {
     title: '服務條款',
     sections: [
-      { p: '使用 GG Tracker，即表示你同意本條款。App 用於個人整理遊戲活動資訊，擷取結果可能受公告內容品質與 AI 服務狀態影響，請以遊戲官方公告為準。' },
+      { p: '使用 Gacha Pal，即表示你同意本條款。App 用於個人整理遊戲活動資訊，擷取結果可能受公告內容品質與 AI 服務狀態影響，請以遊戲官方公告為準。' },
       { h: '會員與購買', ul: [
         '會員提供月度與年度兩種自動續訂訂閱，價格以 App Store 購買頁面顯示為準。',
         '購買、續訂、取消與退款由 Apple App Store 處理。你可以在系統帳號的訂閱管理中取消會員訂閱。',
@@ -195,7 +195,7 @@ const TERMS = {
   en: {
     title: 'Terms of Service',
     sections: [
-      { p: 'By using GG Tracker, you agree to these terms. The app is for personally organizing game event information. Extraction results depend on the quality of the announcement and the availability of the AI service, so always rely on the official game announcements.' },
+      { p: 'By using Gacha Pal, you agree to these terms. The app is for personally organizing game event information. Extraction results depend on the quality of the announcement and the availability of the AI service, so always rely on the official game announcements.' },
       { h: 'Premium and purchases', ul: [
         'Premium is offered as monthly and annual auto-renewing subscriptions. Prices are as shown on the App Store purchase sheet.',
         'Purchases, renewals, cancellations and refunds are handled by the Apple App Store. You can cancel your Premium subscription in your Apple account’s subscription settings.',
@@ -211,7 +211,7 @@ const TERMS = {
   ja: {
     title: '利用規約',
     sections: [
-      { p: 'GG Trackerを利用することで、本規約に同意したものとみなされます。本アプリは個人でゲームのイベント情報を整理するためのものです。抽出結果はお知らせの内容やAIサービスの状況によって左右されるため、必ずゲームの公式のお知らせをご確認ください。' },
+      { p: 'Gacha Palを利用することで、本規約に同意したものとみなされます。本アプリは個人でゲームのイベント情報を整理するためのものです。抽出結果はお知らせの内容やAIサービスの状況によって左右されるため、必ずゲームの公式のお知らせをご確認ください。' },
       { h: 'プレミアムと購入', ul: [
         'プレミアムは月額と年額の自動更新サブスクリプションで提供されます。価格はApp Storeの購入画面に表示されるとおりです。',
         '購入、更新、解約、返金はApple App Storeが取り扱います。プレミアムのサブスクリプションはAppleアカウントのサブスクリプション設定から解約できます。',
@@ -227,7 +227,7 @@ const TERMS = {
   ko: {
     title: '서비스 약관',
     sections: [
-      { p: 'GG Tracker를 사용하면 본 약관에 동의한 것으로 간주됩니다. 이 앱은 개인이 게임 이벤트 정보를 정리하기 위한 것입니다. 추출 결과는 공지 내용의 품질과 AI 서비스 상태에 따라 달라질 수 있으므로 반드시 게임 공식 공지를 기준으로 확인해 주세요.' },
+      { p: 'Gacha Pal를 사용하면 본 약관에 동의한 것으로 간주됩니다. 이 앱은 개인이 게임 이벤트 정보를 정리하기 위한 것입니다. 추출 결과는 공지 내용의 품질과 AI 서비스 상태에 따라 달라질 수 있으므로 반드시 게임 공식 공지를 기준으로 확인해 주세요.' },
       { h: '프리미엄 및 구매', ul: [
         '프리미엄은 월간 및 연간 자동 갱신 구독으로 제공되며, 가격은 App Store 구매 화면에 표시된 금액을 따릅니다.',
         '구매, 갱신, 취소 및 환불은 Apple App Store가 처리합니다. 프리미엄 구독은 Apple 계정의 구독 관리에서 취소할 수 있습니다.',
@@ -242,12 +242,80 @@ const TERMS = {
   }
 };
 
+const SUPPORT = {
+  'zh-Hans': {
+    title: '技术支持',
+    sections: [
+      { p: `遇到问题或有建议，请发邮件到 ${mail}，我们通常会在 2 个工作日内回复。来信时请尽量附上设备型号、系统版本和问题截图。` },
+      { h: '常见问题', ul: [
+        '<strong>换了手机或重装后会员不见了？</strong>打开 App 的会员页面，点「恢复购买」，并确认使用的是购买时的 Apple 账户。',
+        '<strong>如何取消订阅？</strong>在 iPhone「设置」→ 你的 Apple 账户 →「订阅」中找到 Gacha Pal 并取消。取消后会员权益保留到当前周期结束。',
+        '<strong>AI 提取的活动不准确？</strong>提取结果依赖公告内容，请以游戏官方公告为准。你可以手动修改或删除活动，也欢迎把公告链接发给我们帮助改进。',
+        '<strong>如何删除我的数据？</strong>在 App「设置」→「管理我的数据」中可以删除服务器上与本设备相关的数据。'
+      ] },
+      { h: '相关文档', p: '<a href="/privacy?lang=zh-Hans">隐私政策</a> · <a href="/terms?lang=zh-Hans">服务条款</a>' }
+    ]
+  },
+  'zh-Hant': {
+    title: '技術支援',
+    sections: [
+      { p: `遇到問題或有建議，請寄信到 ${mail}，我們通常會在 2 個工作天內回覆。來信時請盡量附上裝置型號、系統版本和問題截圖。` },
+      { h: '常見問題', ul: [
+        '<strong>換了手機或重裝後會員不見了？</strong>打開 App 的會員頁面，點「恢復購買」，並確認使用的是購買時的 Apple 帳號。',
+        '<strong>如何取消訂閱？</strong>在 iPhone「設定」→ 你的 Apple 帳號 →「訂閱項目」中找到 Gacha Pal 並取消。取消後會員權益保留到目前週期結束。',
+        '<strong>AI 擷取的活動不準確？</strong>擷取結果取決於公告內容，請以遊戲官方公告為準。你可以手動修改或刪除活動，也歡迎把公告連結寄給我們協助改進。',
+        '<strong>如何刪除我的資料？</strong>在 App「設定」→「管理我的資料」中可以刪除伺服器上與本裝置相關的資料。'
+      ] },
+      { h: '相關文件', p: '<a href="/privacy?lang=zh-Hant">隱私權政策</a> · <a href="/terms?lang=zh-Hant">服務條款</a>' }
+    ]
+  },
+  en: {
+    title: 'Support',
+    sections: [
+      { p: `Questions or feedback? Email us at ${mail}. We usually reply within 2 business days. Please include your device model, iOS version and a screenshot if possible.` },
+      { h: 'FAQ', ul: [
+        '<strong>My Premium is missing after switching phones or reinstalling.</strong> Open the Premium page in the app and tap “Restore Purchases”. Make sure you are signed in with the Apple Account you used to subscribe.',
+        '<strong>How do I cancel my subscription?</strong> Go to iPhone Settings → your Apple Account → Subscriptions, select Gacha Pal and cancel. Premium stays active until the end of the current period.',
+        '<strong>The AI-extracted events are inaccurate.</strong> Results depend on the announcement text, so please treat official game announcements as the source of truth. You can edit or delete events manually, and feel free to send us the announcement link so we can improve.',
+        '<strong>How do I delete my data?</strong> In the app, go to Settings → Manage My Data to delete the server-side data associated with this device.'
+      ] },
+      { h: 'Documents', p: '<a href="/privacy?lang=en">Privacy Policy</a> · <a href="/terms?lang=en">Terms of Service</a>' }
+    ]
+  },
+  ja: {
+    title: 'サポート',
+    sections: [
+      { p: `ご質問やご意見は ${mail} までメールでお送りください。通常 2 営業日以内に返信します。可能であれば端末の機種、iOS のバージョン、スクリーンショットを添えてください。` },
+      { h: 'よくある質問', ul: [
+        '<strong>機種変更や再インストール後にプレミアムが消えた</strong>アプリのプレミアム画面で「購入を復元」をタップし、購入時と同じ Apple アカウントでサインインしているか確認してください。',
+        '<strong>サブスクリプションを解約するには？</strong>iPhone の「設定」→ Apple アカウント →「サブスクリプション」から Gacha Pal を選んで解約できます。現在の期間が終わるまでプレミアムは有効です。',
+        '<strong>AI が抽出したイベントが正確でない</strong>抽出結果はお知らせの内容に左右されます。公式のお知らせを優先してください。イベントは手動で編集・削除でき、改善のためにお知らせのリンクをお送りいただくことも歓迎します。',
+        '<strong>データを削除するには？</strong>アプリの「設定」→「データの管理」から、この端末に関連するサーバー上のデータを削除できます。'
+      ] },
+      { h: '関連ドキュメント', p: '<a href="/privacy?lang=ja">プライバシーポリシー</a> · <a href="/terms?lang=ja">利用規約</a>' }
+    ]
+  },
+  ko: {
+    title: '고객 지원',
+    sections: [
+      { p: `문의나 의견은 ${mail}로 이메일을 보내 주세요. 보통 영업일 기준 2일 이내에 답변드립니다. 가능하면 기기 모델, iOS 버전, 스크린샷을 함께 보내 주세요.` },
+      { h: '자주 묻는 질문', ul: [
+        '<strong>기기를 바꾸거나 다시 설치한 뒤 프리미엄이 사라졌어요.</strong> 앱의 프리미엄 화면에서 「구매 복원」을 누르고, 구독할 때 사용한 Apple 계정으로 로그인되어 있는지 확인해 주세요.',
+        '<strong>구독은 어떻게 해지하나요?</strong> iPhone 「설정」→ Apple 계정 →「구독」에서 Gacha Pal을 선택해 해지할 수 있습니다. 현재 기간이 끝날 때까지 프리미엄은 유지됩니다.',
+        '<strong>AI가 추출한 이벤트가 정확하지 않아요.</strong> 추출 결과는 공지 내용에 따라 달라지므로 게임 공식 공지를 기준으로 해 주세요. 이벤트는 직접 수정하거나 삭제할 수 있으며, 개선을 위해 공지 링크를 보내 주셔도 좋습니다.',
+        '<strong>내 데이터는 어떻게 삭제하나요?</strong> 앱의 「설정」→「내 데이터 관리」에서 이 기기와 관련된 서버 데이터를 삭제할 수 있습니다.'
+      ] },
+      { h: '관련 문서', p: '<a href="/privacy?lang=ko">개인정보 처리방침</a> · <a href="/terms?lang=ko">이용약관</a>' }
+    ]
+  }
+};
+
 const PAGE_TEXT = {
-  'zh-Hans': { app: 'GG Tracker', updated: '更新日期：' },
-  'zh-Hant': { app: 'GG Tracker', updated: '更新日期：' },
-  en: { app: 'GG Tracker', updated: 'Last updated: ' },
-  ja: { app: 'GG Tracker', updated: '最終更新日：' },
-  ko: { app: 'GG Tracker', updated: '최종 업데이트: ' }
+  'zh-Hans': { app: 'Gacha Pal', updated: '更新日期：' },
+  'zh-Hant': { app: 'Gacha Pal', updated: '更新日期：' },
+  en: { app: 'Gacha Pal', updated: 'Last updated: ' },
+  ja: { app: 'Gacha Pal', updated: '最終更新日：' },
+  ko: { app: 'Gacha Pal', updated: '최종 업데이트: ' }
 };
 
 function renderSections(sections) {
@@ -299,6 +367,10 @@ function renderPage({ lang, path, doc }) {
 
 export function privacyPolicyHTML(lang) {
   return renderPage({ lang, path: '/privacy', doc: PRIVACY[lang] ?? PRIVACY[DEFAULT_LANG] });
+}
+
+export function supportPageHTML(lang) {
+  return renderPage({ lang, path: '/support', doc: SUPPORT[lang] ?? SUPPORT[DEFAULT_LANG] });
 }
 
 export function termsOfServiceHTML(lang) {

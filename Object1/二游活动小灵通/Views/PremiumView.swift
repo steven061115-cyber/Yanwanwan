@@ -96,7 +96,7 @@ struct PremiumView: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(purchaseService.isPremium ? "更多活动已经交给 GG Tracker 盯着" : "把更多游戏交给 GG Tracker 盯着")
+                Text(purchaseService.isPremium ? "更多活动已经交给 Gacha Pal 盯着" : "把更多游戏交给 Gacha Pal 盯着")
                     .font(.system(size: 28, weight: .black, design: .rounded))
                     .foregroundStyle(.white)
                     .lineLimit(2)
@@ -742,7 +742,7 @@ private struct PurchaseCelebrationView: View {
             Text("会员已启用")
                 .font(.system(size: 22, weight: .black, design: .rounded))
                 .foregroundStyle(Color.hoyoNavy)
-            Text("更多活动已经交给 GG Tracker 盯着")
+            Text("更多活动已经交给 Gacha Pal 盯着")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.hoyoNavy.opacity(0.52))
         }
